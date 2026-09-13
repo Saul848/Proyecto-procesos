@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<productos>
+    <producto id="1">
+        <nombre>Laptop Gamer Avanzada</nombre>
+        <descripcion>Procesador de última generación, 16GB RAM, 512GB SSD.</descripcion>
+        <precio>1250.00</precio>
+        <stock>15</stock>
+    </producto>
+    
+    <producto id="2">
+        <nombre>Mouse Óptico Inalámbrico</nombre>
+        <descripcion>Diseño ergonómico con batería recargable y clicks silenciosos.</descripcion>
+        <precio>25.50</precio>
+        <stock>120</stock>
+    </producto>
+    
+    <producto id="3">
+        <nombre>Teclado Mecánico RGB</nombre>
+        <descripcion>Teclas con switches independientes y retroiluminación personalizada.</descripcion>
+        <precio>79.99</precio>
+        <stock>45</stock>
+    </producto>
+</productos>

@@ -1,0 +1,28 @@
+{
+  "name": "proyecto-procesos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js", 
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saul848/Proyecto-procesos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Saul848/Proyecto-procesos/issues"
+  },
+  "homepage": "https://github.com/Saul848/Proyecto-procesos#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "fast-xml-parser": "^5.11.1"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.5"
+  }
+}
