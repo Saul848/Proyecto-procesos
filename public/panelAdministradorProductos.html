@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Administrador/Productos</title>
+  <!-- Iconos Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Enlace al archivo CSS externo -->
+  <link rel="stylesheet" href="panelAdministradorProductos.css">
+  <link rel="stylesheet" href="modal_agregar_producto.css">
+
+  <div id="contenedor-modal"></div>
+
+  <script type="module" src="panelAdministradorProductos.js"></script>
+  <script type="module" src="modal_agregar_producto.js"></script>
+
+</head>
+
+<body>
+
+  <div class="main-container">
+    <!-- Encabezado -->
+    <header class="header">
+      <h1>Menu Administrador/Productos</h1>
+    </header>
+
+    <!-- Contenido Principal -->
+    <div class="content-grid">
+
+      <!-- Columna Izquierda: Búsqueda y Lista -->
+      <section class="left-section">
+        <div class="search-bar">
+          <h2>Buscar producto</h2>
+          <input type="text" placeholder="Ingresar nombre o id">
+          <button class="btn-primary">Buscar</button>
+        </div>
+
+        <div class="product-list">
+          <!-- Item de producto 1 -->
+          <div class="product-item">
+            <span class="product-name">Producto 1 (Papas)</span>
+            <div class="product-actions">
+              <button class="icon-btn" title="Más información"><i class="fa-regular fa-circle-plus"></i></button>
+              <button class="icon-btn" title="Eliminar"><i class="fa-solid fa-basket-shopping"></i></button>
+              <button class="icon-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+            </div>
+          </div>
+
+          <!-- Item de producto 2 -->
+          <div class="product-item">
+            <span class="product-name">Producto 1 (Papas)</span>
+            <div class="product-actions">
+              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+            </div>
+          </div>
+
+          <!-- Item de producto 3 -->
+          <div class="product-item">
+            <span class="product-name">Producto 1 (Papas)</span>
+            <div class="product-actions">
+              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+            </div>
+          </div>
+
+          <!-- Item de producto 4 -->
+          <div class="product-item">
+            <span class="product-name">Producto 1 (Papas)</span>
+            <div class="product-actions">
+              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+            </div>
+          </div>
+
+          <!-- Item de producto 5 -->
+          <div class="product-item">
+            <span class="product-name">Producto 1 (Papas)</span>
+            <div class="product-actions">
+              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+            </div>
+          </div>
+
+          <!-- Item de producto 6 -->
+          <div class="product-item">
+            <span class="product-name">Producto 1 (Papas)</span>
+            <div class="product-actions">
+              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
+              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Columna Derecha: Información y Registro -->
+      <section class="right-section">
+        <div class="info-box">
+          <h2>Informacion producto</h2>
+        </div>
+
+        <div class="register-box">
+          <h2>Registrar un nuevo producto</h2>
+          <button class="btn-primary" id="boton-registrar-producto">Registrar nuevo</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <div id="contenedor-modal"></div>
+
+</body>
+
+</html>
