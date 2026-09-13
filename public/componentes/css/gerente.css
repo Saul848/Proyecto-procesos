@@ -94,6 +94,10 @@ body{
                     border-bottom: solid;
                 }
 
+                .formulario input{
+                    width: 400px;
+                }
+
 
         .contLista{
             display: flex;

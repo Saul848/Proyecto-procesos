@@ -75,4 +75,22 @@
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
   </empleado>
+  <empleado>
+    <id>9</id>
+    <nombre>Emiliano Garcia</nombre>
+    <puesto>administrador</puesto>
+    <usuario>Cypher34</usuario>
+    <password>ueueueue</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>10</id>
+    <nombre>Emiliano Zapata</nombre>
+    <puesto>gerente</puesto>
+    <usuario>Mauricio032</usuario>
+    <password>ueueueue</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
 </empleados>
