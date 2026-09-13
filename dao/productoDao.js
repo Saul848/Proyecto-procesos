@@ -1,9 +1,10 @@
 const Producto = require("../clases/producto");
 
 const fs = require("fs");
+const path = require('path');
 const { XMLParser, XMLBuilder } = require("fast-xml-parser");
 
-const archivo = "./data/productos.xml";
+const archivo = path.join(__dirname, "../data/xml/productos.xml");
 
 /**
  * Agrega un nuevo producto a la base de datos.

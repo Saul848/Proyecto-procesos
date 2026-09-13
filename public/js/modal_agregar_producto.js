@@ -153,6 +153,7 @@ async function agregarProducto() {
 
     // Validacion respuesta del servidor
     if (respuesta.ok) {
+        limpiarCamposProducto();
         //cargar la tabla de productos del panel principal
         alert(resultado.mensaje);
     } else {

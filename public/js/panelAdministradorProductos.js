@@ -1,7 +1,7 @@
 import { inicializarModalProducto, abrirModalProducto} from './modal_agregar_producto.js';
 
 // CARGAR EL MODAL
-fetch("componentes/modal_agregar_producto.html")
+fetch("../html/modal_agregar_producto.html")
     .then(respuesta => respuesta.text())
     .then(html => {
 

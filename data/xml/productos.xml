@@ -21,7 +21,25 @@
   <producto id="4">
     <nombre>d</nombre>
     <descripcion>d</descripcion>
-    <precio>11.00</precio>
+    <precio>11</precio>
     <stock>11</stock>
+  </producto>
+  <producto id="5">
+    <nombre>a</nombre>
+    <descripcion>a</descripcion>
+    <precio>41.99</precio>
+    <stock>100</stock>
+  </producto>
+  <producto id="6">
+    <nombre>fresas</nombre>
+    <descripcion>400 gramos</descripcion>
+    <precio>41.99</precio>
+    <stock>100</stock>
+  </producto>
+  <producto id="7">
+    <nombre>fresas con crema</nombre>
+    <descripcion>33 gramos</descripcion>
+    <precio>41.22</precio>
+    <stock>111</stock>
   </producto>
 </productos>
