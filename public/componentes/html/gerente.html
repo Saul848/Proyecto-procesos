@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oxxo - Gerente</title>
+    <link rel="stylesheet" href="../css/gerente.css">
+</head>
+<body>
+    <section class = "pestaña">
+        <label id="msgPestaña">Menu Gerente</label>
+        <nav>
+        </nav>
+        <button id="btnSalir"> Salir</button>
+    </section>
+    <section class = "contenido">
+        <section class = "datos">
+            <section class = "perfil">
+                <div id="divDatosPerfil">
+                    <div id="divNumEmp">
+                        <label id="numEmp">Empleado #?</label>
+                    </div>
+                    <div id="divDatosEmp">
+                        <div id="divDesgloce">
+                            <label id="nombreEmp">Nombre empleado</label>
+                            <label id="puestoEmp">Puesto</label>
+                            <label id="infoContacto">Info de contacto</label>    
+                        </div>
+                        <div id="divImagenEmp"> 
+                            <img id="imgEmpleado" src="" alt=""> <Label>IMAGEN </Label>
+                        </div>
+                    </div>
+                </div>    
+            </section>
+            <section class = "formulario">
+                <div id="divMsgAgregarEmp">
+                    <label id="msgAgregarEmp">Agregar empleado</label>
+                </div>
+                <div id="inputsEmp">
+                    <label htmlFor="inpNombre">Nombre: <input type="text" id="inpNombre" placeholder="Escribe el nombre del empleado" /></label>
+                    <label htmlFor="selectPuesto">Puesto:</label>
+                    <select id="selectPuesto">
+                        <option value="empleado">Empleado</option>
+                        <option value="administrador">Administrador</option>
+                        <option value="gerente">Gerente</option>
+                    </select>
+                    <label htmlFor="inpTel">Telefono: <input type="text" id="inpTel" placeholder="Escribe el telefono del empleado" /></label>
+                    <label htmlFor="inpUsuario">Usuario: <input type="text" id="inpUsuario" placeholder="Escribe el usuario del empleado" /></label>
+                    <label htmlFor="inpPassword">Contraseña: <input type="text" id="inpPassword" placeholder="Escribe la contraseña del empleado empleado" /></label>
+                </div>
+                <div id="divBtnAgregar">
+                    <button id="btnAgregarEmp">Agregar Empleado</button>
+                </div>
+            </section>
+        </section>
+        <section class="contLista">
+            <aside class="listaAct">
+                <div id="seccionEmp">
+                </div>
+            </aside>
+            <div id="divBtnGenReporte">
+                <button id="btnGenReporte">Generar reporte</button>
+            </div>
+        </section>
+    </section>
+</body>
+</html>
+<script src="../js/gerente.js" defer></script>

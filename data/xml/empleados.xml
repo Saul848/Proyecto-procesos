@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<empleados>
+  <empleado>
+    <id>1</id>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <puesto>empleado</puesto>
+    <telefono>3453244576</telefono>
+    <usuario>roger01</usuario>
+    <password>rogelio123</password>
+    <numVentas>5</numVentas>
+    <numTransacciones>3</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>2</id>
+    <nombre>Martha Garcia Morales</nombre>
+    <puesto>administrador</puesto>
+    <telefono>4564342365</telefono>
+    <usuario>martha01</usuario>
+    <password>martha123</password>
+    <numVentas>6</numVentas>
+    <numTransacciones>5</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>3</id>
+    <nombre>Ruben Flores Martinez</nombre>
+    <puesto>gerente</puesto>
+    <telefono>4534234565</telefono>
+    <usuario>martha01</usuario>
+    <password>martha123</password>
+    <numVentas>8</numVentas>
+    <numTransacciones>3</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>4</id>
+    <nombre>Cesar</nombre>
+    <puesto>administrador</puesto>
+    <usuario>Cesa7r</usuario>
+    <password>123</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>5</id>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <puesto>administrador</puesto>
+    <usuario>roger134</usuario>
+    <password>123</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>6</id>
+    <nombre>Aurelio</nombre>
+    <puesto>empleado</puesto>
+    <usuario>roger123</usuario>
+    <password>234</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>7</id>
+    <nombre>Misael</nombre>
+    <puesto>gerente</puesto>
+    <usuario>Misa3l</usuario>
+    <password>misa123</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>8</id>
+    <nombre>Pedro Antonio</nombre>
+    <puesto>gerente</puesto>
+    <usuario>Pedro09</usuario>
+    <password>pedro098</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+</empleados>

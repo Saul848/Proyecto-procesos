@@ -1,0 +1,10 @@
+<!ELEMENT empleados (empleado*)>
+<!ELEMENT empleado (id, nombre, puesto, telefono, usuario, password, numVentas, numTransacciones)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT puesto (#PCDATA)>
+<!ELEMENT telefono (#PCDATA)>
+<!ELEMENT usuario (#PCDATA)>
+<!ELEMENT password (#PCDATA)>
+<!ELEMENT numVentas (#PCDATA)>
+<!ELEMENT numTransacciones (#PCDATA)>
