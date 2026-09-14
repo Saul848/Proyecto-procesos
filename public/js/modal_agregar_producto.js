@@ -20,9 +20,9 @@ function inicializarModalProducto() {
 
     const inputPrecio = document.getElementById("input-precio-producto");
     const inputStock = document.getElementById("input-stock-producto");
+    const inputDescuento = document.getElementById("input-descuento-producto");
 
     if (inputPrecio) {
-
         // Bloquear teclas no deseadas (e, E, +, -, .)
         inputPrecio.addEventListener('keydown', (e) => {
             if (['e', 'E', '+', '-'].includes(e.key)) {
@@ -89,6 +89,38 @@ function inicializarModalProducto() {
         });
     }
 
+    if (inputDescuento) {
+        // Bloquear teclas no deseadas (e, E, +, -, .)
+        inputDescuento.addEventListener('keydown', (e) => {
+            if (['e', 'E', '+', '-', '.'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // Controlar rangos al escribir
+        inputDescuento.addEventListener('input', (e) => {
+            const val = e.target.value;
+
+            if (val !== '') {
+                const num = Number(val);
+
+                if (num < 0) {
+                    e.target.value = 0;
+                }
+
+                if (num > 1) {
+                    e.target.value = 1;
+                }
+            }
+        });
+
+        // Restaurar valor por defecto si se deja vacío
+        inputDescuento.addEventListener('blur', (e) => {
+            if (e.target.value === '') {
+                e.target.value = 0;
+            }
+        });
+    }
 }
 
 
@@ -108,6 +140,7 @@ function limpiarCamposProducto() {
     document.getElementById("input-descripcion-producto").value = "";
     document.getElementById("input-precio-producto").value = "";
     document.getElementById("input-stock-producto").value = "";
+    document.getElementById("input-descuento-producto").value = "";
 }
 
 
@@ -124,12 +157,14 @@ async function agregarProducto() {
     let descripcion = document.getElementById("input-descripcion-producto").value.trim();
     let precio = document.getElementById("input-precio-producto").value;
     let stock = document.getElementById("input-stock-producto").value;
+    let descuento = document.getElementById("input-descuento-producto").value;
 
     // Transformación y sanitización de tipos
     nombre = nombre.toLowerCase();
     descripcion = descripcion.toLowerCase();
     const precioNum = parseFloat(precio);
     const stockNum = parseInt(stock, 10);
+    const descuentoNum = parseFloat(descuento);
 
     // Enviar producto a Express
     const respuesta = await fetch("/api/productos", {
@@ -143,10 +178,10 @@ async function agregarProducto() {
             nombre: nombre,
             descripcion: descripcion,
             precio: precioNum,
-            stock: stockNum
+            stock: stockNum,
+            descuento: descuentoNum
         })
     });
-
 
     // Obtencion resultado respuesta
     const resultado = await respuesta.json();
@@ -169,7 +204,7 @@ function validarDatosProducto() {
     const descripcion = document.getElementById("input-descripcion-producto").value.trim();
     const precio = Number(document.getElementById("input-precio-producto").value);
     const stock = Number(document.getElementById("input-stock-producto").value);
-
+    const descuento = Number(document.getElementById("input-descuento-producto").value);
 
     // Validar nombre
     if (nombre === "") {
@@ -195,6 +230,11 @@ function validarDatosProducto() {
         return false;
     }
 
+    //validar descuento
+    if (!Number.isFinite(descuento) || descuento < 0 || descuento >1){
+        alert("El descuento debe ser un número entre 0 y 1");
+        return false;
+    }
     // Todos los datos son válidos
     return true;
 }
