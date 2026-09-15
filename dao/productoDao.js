@@ -18,6 +18,7 @@ const archivo = path.join(__dirname, "../data/xml/productos.xml");
  * @param {string} producto.descripcion - Descripcion del producto.
  * @param {string} producto.precio - Precio del producto.
  * @param {string} producto.stock - Stock del producto.
+ * @param {number} producto.descuento - Descuento del producto
  * @returns {Object} Resultado de la operación.
  * @throws {Error} Si ocurre un error al leer, modificar o escribir el archivo XML.
  */
@@ -52,7 +53,8 @@ function agregarProducto(producto) {
             nombre: producto.nombre.toLowerCase(),
             descripcion: producto.descripcion,
             precio: Number(producto.precio).toFixed(2),
-            stock: Number(producto.stock)
+            stock: Number(producto.stock),
+            descuento: Number(producto.descuento)
         };
 
         // Agregar al arreglo existente

@@ -9,7 +9,7 @@
  * @property {string} usuario - Nombre de usuario del empleado.
  * @property {string} password - Contraseña del usuario del empleado.
  * @property {number} numVentas - Numero de ventas totales realizadas por el empleado.
- * @property {number} numTransacciones - Numero de ventas totales realizadas por el empleado.
+ * @property {number} numTransacciones - Numero de transacciones totales realizadas por el empleado.
 */ 
 
 /**
@@ -45,15 +45,36 @@ class Empleado {
     /**
      * Telefono del empleado
      * 
+     * @type {number}
      */
     #telefono
 
+    /**
+     * Nombre de usuario en el sistema
+     * 
+     * @type {string}
+     */
     #usuario
 
+    /**
+     * Contraseña del empleado
+     * 
+     * @type {string}
+     */
     #password
 
+    /**
+     * Numero de ventas totales realizadas por el empleado
+     * 
+     * @type {number}
+     */
     #numVentas
 
+    /**
+     * Numero total de transacciones totales realizadas por el empleado
+     * 
+     * @type {number}
+     */
     #numTransaciones
 
     /**

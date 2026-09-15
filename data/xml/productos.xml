@@ -5,41 +5,48 @@
     <descripcion>Procesador de última generación, 16GB RAM, 512GB SSD.</descripcion>
     <precio>1250</precio>
     <stock>15</stock>
+    <descuento></descuento>
   </producto>
   <producto id="2">
     <nombre>Mouse Óptico Inalámbrico</nombre>
     <descripcion>Diseño ergonómico con batería recargable y clicks silenciosos.</descripcion>
     <precio>25.5</precio>
     <stock>120</stock>
+    <descuento>0.5</descuento>
   </producto>
   <producto id="3">
     <nombre>Teclado Mecánico RGB</nombre>
     <descripcion>Teclas con switches independientes y retroiluminación personalizada.</descripcion>
     <precio>79.99</precio>
     <stock>45</stock>
+    <descuento></descuento>
   </producto>
   <producto id="4">
     <nombre>d</nombre>
     <descripcion>d</descripcion>
     <precio>11</precio>
     <stock>11</stock>
+    <descuento></descuento>
   </producto>
   <producto id="5">
     <nombre>a</nombre>
     <descripcion>a</descripcion>
     <precio>41.99</precio>
     <stock>100</stock>
+    <descuento></descuento>
   </producto>
   <producto id="6">
     <nombre>fresas</nombre>
     <descripcion>400 gramos</descripcion>
     <precio>41.99</precio>
     <stock>100</stock>
+    <descuento></descuento>
   </producto>
   <producto id="7">
     <nombre>fresas con crema</nombre>
     <descripcion>33 gramos</descripcion>
     <precio>41.22</precio>
     <stock>111</stock>
+    <descuento>0.1</descuento>
   </producto>
 </productos>
