@@ -93,4 +93,22 @@
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
   </empleado>
+  <empleado>
+    <id>11</id>
+    <nombre>d</nombre>
+    <puesto>empleado</puesto>
+    <usuario>sde</usuario>
+    <password>cjkdsk s</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>12</id>
+    <nombre>fff</nombre>
+    <puesto>empleado</puesto>
+    <usuario>fjd</usuario>
+    <password>cjkdsk s</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
 </empleados>
