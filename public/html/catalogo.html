@@ -1,0 +1,42 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos</title>
+    <link rel="stylesheet" href="../css/catalogo.css"> 
+</head>
+<body>
+    <section class="pestaña">
+        <label id="msgPestaña">Catálogo de Productos</label>
+        <button id="btnVolver">Regresar</button>
+    </section>
+
+    <section class="contenido">
+       
+        <section class="formulario">
+            <div id="divMsgBusqueda">
+                <label id="msgBusqueda">Buscar Productos</label>
+            </div>
+            <div id="inputsBusqueda">
+                <label for="inpBuscar">Nombre o ID: 
+                    <input type="text" id="inpBuscar" placeholder="Escribe para buscar..." />
+                </label>
+            </div>
+            <div id="divBtnBuscar">
+                <button id="btnBuscar">Buscar</button>
+            </div>
+        </section>
+
+       
+        <section class="contLista">
+            <aside class="listaAct">
+                <div id="seccionProductos">
+                   
+                </div>
+            </aside>
+        </section>
+    </section>
+
+    <script src="/js/catalogo.js" defer></script>
+</body>
+</html>

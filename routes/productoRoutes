@@ -11,6 +11,11 @@ const productoControlador = require("../controladores/productoControlador");
  */
 router.post("/", productoControlador.agregarProducto);
 
+/**
+ * @name GET /
+ * @description Consulta el catálogo de productos con opciones de búsqueda y filtro.
+ */
+router.get("/", productoControlador.consultarCatalogo);
 
 
 module.exports = router;
