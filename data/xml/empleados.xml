@@ -25,8 +25,8 @@
     <nombre>Ruben Flores Martinez</nombre>
     <puesto>gerente</puesto>
     <telefono>4534234565</telefono>
-    <usuario>martha01</usuario>
-    <password>martha123</password>
+    <usuario>ruben01</usuario>
+    <password>ruben123</password>
     <numVentas>8</numVentas>
     <numTransacciones>3</numTransacciones>
   </empleado>
