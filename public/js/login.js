@@ -54,29 +54,35 @@ document.getElementById("boton-login").addEventListener('click', async () => {
             const usuarioXML = listaEmpleados[i].getElementsByTagName("usuario")[0].textContent.trim();
             const contraXML = listaEmpleados[i].getElementsByTagName("password")[0].textContent.trim();
             const puestoXML = listaEmpleados[i].getElementsByTagName("puesto")[0].textContent.trim();
+            const nombreXML = listaEmpleados[i].getElementsByTagName("nombre")[0].textContent.trim();
 
             if (usuarioXML === user && contraXML === contra) {
                 empleadoEncontrado = {
                     user: usuarioXML,
+                    nombre: nombreXML,
                     puesto: puestoXML.toLowerCase()
                 };
                 break;
             }
         }
 
-        //redirección a la página correspondiente 
         if (empleadoEncontrado) {
+            //guardamos la información de la sesión en el navegador 
+            sessionStorage.setItem("nombreUsuario", empleadoEncontrado.nombre);
+            sessionStorage.setItem("puestoLogueado", empleadoEncontrado.puesto);
+
             alert(`¡Bienvenid@, ${empleadoEncontrado.user}! `);
 
+            //redirección a la página correspondiente 
             switch (empleadoEncontrado.puesto) {
                 case "administrador":
-                    window.location.href = "admin.html"; //página pendiente
+                    window.location.href = "administrador.html"; //página pendiente, hecha para pruebas
                     break;
                 case "gerente":
                     window.location.href = "gerente.html";
                     break;
                 case "empleado":
-                    window.location.href = "empleado.html"; //página pendiente
+                    window.location.href = "empleado.html"; //página pendiente, hecha para puebas
                     break;
                 default:
                     alert("Puesto no reconocido en el sistema.");
