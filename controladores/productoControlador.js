@@ -79,8 +79,38 @@ function validarDatosAgregar(nombre, descripcion, precio, stock) {
 
     return { esValido: true, mensaje: "" };
 }
+/**
+ * Consulta el catálogo de productos con opción de búsqueda y filtros.
+ * @async
+ * @function consultarCatalogo
+ * @param {Object} req - Objeto de petición HTTP (puede recibir 'busqueda' por query params).
+ * @param {Object} res - Objeto de respuesta HTTP.
+ * @returns {Promise<void>} Lista de productos filtrados o mensaje de error.
+ */
+const consultarCatalogo = async (req, res) => {
+    try {
+        
+        const { busqueda } = req.query;
+
+        const productos = await productoDao.obtenerProductos(busqueda || "");
+
+        return res.status(200).json({
+            ok: true,
+            productos: productos,
+            total: productos.length
+        });
+
+    } catch (error) {
+        console.error("Error al consultar el catálogo en el controlador:", error);
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error en el servidor al consultar el catálogo de productos"
+        });
+    }
+};
 
 
 module.exports = {
-    agregarProducto
+    agregarProducto,
+    consultarCatalogo,
 };

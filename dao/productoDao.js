@@ -142,12 +142,62 @@ function obtenerSiguienteId() {
         throw error;
     }
 }
+/**
+ * Obtiene la lista de productos, permitiendo filtrar por nombre, ID o categoría,
+ * y verificando el estado del stock.
+ * @param {string} [busqueda] Texto opcional para buscar por nombre o ID.
+ * @returns {Array} Lista de productos filtrados.
+ */
+function obtenerProductos(busqueda = "") {
+    try {
+        const xml = fs.readFileSync(archivo, "utf8");
+
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            attributeNamePrefix: "@_",
+            isArray: (tagName) => ['producto'].includes(tagName)
+        });
+
+        const resultado = parser.parse(xml);
+        let productos = resultado.productos?.producto || [];
+
+       
+        if (busqueda && busqueda.trim() !== "") {
+            const termino = busqueda.trim().toLowerCase();
+            productos = productos.filter((prod) => {
+                const idProd = prod["@_id"] ? String(prod["@_id"]).toLowerCase() : "";
+                const nombreProd = prod.nombre ? String(prod.nombre).toLowerCase() : "";
+                
+                return idProd.includes(termino) || nombreProd.includes(termino);
+            });
+        }
+
+       
+        return productos.map((prod) => {
+            const stockActual = Number(prod.stock) || 0;
+            return {
+                id: prod["@_id"],
+                nombre: prod.nombre,
+                descripcion: prod.descripcion,
+                precio: prod.precio,
+                stock: stockActual,
+                descuento: prod.descuento,
+                sinStock: stockActual <= 0 
+            };
+        });
+
+    } catch (error) {
+        console.error("Error al obtener el catálogo de productos:", error);
+        throw error;
+    }
+}
 
 
 
 module.exports = {
     agregarProducto,
     existeProducto,
+    obtenerProductos,
 };
 
 
