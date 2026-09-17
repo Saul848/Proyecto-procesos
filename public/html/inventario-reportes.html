@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Inventario</title>
+    <link rel="stylesheet" href="../css/catalogo.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Reporte de Inventario y Existencias</h1>
+        
+        <div class="card-resumen" style="margin: 20px 0; padding: 15px; background: #f4f4f4; border-radius: 8px;">
+            <h3>Total de Existencias en Almacén: <span id="totalExistencias">0</span> unidades</h3>
+        </div>
+
+        <table class="tabla-productos" border="1" width="100%" style="border-collapse: collapse; margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Estado / Alerta</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTablaReporte">
+            </tbody>
+        </table>
+
+        <div style="margin-top: 20px;">
+            <a href="../index.html" class="btn-regresar">Regresar al Inicio</a>
+        </div>
+    </div>
+
+    <!-- meti aqui el script porque me estaba marcando el error 404 de que no encontraba el archivo js y ya me habia desesperado-->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarReporteInventario();
+        });
+
+        async function cargarReporteInventario() {
+            try {
+                const respuesta = await fetch("/api/productos/inventario-reportes");
+                const datos = await respuesta.json();
+
+                if (datos.ok) {
+                    document.getElementById("totalExistencias").textContent = datos.totalExistencias;
+                    const cuerpoTabla = document.getElementById("cuerpoTablaReporte");
+                    cuerpoTabla.innerHTML = "";
+
+                    datos.productos.forEach(prod => {
+                        const fila = document.createElement("tr");
+
+                        if (prod.esDesabasto) {
+                            fila.style.backgroundColor = "#ffdddd";
+                        }
+
+                        fila.innerHTML = `
+                            <td>${prod.id}</td>
+                            <td>${prod.nombre}</td>
+                            <td>${prod.descripcion}</td>
+                            <td>$${prod.precio}</td>
+                            <td>${prod.stock}</td>
+                            <td>
+                                ${prod.esDesabasto ? '<span style="color: red; font-weight: bold;">⚠️ Desabasto / Stock Bajo</span>' : '<span style="color: green;">Normal</span>'}
+                            </td>
+                        `;
+
+                        cuerpoTabla.appendChild(fila);
+                    });
+                } else {
+                    alert("No se pudo cargar el reporte de inventario.");
+                }
+            } catch (error) {
+                console.error("Error al obtener el reporte:", error);
+                alert("Error de conexión con el servidor.");
+            }
+        }
+    </script>
+</body>
+</html>

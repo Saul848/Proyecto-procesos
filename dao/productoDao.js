@@ -192,12 +192,34 @@ function obtenerProductos(busqueda = "") {
     }
 }
 
+const obtenerReporteInventario = () => {
+    // se lee el archivo xml
+    // y calcula existencias totales o etiquetas de desabasto
+    const productos = obtenerProductos(); 
+    
+    let totalExistencias = 0;
+    const productosConAlerta = productos.map(prod => {
+        const stockNum = parseInt(prod.stock) || 0;
+        totalExistencias += stockNum;
+        return {
+            ...prod,
+            esDesabasto: stockNum <= 5 // límite de stock mínimo aquí
+        };
+    });
+
+    return {
+        totalExistencias,
+        productos: productosConAlerta
+    };
+};
+
 
 
 module.exports = {
     agregarProducto,
     existeProducto,
     obtenerProductos,
+    obtenerReporteInventario,
 };
 
 
