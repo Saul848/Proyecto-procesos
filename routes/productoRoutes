@@ -17,5 +17,6 @@ router.post("/", productoControlador.agregarProducto);
  */
 router.get("/", productoControlador.consultarCatalogo);
 
+router.get("/inventario-reportes", productoControlador.consultarInventarioYReportes);
 
 module.exports = router;
