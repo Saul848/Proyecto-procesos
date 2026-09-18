@@ -1,55 +1,71 @@
 const fs = require('fs');
 const path = require('path');
 const { XMLParser, XMLBuilder } = require('fast-xml-parser');
+
 const archivoVentas = path.join(__dirname, '../data/xml/ventas.xml');
 const archivoProductos = path.join(__dirname, '../data/xml/productos.xml');
+
 const parserConfig = {
     ignoreAttributes: false,
     attributeNamePrefix: '@_',
     isArray: (tagName) => ["venta", "producto", "item"].includes(tagName),
 };
+
 const builderConfig = {
     format: true,
     ignoreAttributes: false,
     attributeNamePrefix: '@_',
 };
 
-// esta funcion obtiene el siguiente id autoincrementable para una venta
+// Función auxiliar para obtener el ID sin importar si viene como atributo o etiqueta
+function extraerId(entidad) {
+    if (!entidad) return "";
+    return String(entidad['@_id'] !== undefined ? entidad['@_id'] : (entidad.id !== undefined ? entidad.id : "")).trim();
+}
+
+// Obtiene el siguiente ID autoincrementable para una venta
 function obtenerSiguienteIdVenta() {
     if (!fs.existsSync(archivoVentas)) {
-        return 1;
+        return "1";
     }
     const xmlData = fs.readFileSync(archivoVentas, 'utf-8');
     const parser = new XMLParser(parserConfig);
-    const resultodo = parser.parse(xmlData);
-    const ventas = resultodo.ventas?.venta || [];
+    const resultado = parser.parse(xmlData);
+    const ventas = resultado.ventas?.venta || [];
+    
     const maxId = ventas.reduce((max, v) => {
-        const idActual = parseInt(v['@_id'], 10) || 0;
+        const idActual = parseInt(extraerId(v), 10) || 0;
         return idActual > max ? idActual : max;
     }, 0);
+
     return String(maxId + 1);
 }
-//funcion para procesar la venbta
+
+// Procesa la venta, descuenta stock y guarda en disco
 function registrarVenta(datosVenta) {
     try {
         const parser = new XMLParser(parserConfig);
         const builder = new XMLBuilder(builderConfig);
+
+        // 1. Leer inventario actual
         const xmlProductos = fs.readFileSync(archivoProductos, 'utf-8');
-        const resProuctos = parser.parse(xmlProductos);
-        const listaProductos = resProuctos.productos?.producto || [];
-       // Funcion para validar stock 
+        const resProductos = parser.parse(xmlProductos);
+        const listaProductos = resProductos.productos?.producto || [];
+
         const itemsParaTicket = [];
         let totalVenta = 0;
 
+        // 2. Validar existencias y calcular subtotales
         for (const item of datosVenta.items) {
-            const producto = listaProductos.find((p) => String(p['@_id']) === String(item.idProducto));
+            const producto = listaProductos.find((p) => extraerId(p) === String(item.idProducto).trim());
             if (!producto) {
                 throw new Error(`Producto con ID ${item.idProducto} no encontrado.`);
             }
-            const stockActual = parseInt(producto.stock) || 0;
+
+            const stockActual = parseInt(producto.stock, 10) || 0;
             const cantidadSolicitada = Number(item.cantidad);
             if (stockActual < cantidadSolicitada) {
-                throw new Error(`Stock insuficiente para el producto ${producto.nombre}. Stock actual: ${stockActual}, cantidad solicitada: ${cantidadSolicitada}`);
+                throw new Error(`Stock insuficiente para ${producto.nombre}. Stock actual: ${stockActual}, solicitado: ${cantidadSolicitada}`);
             }
 
             const precioUnitario = Number(producto.precio) || 0;
@@ -59,7 +75,7 @@ function registrarVenta(datosVenta) {
             totalVenta += subtotal;
 
             itemsParaTicket.push({
-                "@_idProducto": String(producto['@_id']),
+                "@_idProducto": extraerId(producto),
                 nombre: producto.nombre,
                 precioUnitario: precioUnitario.toFixed(2),
                 descuento: descuento,
@@ -67,21 +83,24 @@ function registrarVenta(datosVenta) {
                 subtotal: subtotal.toFixed(2),
             });
         }
-        //descontar stock de los productos
+
+        // 3. Descontar stock en memoria
         for (const item of datosVenta.items) {
-            const producto = listaProductos.find((p) => String(p['@_id']) === String(item.idProducto));
-            producto.stock = Number(producto.stock) - Number(item.cantidad);
+            const producto = listaProductos.find((p) => extraerId(p) === String(item.idProducto).trim());
+            producto.stock = (parseInt(producto.stock, 10) || 0) - Number(item.cantidad);
         }
 
-        // guardar inventario actualizado en productos.xml
-        resProuctos.productos.producto = listaProductos;
-        fs.writeFileSync(archivoProductos, builder.build(resProuctos), 'utf-8');
+        // 4. Guardar inventario actualizado en data/xml/productos.xml
+        resProductos.productos.producto = listaProductos;
+        fs.writeFileSync(archivoProductos, builder.build(resProductos), 'utf-8');
 
-        //leer y registrar en ventas.xml
+        // 5. Leer historial y registrar la nueva venta en data/xml/ventas.xml
         let xmlVentas = "<ventas></ventas>";
         if (fs.existsSync(archivoVentas)) {
             const contenido = fs.readFileSync(archivoVentas, 'utf-8').trim();
-            if (contenido.lenght > 0) xmlVentas = contenido;
+            if (contenido.length > 0) { // Corregido el error tipográfico .length
+                xmlVentas = contenido;
+            }
         }
 
         const resVentas = parser.parse(xmlVentas);
@@ -101,6 +120,7 @@ function registrarVenta(datosVenta) {
                 item: itemsParaTicket
             }
         };
+
         resVentas.ventas.venta.push(nuevaVenta);
         fs.writeFileSync(archivoVentas, builder.build(resVentas), 'utf-8');
 
@@ -115,7 +135,6 @@ function registrarVenta(datosVenta) {
 }
 
 module.exports = {
-    registrarVenta
-        
-
-    };
+    registrarVenta,
+    obtenerSiguienteIdVenta
+};

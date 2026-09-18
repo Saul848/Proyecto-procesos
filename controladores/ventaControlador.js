@@ -50,9 +50,18 @@ function procesarVenta(req, res) {
         });
     }
 }
+function obtenerProximoFolio(req, res) {
+    try {
+        const siguienteId = ventaDao.obtenerSiguienteIdVenta();
+        res.json({ siguienteFolio: siguienteId });
+    } catch (error) {
+        res.status(500).json({ siguienteFolio: "1" });
+    }
+}
 
 module.exports = {
     obtenerEstadoCaja,
     cambiarEstadoCaja,
-    procesarVenta
+    procesarVenta,
+    obtenerProximoFolio
 };
