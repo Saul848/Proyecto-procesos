@@ -1,4 +1,72 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ventas>
-
+  <venta id="4">
+    <fecha>2026-09-18T04:29:23.845Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>57.1</total>
+    <items>
+      <item idProducto="8">
+        <nombre>papas</nombre>
+        <precioUnitario>20</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>20</subtotal>
+      </item>
+      <item idProducto="7">
+        <nombre>fresas con crema</nombre>
+        <precioUnitario>41.22</precioUnitario>
+        <descuento>0.1</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>37.1</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="5">
+    <fecha>2026-09-18T04:35:42.942Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>57.1</total>
+    <items>
+      <item idProducto="8">
+        <nombre>papas</nombre>
+        <precioUnitario>20</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>20</subtotal>
+      </item>
+      <item idProducto="7">
+        <nombre>fresas con crema</nombre>
+        <precioUnitario>41.22</precioUnitario>
+        <descuento>0.1</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>37.1</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="6">
+    <fecha>2026-09-18T04:37:05.133Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>1250</total>
+    <items>
+      <item idProducto="1">
+        <nombre>Laptop Gamer Avanzada</nombre>
+        <precioUnitario>1250</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>1250</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="7">
+    <fecha>2026-09-18T04:38:36.522Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>12.75</total>
+    <items>
+      <item idProducto="2">
+        <nombre>Mouse Óptico Inalámbrico</nombre>
+        <precioUnitario>25.50</precioUnitario>
+        <descuento>0.5</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>12.75</subtotal>
+      </item>
+    </items>
+  </venta>
 </ventas>

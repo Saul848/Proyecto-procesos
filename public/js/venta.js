@@ -1,9 +1,10 @@
-let catalogoProductos = [];
-let itemsCuenta = [];
+let todosLosProductos = []; // Catálogo original completo
+let catalogoProductos = []; // Catálogo visible/filtrado
+let itemsCuenta = [];       // Productos seleccionados en el ticket { id, nombre, precio, cantidad, stockMax }
 let metodoPago = "Efectivo";
 let cajaAbierta = true;
 
-// Referencias DOM
+// Referencias del DOM
 const tablaProductosCuerpo = document.getElementById("tablaProductosCuerpo");
 const inputBuscar = document.getElementById("inputBuscar");
 const listaItemsTicket = document.getElementById("listaItemsTicket");
@@ -21,16 +22,19 @@ const btnToggleCaja = document.getElementById("btnToggleCaja");
 const modalTicket = document.getElementById("modalTicket");
 const reciboDetalle = document.getElementById("reciboDetalle");
 const btnCerrarModal = document.getElementById("btnCerrarModal");
+const lblFolioVenta = document.getElementById("lblFolioVenta");
 
 document.addEventListener("DOMContentLoaded", () => {
     verificarEstadoCaja();
+    cargarFolioActual();
     cargarProductos();
     configurarEventos();
 });
 
 function configurarEventos() {
+    // Búsqueda instantánea en tiempo real por ID o por nombre
     inputBuscar.addEventListener("input", (e) => {
-        cargarProductos(e.target.value);
+        filtrarProductos(e.target.value);
     });
 
     btnToggleCaja.addEventListener("click", alternarCaja);
@@ -63,11 +67,27 @@ function configurarEventos() {
         inputMontoRecibido.value = "";
         inputCambio.value = "$0.00";
         actualizarTicket();
+        cargarFolioActual();
         cargarProductos();
     });
 }
 
-// 1. Estado de Caja
+// 1. Folio de la siguiente venta
+async function cargarFolioActual() {
+    try {
+        const res = await fetch("/api/ventas/folio/siguiente");
+        if (res.ok) {
+            const data = await res.json();
+            if (lblFolioVenta && data.siguienteFolio) {
+                lblFolioVenta.textContent = `Venta numero ${data.siguienteFolio}`;
+            }
+        }
+    } catch (e) {
+        console.warn("No se pudo obtener el folio actual:", e);
+    }
+}
+
+// 2. Control de estado de caja
 async function verificarEstadoCaja() {
     try {
         const res = await fetch("/api/ventas/caja/estado");
@@ -107,50 +127,80 @@ function actualizarVistaCaja() {
     validarBotonCobro();
 }
 
-// 2. Cargar Catálogo
-async function cargarProductos(filtro = "") {
+async function cargarProductos() {
     try {
-        const url = filtro ? `/api/productos?busqueda=${encodeURIComponent(filtro)}` : "/api/productos";
-        const res = await fetch(url);
-        catalogoProductos = await res.json();
-        renderizarTabla();
+        const res = await fetch("/api/productos");
+        const data = await res.json();
+        
+        // Extraemos el arreglo de data.productos
+        const lista = data.productos || (Array.isArray(data) ? data : []);
+        
+        todosLosProductos = lista;
+        catalogoProductos = [...todosLosProductos];
+        
+        if (inputBuscar && inputBuscar.value.trim() !== "") {
+            filtrarProductos(inputBuscar.value);
+        } else {
+            renderizarTabla();
+        }
     } catch (err) {
         console.error("Error al obtener catálogo:", err);
     }
+}
+
+function filtrarProductos(termino) {
+    const busqueda = String(termino || "").trim().toLowerCase();
+
+    if (!busqueda) {
+        catalogoProductos = [...todosLosProductos];
+    } else {
+        catalogoProductos = todosLosProductos.filter((prod) => {
+            // Maneja id normal o @_id por si viene directo del parser XML
+            const idVal = prod.id !== undefined ? String(prod.id) : (prod["@_id"] !== undefined ? String(prod["@_id"]) : "");
+            const nombreVal = prod.nombre ? String(prod.nombre).toLowerCase() : "";
+
+            return idVal.trim() === busqueda || idVal.includes(busqueda) || nombreVal.includes(busqueda);
+        });
+    }
+
+    renderizarTabla();
 }
 
 function renderizarTabla() {
     tablaProductosCuerpo.innerHTML = "";
 
     if (catalogoProductos.length === 0) {
-        tablaProductosCuerpo.innerHTML = `<tr><td colspan="5" style="color:#888; padding:15px;">No hay productos disponibles</td></tr>`;
+        tablaProductosCuerpo.innerHTML = `<tr><td colspan="5" style="color:#888; padding:15px;">No hay productos que coincidan</td></tr>`;
         return;
     }
 
     catalogoProductos.forEach((prod) => {
-        const estaMarcado = itemsCuenta.some((i) => String(i.id) === String(prod.id));
-        const tr = document.createElement("tr");
+        const idProd = prod.id !== undefined ? prod.id : prod["@_id"];
+        const estaMarcado = itemsCuenta.some((i) => String(i.id) === String(idProd));
+        const stockActual = Number(prod.stock) || 0;
+        const precioActual = Number(prod.precio) || 0;
 
+        const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>
                 <input type="checkbox" 
                        ${estaMarcado ? "checked" : ""} 
-                       ${prod.stock <= 0 ? "disabled" : ""}
-                       onchange="toggleSeleccion('${prod.id}', this.checked)">
+                       ${stockActual <= 0 ? "disabled" : ""}
+                       onchange="toggleSeleccion('${idProd}', this.checked)">
             </td>
             <td style="text-transform: capitalize; text-align: left; padding-left: 10px;">${prod.nombre}</td>
-            <td>$${Number(prod.precio).toFixed(0)}</td>
-            <td><span class="badge-stock">${prod.stock}</span></td>
-            <td><span class="badge-id">${prod.id}</span></td>
+            <td>$${precioActual.toFixed(0)}</td>
+            <td><span class="badge-stock">${stockActual}</span></td>
+            <td><span class="badge-id">${idProd}</span></td>
         `;
 
         tablaProductosCuerpo.appendChild(tr);
     });
 }
 
-// 3. Manejo del Carrito vía Checkbox
+// 4. Carrito / Cuenta actual
 window.toggleSeleccion = function(idProducto, checked) {
-    const prod = catalogoProductos.find((p) => String(p.id) === String(idProducto));
+    const prod = todosLosProductos.find((p) => String(p.id) === String(idProducto));
     if (!prod) return;
 
     if (checked) {
@@ -245,7 +295,7 @@ function actualizarTicket() {
     calcularCambio();
 }
 
-// 4. Confirmar y procesar venta
+// 5. Procesar compra y emitir ticket
 async function procesarVenta() {
     if (!cajaAbierta) {
         alert("La caja está cerrada.");
