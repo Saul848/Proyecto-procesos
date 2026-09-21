@@ -65,6 +65,28 @@ function obtenerEmpleado(id){
     }
 }
 
+function obtenerEmpleadoPorusuario(usuario){
+    try {
+        const xml = fs.readFileSync(archivo, "utf8");
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            isArray: (tagName) => ['empleado'].includes(tagName)
+        });
+
+        const resultado = parser.parse(xml);
+        const empleados = resultado.empleados?.empleado || [];
+        empleados.forEach(empleado => {
+            if(empleado.usuario === usuario){
+                return element;
+            }
+        return null;
+        });
+
+    } catch (error) {
+        console.error("Error al obtener los datos de los empleados:", error);
+        throw error;
+    }
+}
 
 /**
  * Agrega un nuevo empleado a la base de datos.
