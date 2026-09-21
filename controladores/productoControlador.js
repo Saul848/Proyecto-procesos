@@ -109,8 +109,25 @@ const consultarCatalogo = async (req, res) => {
     }
 };
 
+const consultarInventarioYReportes = (req, res) => {
+    try {
+        const reporte = productoDao.obtenerReporteInventario();
+        return res.status(200).json({
+            ok: true,
+            totalExistencias: reporte.totalExistencias,
+            productos: reporte.productos
+        });
+    } catch (error) {
+        console.error("Error al generar reporte de inventario:", error);
+        return res.status(500).json({ 
+            ok: false, 
+            mensaje: "Error al obtener el reporte de inventario" 
+        });
+    }
+};
 
 module.exports = {
     agregarProducto,
     consultarCatalogo,
+    consultarInventarioYReportes,
 };

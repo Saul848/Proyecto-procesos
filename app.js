@@ -11,12 +11,12 @@ const express = require("express");
 
 // const usuarioRoutes = require("./routes/usuarioRoutes");
 const productoRoutes = require("./routes/productoRoutes");
-// const ventaRoutes = require("./routes/ventaRoutes");
+const ventaRoutes = require("./routes/ventaRoutes");
 
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
 
-
+const path = require('path');
 
 const app = express();
 /**
@@ -28,9 +28,12 @@ app.use(express.json());
  */
 app.use(express.static("public"));
 
+
+app.use('/data', express.static(path.join(__dirname, 'data')));
+
 // app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);
-// app.use("/api/ventas", ventaRoutes);
+app.use("/api/ventas", ventaRoutes);
 
 /**
  * Montaje del enrutador de alumnos en la ruta base de la API.
