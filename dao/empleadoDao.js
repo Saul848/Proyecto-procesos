@@ -231,11 +231,56 @@ function actualizarDatos(empleado) {
         throw error;
     }
 }
+/**
+ * Obtiene el reporte de desempeño y evalúa candidatos a promoción.
+ * @function obtenerReporteDesempeno
+ * @returns {Object} Objeto con el estatus y la lista de empleados evaluados.
+ */
+function obtenerReporteDesempeno(){
+    try{
+        const empleados = obtenerEmpleados();
+
+        //aqui vamos a mapear y evaluar métricas para cada empleado
+        const reporteEmpleados = empleados.map(emp =>{
+            const numVentas = parseInt(emp.numVentas) || 0;
+            const numTransacciones = parseInt(emp.numTransacciones) || 0;
+
+            //la regla para poder promocionarlo
+            const esCandidatoPromocion= numVentas >=5;
+
+            return {
+                id: emp.id,
+                nombre: emp.puesto,
+                puesto: emp.puesto,
+                usuario: emp.usuario,
+                numVentas: numVentas,
+                numTransacciones: numTransacciones,
+                esCandidatoPromocion: esCandidatoPromocion
+
+            };
+
+
+        });
+
+        return {
+            ok: true,
+            empleados: reporteEmpleados
+        };
+    }catch(error){
+        console.error("Error al generar reporte de desempeño:", error);
+        throw error;
+    }
+
+}
+
+
 
 module.exports = {
     obtenerEmpleados,
     obtenerEmpleado,
     agregarEmpleado,
-    actualizarDatos
+    actualizarDatos,
+    obtenerReporteDesempeno
+
     
 };

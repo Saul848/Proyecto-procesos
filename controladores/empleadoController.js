@@ -159,3 +159,14 @@ exports.agregarEmpleado = async (req, res) => {
         });
     }
 };
+
+exports.getReporteDesempeno = async (req, res) =>{
+    try{
+        const resultado = empleadoDao.obtenerReporteDesempeno();
+        res.json(resultado);
+
+    }catch(error){
+        res.status(500).json({ok: false, mensaje: "error al obtener el reporte de desempeño"});
+
+    }
+};
