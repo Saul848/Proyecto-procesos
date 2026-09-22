@@ -31,9 +31,6 @@ app.use(express.json());
  */
 app.use(express.static("public"));
 
-
-app.use('/data', express.static(path.join(__dirname, 'data')));
-
 // app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);
 app.use("/api/ventas", ventaRoutes);
