@@ -15,6 +15,8 @@ const path = require('path');
 
 const archivo = path.join(__dirname, "../data/xml/empleados.xml");
 
+const empleado = require('../clases/empleadoClass');
+
 /**
  * Obtener un arreglo con todos los empleados en el archivo xml
  * @function obtenerEmpleados
@@ -65,6 +67,32 @@ function obtenerEmpleado(id){
     }
 }
 
+/**
+ * Realiza la busqueda en la base de datos de usuarios buscando en base al
+ * atributo 'usuario'
+ * 
+ * @param {string} usuario Nombre de usuario buscado
+ * @returns 
+ */
+function obtenerEmpleadoPorUsuario(usuario) {
+    try {
+        const xml = fs.readFileSync(archivo, "utf8");
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            isArray: (tagName) => ['empleado'].includes(tagName)
+        });
+
+        const resultado = parser.parse(xml);
+        const empleados = resultado.empleados?.empleado || [];
+
+        const encontrado = empleados.find(empleado => empleado.usuario === usuario);
+        return encontrado || null;
+
+    } catch (error) {
+        console.error("Error al obtener los datos de los empleados:", error);
+        throw error;
+    }
+}
 
 /**
  * Agrega un nuevo empleado a la base de datos.
@@ -88,7 +116,7 @@ function obtenerEmpleado(id){
 function agregarEmpleado(empleado){
     try {
         const xml = fs.readFileSync(archivo, "utf8");
-         const parser = new XMLParser({
+        const parser = new XMLParser({
             ignoreAttributes: false,
             isArray: (tagName) => ['empleado'].includes(tagName)
         });
@@ -231,11 +259,55 @@ function actualizarDatos(empleado) {
         throw error;
     }
 }
+/**
+ * Obtiene el reporte de desempeño y evalúa candidatos a promoción.
+ * @function obtenerReporteDesempeno
+ * @returns {Object} Objeto con el estatus y la lista de empleados evaluados.
+ */
+function obtenerReporteDesempeno(){
+    try{
+        const empleados = obtenerEmpleados();
+
+        //aqui vamos a mapear y evaluar métricas para cada empleado
+        const reporteEmpleados = empleados.map(emp =>{
+            const numVentas = parseInt(emp.numVentas) || 0;
+            const numTransacciones = parseInt(emp.numTransacciones) || 0;
+
+            //la regla para poder promocionarlo
+            const esCandidatoPromocion= numVentas >=5;
+
+            return {
+                id: emp.id,
+                nombre: emp.puesto,
+                puesto: emp.puesto,
+                usuario: emp.usuario,
+                numVentas: numVentas,
+                numTransacciones: numTransacciones,
+                esCandidatoPromocion: esCandidatoPromocion
+
+            };
+
+
+        });
+
+        return {
+            ok: true,
+            empleados: reporteEmpleados
+        };
+    }catch(error){
+        console.error("Error al generar reporte de desempeño:", error);
+        throw error;
+    }
+
+}
+
+
 
 module.exports = {
     obtenerEmpleados,
     obtenerEmpleado,
     agregarEmpleado,
-    actualizarDatos
-    
+    actualizarDatos,
+    obtenerReporteDesempeno,
+    obtenerEmpleadoPorUsuario
 };

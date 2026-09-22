@@ -1,0 +1,20 @@
+<categorias>
+  <categoria>
+    <nombre>lacteos</nombre>
+  </categoria>
+  <categoria>
+    <nombre>enlatados</nombre>
+  </categoria>
+  <categoria>
+    <nombre>panaderia</nombre>
+  </categoria>
+  <categoria>
+    <nombre>snacks</nombre>
+  </categoria>
+  <categoria>
+    <nombre>limpieza</nombre>
+  </categoria>
+  <categoria>
+    <nombre>dulceria</nombre>
+  </categoria>
+</categorias>

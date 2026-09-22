@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Desempeño de Empleados</title>
+    <link rel="stylesheet" href="../css/catalogo.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Reporte de Desempeño y Promociones</h1>
+        
+        <div class="card-resumen" style="margin: 20px 0; padding: 15px; background: #f4f4f4; border-radius: 8px;">
+            <h3>Empleados Evaluados: <span id="totalEmpleados">0</span></h3>
+        </div>
+
+        <table class="tabla-productos" border="1" width="100%" style="border-collapse: collapse; margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Puesto</th>
+                    <th>Ventas</th>
+                    <th>Transacciones</th>
+                    <th>Estatus / Promoción</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTablaDesempeno">
+                
+            </tbody>
+        </table>
+
+        <div style="margin-top: 20px;">
+            <a href="../index.html" class="btn-regresar">Regresar al Inicio</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarReporteDesempeno();
+        });
+
+        async function cargarReporteDesempeno() {
+            try {
+                // Hacemos el fetch a la ruta que acabamos de crear en el backend
+                const respuesta = await fetch("/api/empleados/reporte-desempeno");
+                const datos = await respuesta.json();
+
+                if (datos.ok) {
+                    document.getElementById("totalEmpleados").textContent = datos.empleados.length;
+                    const cuerpoTabla = document.getElementById("cuerpoTablaDesempeno");
+                    cuerpoTabla.innerHTML = "";
+
+                    datos.empleados.forEach(emp => {
+                        const fila = document.createElement("tr");
+
+                        // Si es candidato a promoción, le ponemos un colorcito distintivo (ej. verde claro o amarillo)
+                        if (emp.esCandidatoPromocion) {
+                            fila.style.backgroundColor = "#e8f8f5"; 
+                        }
+
+                        fila.innerHTML = `
+                            <td>${emp.id}</td>
+                            <td>${emp.nombre}</td>
+                            <td>${emp.puesto}</td>
+                            <td>${emp.numVentas}</td>
+                            <td>${emp.numTransacciones}</td>
+                            <td>
+                                ${emp.esCandidatoPromocion 
+                                    ? '<span style="color: green; font-weight: bold;">⭐ Candidato a Promoción</span>' 
+                                    : '<span style="color: gray;">En seguimiento</span>'}
+                            </td>
+                        `;
+
+                        cuerpoTabla.appendChild(fila);
+                    });
+                } else {
+                    alert("No se pudo cargar el reporte de desempeño.");
+                }
+            } catch (error) {
+                console.error("Error al obtener el reporte de desempeño:", error);
+                alert("Error de conexión con el servidor.");
+            }
+        }
+    </script>
+</body>
+</html>

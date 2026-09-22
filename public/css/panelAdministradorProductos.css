@@ -33,12 +33,15 @@ body {
   color: #1a1a1a;
 }
 
-/* Layout principal de 2 columnas */
+/* grid para que la columna derecha se alinee arriba */
 .content-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 20px;
+  align-items: start; /* <--- Agrega esto */
 }
+
+
 
 /* Sección Izquierda: Lista de productos */
 .left-section {
@@ -83,6 +86,46 @@ body {
 
 .btn-primary:hover {
   background-color: #4f46e5;
+}
+
+/* Estilos para el contenedor y el control select */
+.search-bar .campo {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar select {
+  padding: 4px 12px; /* Reducimos el padding superior e inferior de 8px a 4px */
+  height: 35px;
+  width: 50px;
+  line-height: 1.2;  /* Asegura un interlineado adecuado */
+  box-sizing: border-box; /* Garantiza que padding e height no entren en conflicto */
+  border: px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  font-size: 12px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  height: 35px; /* Mantiene la misma altura que los inputs */
+}
+
+#selec-categoria-producto {
+  font-size: 13px; /* Cambia al tamaño que desees */
+  height: 35px;
+  width: 250px;
+}
+
+
+/* Ajuste específico para el botón de agregar '+' */
+#btn-registrar-categoria {
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Lista de ítems */
@@ -132,15 +175,17 @@ body {
   background-color: #f0f0f0;
 }
 
-/* Sección Derecha: Detalle y Registro */
+
+
+/* Ajusta los estilos de right-section */
 .right-section {
   background-color: #fdf6d8;
   padding: 20px;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 400px;
+  gap: 20px; /* <--- Usa gap en lugar de space-between */
+  /* Quita min-height: 400px; si no deseas una altura fija mínima */
 }
 
 .info-box h2, .register-box h2 {
@@ -164,3 +209,4 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
