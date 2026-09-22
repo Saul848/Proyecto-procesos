@@ -6,6 +6,7 @@
  */
 
 const empleadoDao = require("../dao/empleadoDao");
+
 /**
  * Funcion que verifica si se obtuvieron los datos de los empleados del lado del servidor
  * Regresa un arreglo de empleados con objetos js.
@@ -156,6 +157,65 @@ exports.agregarEmpleado = async (req, res) => {
         return res.status(500).json({
             ok: false,
             mensaje: "Error en el servidor al guardar los datos del empleado"
+        });
+    }
+};
+
+/**
+ * Valida las credenciales de inicio de sesión de un empleado.
+ * @param {Object} req - Objeto de petición HTTP con usuario y password en el body.
+ * @param {Object} res - Objeto de respuesta HTTP.
+ */
+exports.loginEmpleado = async (req, res) => {
+    try {
+        const { usuario, password } = req.body;
+
+        if (!usuario || !password) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: "Por favor, completa todos los campos."
+            });
+        }
+
+        // Obtenemos los empleados desde el DAO (el servidor lee el XML de forma segura)
+        const empleados = await empleadoDao.obtenerEmpleados();
+        if (!Array.isArray(empleados)) empleados = [empleados];
+
+        
+        console.log('--- DEBUG LOGIN ---');
+        console.log('Usuario recibido:', JSON.stringify(usuario));
+        console.log('Password recibido:', JSON.stringify(password));
+        console.log('Empleados del XML:', JSON.stringify(empleados, null, 2));
+        console.log('-------------------');
+        
+        // Buscamos si coincide el usuario y la contraseña
+        const empleadoEncontrado = empleados.find(
+            e => String(e.usuario) === usuario && String(e.password) === password
+        );
+        
+
+        if (!empleadoEncontrado) {
+            return res.status(401).json({
+                ok: false,
+                mensaje: "Usuario o contraseña incorrectos."
+            });
+        }
+
+        // Si coincide, regresamos los datos necesarios para la sesión
+        return res.status(200).json({
+            ok: true,
+            mensaje: "Autenticación exitosa.",
+            data: {
+                nombre: empleadoEncontrado.nombre,
+                puesto: empleadoEncontrado.puesto.toLowerCase(),
+                usuario: empleadoEncontrado.usuario
+            }
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error al intentar iniciar sesión"
         });
     }
 };

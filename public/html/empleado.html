@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/empleado.css">
     <title>OXXO - Empleado</title>
     <link rel="stylesheet" href="../css/venta.css">
 </head>
@@ -12,7 +13,12 @@
     <header class="barra-sesion">
         <div>
             <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Empleado</span></span>
+            <label id="msgPestaña">Menu empleado</label>
+            <button id="btnMensajes"> Mensajes </button>
+            <button id="btn-logout"> Salir</button>
         </div>
+
+    <div>
         <div>
             <button id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</button>
         </div>
@@ -124,6 +130,20 @@
         </div>
     </div>
 
+    
+    <div id="checkMensajes" class="modal-overlay" style="display: none;">
+        <div class="modal-caja">
+            <h3>Mensajes pendientes:</h3>
+            <div id="contenedorDetalles">
+
+            </div>
+            <div id="contenedorBoton">
+                <button id="btnCerrarModal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+      
+      <script src="../js/empleado.js"></script>
     <script src="../js/cerrarSesion.js"></script>
     <script src="../js/venta.js"></script>
 </body>
