@@ -16,6 +16,9 @@ const ventaRoutes = require("./routes/ventaRoutes");
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
 
+// const ofertaRoutes
+const ofertaRoutes = require("./routes/ofertaRoutes")
+
 const path = require('path');
 
 const app = express();
@@ -42,6 +45,7 @@ app.use("/api/ventas", ventaRoutes);
  */
 app.use("/api/empleados", empleadoRoutes);
 
+app.use("/api/ofertas", ofertaRoutes);
 
 /**
  * Puerto de escucha predeterminado del servidor.

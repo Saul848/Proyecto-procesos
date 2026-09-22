@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Ofertas</title>
+    <link rel="stylesheet" href="../css/ofertas.css">    
+</head>
+<body>
+    <div class="contenedor">
+        <div class="formulario">
+            <h2>Descripción de la Oferta</h2>
+
+            <label for="producto">Selección de producto:</label>
+            <select id="producto">
+                <option value="">Cargando productos...</option>
+            </select>
+
+            <label for="tipo">Tipo de promoción</label>
+            <select id="tipo">
+                <option value="porcentaje">Descuento</option>
+                <option value="cantidad">Volumen (2x1)</option>
+                <option value="precioFijo">Precio especial</option>
+            </select>
+
+            <div id="campoValor">
+                <label id="labelValor" for="valor">Valor (introduce el % de descuento, ej.15):</label>
+                <input type="number" id="valor" placeholder="Ej. 15" min="1" step="0.01"></label>                
+            </div>
+
+            <div id="campoRecibe" style="display: none;">
+                <label for="recibe">Recibe (unidades que se lleva):</label>
+                <input type="number" id="recibe" placeholder="Ej. 3" min="1">
+            </div>            
+            <div id="campoPaga" style="display: none;">
+                <label for="paga">Paga (cantidad que va a pagar)</label>
+                <input type="number" id="paga" placeholder="Ej. 2" min="1">
+            </div>
+
+            <label>Rango de fechas:</label>
+            <div class="fechas">
+                <div>
+                    <label for="inicio">Inicio</label>
+                    <input type="date" id="inicio">
+                </div>
+                <div>
+                    <label for="fin">Fin</label>
+                    <input type="date" id="fin">
+                </div>
+            </div>
+
+            <div class="botones">
+                <button class="btn-guardar" onclick="guardarOferta()">Guardar oferta</button>
+                <button class="btn-cancelar" onclick="cancelar()">Cancelar</button>
+            </div>
+
+            <div id="mensaje" class="mensaje"></div>
+        </div>
+
+
+        <div class="historial">
+            <h2>Lista de ofertas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Tipo</th>
+                        <th>Descuento</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaOfertas">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/ofertas.js"></script>
+</body>
+</html>
