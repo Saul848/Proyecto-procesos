@@ -160,6 +160,56 @@ exports.agregarEmpleado = async (req, res) => {
     }
 };
 
+/**
+ * Valida las credenciales de inicio de sesión de un empleado.
+ * @param {Object} req - Objeto de petición HTTP con usuario y password en el body.
+ * @param {Object} res - Objeto de respuesta HTTP.
+ */
+exports.loginEmpleado = async (req, res) => {
+    try {
+        const { usuario, password } = req.body;
+
+        if (!usuario || !password) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: "Por favor, completa todos los campos."
+            });
+        }
+
+        // Obtenemos los empleados desde el DAO (el servidor lee el XML de forma segura)
+        const empleados = await empleadoDao.obtenerEmpleados();
+
+        // Buscamos si coincide el usuario y la contraseña
+        const empleadoEncontrado = empleados.find(
+            e => e.usuario === usuario && e.password === password
+        );
+        
+
+        if (!empleadoEncontrado) {
+            return res.status(401).json({
+                ok: false,
+                mensaje: "Usuario o contraseña incorrectos."
+            });
+        }
+
+        // Si coincide, regresamos los datos necesarios para la sesión
+        return res.status(200).json({
+            ok: true,
+            mensaje: "Autenticación exitosa.",
+            data: {
+                nombre: empleadoEncontrado.nombre,
+                puesto: empleadoEncontrado.puesto.toLowerCase()
+            }
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error al intentar iniciar sesión"
+        });
+    }
+};
+
 exports.getReporteDesempeno = async (req, res) =>{
     try{
         const resultado = empleadoDao.obtenerReporteDesempeno();

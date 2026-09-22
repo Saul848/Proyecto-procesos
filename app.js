@@ -16,7 +16,6 @@ const ventaRoutes = require("./routes/ventaRoutes");
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
 
-const path = require('path');
 
 const app = express();
 /**
@@ -27,9 +26,6 @@ app.use(express.json());
  * Middleware para servir archivos estáticos (frontend UI, assets, etc.).
  */
 app.use(express.static("public"));
-
-
-app.use('/data', express.static(path.join(__dirname, 'data')));
 
 // app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);

@@ -15,6 +15,12 @@ const empleadoController = require("../controladores/empleadoController");
 router.get("/reporte-desempeno", empleadoController.getReporteDesempeno);
 
 /**
+ * @name POST /login
+ * @description Valida las credenciales de acceso para iniciar sesión en el sistema
+ */
+router.post("/login", empleadoController.loginEmpleado);
+
+/**
  * @name GET /
  * @description Obtiene la lista de empleados en el sistema
  */
