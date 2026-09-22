@@ -10,11 +10,13 @@
   <!-- Enlace al archivo CSS externo -->
   <link rel="stylesheet" href="../css/panelAdministradorProductos.css">
   <link rel="stylesheet" href="../css/modal_agregar_producto.css">
+  <link rel="stylesheet" href="../css/modal_agregar_categoria.css">
 
   <div id="contenedor-modal"></div>
 
   <script type="module" src="../js/panelAdministradorProductos.js"></script>
   <script type="module" src="../js/modal_agregar_producto.js"></script>
+  <script type="module" src="../js/modal_agregar_categoria.js"></script>
 
 </head>
 
@@ -31,73 +33,20 @@
 
       <!-- Columna Izquierda: Búsqueda y Lista -->
       <section class="left-section">
+
         <div class="search-bar">
           <h2>Buscar producto</h2>
-          <input type="text" placeholder="Ingresar nombre o id">
+          <input type="text" id="id_busqueda" placeholder="Ingresar nombre o id">
           <button class="btn-primary">Buscar</button>
+          <div class="campo" id="campo-categoria">
+            <select id="selec-categoria-producto" name="categoriaProducto">
+            </select>
+          </div>
+          <button class="btn-primary" id="btn-registrar-categoria">+</button>
         </div>
 
+        <!-- Aqui se muestran los productos -->
         <div class="product-list">
-          <!-- Item de producto 1 -->
-          <div class="product-item">
-            <span class="product-name">Producto 1 (Papas)</span>
-            <div class="product-actions">
-              <button class="icon-btn" title="Más información"><i class="fa-regular fa-circle-plus"></i></button>
-              <button class="icon-btn" title="Eliminar"><i class="fa-solid fa-basket-shopping"></i></button>
-              <button class="icon-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-            </div>
-          </div>
-
-          <!-- Item de producto 2 -->
-          <div class="product-item">
-            <span class="product-name">Producto 1 (Papas)</span>
-            <div class="product-actions">
-              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
-            </div>
-          </div>
-
-          <!-- Item de producto 3 -->
-          <div class="product-item">
-            <span class="product-name">Producto 1 (Papas)</span>
-            <div class="product-actions">
-              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
-            </div>
-          </div>
-
-          <!-- Item de producto 4 -->
-          <div class="product-item">
-            <span class="product-name">Producto 1 (Papas)</span>
-            <div class="product-actions">
-              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
-            </div>
-          </div>
-
-          <!-- Item de producto 5 -->
-          <div class="product-item">
-            <span class="product-name">Producto 1 (Papas)</span>
-            <div class="product-actions">
-              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
-            </div>
-          </div>
-
-          <!-- Item de producto 6 -->
-          <div class="product-item">
-            <span class="product-name">Producto 1 (Papas)</span>
-            <div class="product-actions">
-              <button class="icon-btn"><i class="fa-regular fa-circle-plus"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-basket-shopping"></i></button>
-              <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
-            </div>
-          </div>
-
         </div>
       </section>
 

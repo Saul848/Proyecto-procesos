@@ -16,8 +16,9 @@ const archivo = path.join(__dirname, "../data/xml/productos.xml");
  * @param {Object} producto - Objeto que contiene los datos del alumno.
  * @param {string} producto.nombre - Nombre del producto.
  * @param {string} producto.descripcion - Descripcion del producto.
- * @param {string} producto.precio - Precio del producto.
- * @param {string} producto.stock - Stock del producto.
+ * @param {string} producto.categoria - Categoria del producto.
+ * @param {number} producto.precio - Precio del producto.
+ * @param {number} producto.stock - Stock del producto.
  * @param {number} producto.descuento - Descuento del producto
  * @returns {Object} Resultado de la operación.
  * @throws {Error} Si ocurre un error al leer, modificar o escribir el archivo XML.
@@ -50,8 +51,9 @@ function agregarProducto(producto) {
 
         const nuevoProducto = {
             "@_id": nuevoId,
-            nombre: producto.nombre.toLowerCase(),
+            nombre: producto.nombre.toLowerCase().trim(),
             descripcion: producto.descripcion,
+            categoria: producto.categoria.toLowerCase().trim(),
             precio: Number(producto.precio).toFixed(2),
             stock: Number(producto.stock),
             descuento: Number(producto.descuento)
@@ -179,6 +181,7 @@ function obtenerProductos(busqueda = "") {
                 id: prod["@_id"],
                 nombre: prod.nombre,
                 descripcion: prod.descripcion,
+                categoria: prod.categoria,
                 precio: prod.precio,
                 stock: stockActual,
                 descuento: prod.descuento,

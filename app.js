@@ -17,6 +17,9 @@ const mensajeRoutes = require ("./routes/mensajeRoutes");
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
 
+//categorias de productos
+const categoriaRoutes = require("./routes/categoriaRoutes");
+
 const path = require('path');
 
 const app = express();
@@ -28,9 +31,6 @@ app.use(express.json());
  * Middleware para servir archivos estáticos (frontend UI, assets, etc.).
  */
 app.use(express.static("public"));
-
-
-app.use('/data', express.static(path.join(__dirname, 'data')));
 
 // app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);
@@ -44,9 +44,12 @@ app.use("/api/ventas", ventaRoutes);
 app.use("/api/empleados", empleadoRoutes);
 
 /**
- * apuntador de ruta para mensajes
+ * Montaje del enrutador de categorias en la ruta base de la API.
+ * @name /api/categorias
+ * @see module:routes/categoriaRoutes
  */
-app.use("/api/mensajes", mensajeRoutes);
+app.use("/api/categorias", categoriaRoutes);
+
 
 /**
  * Puerto de escucha predeterminado del servidor.
