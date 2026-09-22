@@ -1,6 +1,6 @@
 let todosLosProductos = []; // Catálogo original completo
-let catalogoProductos = []; // Catálogo visible/filtrado
-let itemsCuenta = [];       // Productos seleccionados en el ticket { id, nombre, precio, cantidad, stockMax }
+let catalogoProductos = []; // Catálogo visible
+let itemsCuenta = [];       // Productos seleccionados en el ticket 
 let metodoPago = "Efectivo";
 let cajaAbierta = true;
 
@@ -295,15 +295,21 @@ function actualizarTicket() {
     calcularCambio();
 }
 
-// 5. Procesar compra y emitir ticket
 async function procesarVenta() {
     if (!cajaAbierta) {
         alert("La caja está cerrada.");
         return;
     }
 
+    // 1. Extraer el idEmpleado o el nombre del empleado desde sessionStorage
+    
+    const idEmpleadoActivo = sessionStorage.getItem("idEmpleado") 
+                          || sessionStorage.getItem("idUsuario") 
+                          || sessionStorage.getItem("nombreUsuario") 
+                          || "1";
+
     const payload = {
-        idEmpleado: "1",
+        idEmpleado: idEmpleadoActivo, // Asigna el empleado real de la sesión activa
         items: itemsCuenta.map((i) => ({
             idProducto: i.id,
             cantidad: i.cantidad
@@ -323,7 +329,7 @@ async function procesarVenta() {
         const data = await res.json();
 
         if (!res.ok) {
-            throw new Error(data.mensaje || "Error al procesar");
+            throw new Error(data.mensaje || "Error al procesar la venta");
         }
 
         mostrarTicketModal(data.ticket);
