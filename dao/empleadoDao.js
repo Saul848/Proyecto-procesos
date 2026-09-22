@@ -54,7 +54,7 @@ function obtenerEmpleado(id){
         const empleados = resultado.empleados?.empleado || [];
         empleados.forEach(empleado => {
             if(empleado.id === id){
-                return element;
+                return empleado;
             }
         return null;
         });
@@ -232,10 +232,65 @@ function actualizarDatos(empleado) {
     }
 }
 
+function eliminarEmpleado(id){
+    try {
+        const xml = fs.readFileSync(archivo, "utf8");
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            isArray: (tagName) => ['empleado'].includes(tagName)
+        });
+
+        //Convertir el xml a un arreglo de objetos js
+        const resultado = parser.parse(xml);
+
+        //Si mi xml no tiene la estructura se agrega y se manda una variable que indica que no hay una estructura en el sistema.
+        if(!resultado.empleados){
+            return{
+                ok: false,
+                errorXml: true
+            }
+        }
+        
+        //Simplificamos el arreglo de empleados
+        const empleados = resultado.empleados?.empleado || [];
+
+        // Buscar al empleado, recorro el arreglo empleados y busco al empleado a eliminar mediante su id, cuando se encuentra se elimina del arreglo.
+        for(n=0;n<empleados.length;n++){
+            if(empleados[n].id===id){
+                empleados.splice(n,1);
+            }
+        }
+
+        //Agregamos el nuevo contenido a resultado
+        resultado.empleados.empleado = empleados;
+
+        // Crear una instancia XMLBuilder
+        const builder = new XMLBuilder({
+            format: true,
+            ignoreAttributes: false
+        });
+
+        //Creamos un nuevo archivo xml con la estructura de la variable resultado
+        const nuevoXml = builder.build(resultado);
+
+        // Sobrescribir el archivo XML en disco
+        fs.writeFileSync(archivo, nuevoXml, "utf8");
+        return {
+            ok: true,
+            eliminado: true
+        };
+    } catch (error) {
+        console.error("Error al eliminar al empleado de la BD:", error);
+        throw error;
+    }
+}
+
+
+
 module.exports = {
     obtenerEmpleados,
     obtenerEmpleado,
     agregarEmpleado,
-    actualizarDatos
-    
+    actualizarDatos,
+    eliminarEmpleado
 };

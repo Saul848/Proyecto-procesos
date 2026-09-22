@@ -4,7 +4,11 @@
 const listaActDom = document.querySelector(".listaAct"); //Contenedor gris de lista
 const seccionEmpDom = document.getElementById("seccionEmp") //Contenedor con scrollbar para la lista
 
-//Inputs del formulario agregar estudiantes
+//Dom de las secciones
+const seccionAgregar = document.getElementById("seccionAgregar");
+const seccionMod = document.getElementById("seccionModificar");
+
+//Inputs de seccion agregar estudiantes
 const inpNombreDom = document.getElementById("inpNombre");
 const selectPuestoDom = document.getElementById("selectPuesto");
 const inpTelefonoDom = document.getElementById("inpTel");
@@ -12,8 +16,22 @@ const inpUsuarioDom = document.getElementById("inpUsuario");
 const inpPasswordDom = document.getElementById("inpPassword");
 const btnAgregarEmpDom= document.getElementById("btnAgregarEmp") 
 
+//Inputs de seccion mod estudiantes
+const inpNombreAct = document.getElementById("inpNombreAct");
+const inpNuevoNombre = document.getElementById("inpNuevoNombre");
+const inpPuestoAct = document.getElementById("inpPuestoAct");
+const selectNuevoPuesto = document.getElementById("selectNuevoPuesto");
+const inpTelefonoAct = document.getElementById("inpTelefonoAct");
+const inpNuevoTelefono = document.getElementById("inpNuevoTelefono");
+const inpUsuarioAct = document.getElementById("inpUsuarioAct");
+const inpNuevoUsuario = document.getElementById("inpNuevoUsuario");
+const inpContraseñaAct = document.getElementById("inpContraseñaAct");
+const inpNuevaContraseña = document.getElementById("inpNuevaContraseña");
+const btnModificarEmpDom = document.getElementById("btnModificarEmp");
+
 //Elementos bandera
 let verificado=false;
+let enModificacion=false;
 //Arreglo para obtener los datos de los estudiantes
 let datosEmp =null;
 
@@ -53,8 +71,8 @@ document.addEventListener("DOMContentLoaded", async function(){
                         <div class="nombreCompleto">${nombre}</div>
                     </div>
                     <button class="btnInfo">Info<img src="" alt=""></button>
-                    <button class="btnEliminar">E<img src="" alt=""></button>
-                    <button class="btnModificar">M<img src="" alt=""></button>
+                    <button class="btnEliminar" onclick="eliminarEmpleado(${id})">E<img src="" alt=""></button>
+                    <button class="btnModificar" onclick="prepararSeccionMod(${id})">M<img src="" alt=""></button>
                 </div>`;
         }
     }
@@ -99,6 +117,7 @@ async function obtenerEmpleados(){
 function verificarCampos(){
     //Levantamos una bandera, si llega al final sin ningun cambio despues de realizar todas las verificaciones, entonces la informacion es valida.
     verificado=true;
+    
     //Agrupo los inputs en un arreglo para recorrerlo
     let elementosDom = [inpNombreDom, inpTelefonoDom, inpUsuarioDom, inpPasswordDom]
     //Recorro los inputs y verifico si estan vacios.
@@ -264,6 +283,25 @@ btnAgregarEmpDom.addEventListener("click", function(){
 })
 
 /**
+ * 
+ * Listener del boton Agregar Empleado
+ * Realiza las verificaciones del lado del cliente correspondiente
+ * y si son superadas se procede a hacer la peticion al servidor
+ *
+ */
+btnModificarEmpDom.addEventListener("click", function(){
+    //Se da de alta una bandera, si llega al final del metodo y pasa las verificaciones el empleado es valido.
+    let empleadoValido=verificarCampos();
+    //Se verifican la informacion ingresada en los campos
+    if(!verificarTelIdentico() | !verificarUsuarioIdentico()){
+        empleadoValido=false;
+    }
+    if(empleadoValido){
+        guardarEmpleado()
+    }
+})
+
+/**
  * Funcion que construye los datos del empleado y realiza la peticion correspondiente
  * 
  * @async
@@ -319,3 +357,73 @@ document.addEventListener("click", function(event){
         event.target.style.border = "";
     }
 });
+
+async function eliminarEmpleado(id){
+    const respuesta =await fetch("/api/empleados", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON .stringify({
+            id: id
+        })
+    });
+
+    //Obtencion de la respuesta
+    const resultado = await respuesta.json();
+
+    if(resultado.ok){
+        alert(resultado.mensaje)
+        //Disparamos el listener del DOMContentLoaded para actualizar la lista
+        document.dispatchEvent(new Event("DOMContentLoaded"));
+    }else{
+        alert(resultado.mensaje);
+    }
+}
+
+//Listener para la bandera "enModificacion" oyendo a evento personalizado
+window.addEventListener('modificandoDatos', (evento)=>{
+    const estadoActual = evento.detail.activo;
+
+    //Si la bandera "enRegistro" es true entonces se activan los botones
+    if(estadoActual){
+        seccionAgregar.classList.add('escondido')
+        seccionMod.classList.remove('escondido')
+        alert("Ingrese los campos que desea modificar");
+    }else{
+        seccionAgregar.classList.remove('escondido')
+        seccionMod.classList.add('escondido')
+    }
+});
+
+//Funcion que cambia la bandera y dispara mi evento personalizado el cual es cambiar el estado de la bandera "enRegistro"
+function setEnModificacion(nuevoValor){
+    if(enModificacion !== nuevoValor){
+        enModificacion= nuevoValor;
+
+        //Emitir el evento personalizado pasando el nuevo valor en "detail"
+        const evento = new CustomEvent('modificandoDatos', {
+            detail: { activo: enModificacion}
+        });
+        window.dispatchEvent(evento);
+    }
+};
+
+async function prepararSeccionMod(id){
+    setEnModificacion(true);
+    datosEmp.forEach(empleado =>{
+        if(empleado.id === id){
+            inpNombreAct.value = empleado.nombre;
+            inpNombreAct.readOnly=true;
+            inpPuestoAct.value = empleado.puesto;
+            inpPuestoAct.readOnly=true;
+            inpTelefonoAct.value = empleado.telefono;
+            inpTelefonoAct.readOnly=true;
+            inpUsuarioAct.value = empleado.usuario;
+            inpUsuarioAct.readOnly=true;
+            inpContraseñaAct.value = empleado.password;
+            inpContraseñaAct.readOnly=true;
+        }    
+    }
+    )
+}

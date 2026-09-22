@@ -14,7 +14,7 @@ const empleadoDao = require("../dao/empleadoDao");
  * @returns {res} Respuesta con los datos de los empleados
  * @returns {error} Si no se pudieron recuperar los datos de los empleados
  */
-exports.obtenerEmpleado = async (req, res) => {
+exports.obtenerEmpleados = async (req, res) => {
     try {
         //Guardamos en un arreglo los datos de los empleados
         const empleados = await empleadoDao.obtenerEmpleados();
@@ -40,6 +40,43 @@ exports.obtenerEmpleado = async (req, res) => {
         });
     }
 };
+
+
+
+exports.obtenerEmpleado = async (req, res) => {
+    try {
+        const { id } = req.body
+
+        //Si mi id no tiene valor o si no es un entero
+        if(!id || !Number.isInteger(id)){
+            return res.status(404).json({
+                ok: false,
+                mensaje: "Error el id del usuario no es valido"
+            })
+        }
+
+        const empleadoRecuperado = await empleadoDao.obtenerEmpleado(id);
+
+        if(empleadoRecuperado){
+            return res.status(200).json({
+                ok: true,
+                mensaje: "Empleado encontrado",
+                datos: empleadoRecuperado
+            })
+        }else{
+            return res.status(404).json({
+                ok: false,
+                mensaje: "Error, el usuario no pudo ser recuperado"
+            })
+        }
+
+    } catch (error) {
+        return res.status(404).json({
+            ok: false,
+            mensaje: "Error en el servidor al intentar obtener los datos del empleado"
+        })
+    }
+}
 
 /**
  * Funcion que verifica las altas de empleados en el sistema
@@ -159,3 +196,48 @@ exports.agregarEmpleado = async (req, res) => {
         });
     }
 };
+
+/**
+ * Funcion que verifica si se obtuvieron los datos de los empleados del lado del servidor
+ * Regresa un arreglo de empleados con objetos js.
+ * @param {Object} req - Objeto de petición HTTP.
+ * @param {Object} res - Objeto de respuesta HTTP.
+ * @returns {res} Respuesta con los datos de los empleados
+ * @returns {error} Si no se pudieron recuperar los datos de los empleados
+ */
+exports.eliminarEmpleado = async (req, res) => {
+    try {
+        //Obtenemos el id
+        const { id } = req.body;
+
+
+        //Si mi id no tiene valor o si no es un entero
+        if(!id || !Number.isInteger(id)){
+            return res.status(404).json({
+                ok: false,
+                mensaje: "Error el id del usuario no es valido"
+            })
+        }
+
+        const empleadoEliminado = await empleadoDao.eliminarEmpleado(id);
+        if(empleadoEliminado.ok){
+            return res.status(201).json({
+                ok: true,
+                mensaje: "Empleado eliminado correctamente"
+            })
+        }else{
+            return res.status(400).json({
+                ok: false,
+                mensaje: "No existen empleados para eliminar"
+            })
+        }
+    } catch (error) {
+        //Resuelve ante cualquier error
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error en el servidor al intentar eliminar los datos del empleado"
+        });
+    }
+};
+
+

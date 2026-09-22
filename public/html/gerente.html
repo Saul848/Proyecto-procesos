@@ -32,23 +32,61 @@
                 </div>    
             </section>
             <section class = "formulario">
-                <div id="divMsgAgregarEmp">
-                    <label id="msgAgregarEmp">Agregar empleado</label>
+                <div id="seccionAgregar">
+                    <div id="divMsgAgregarEmp">
+                        <label id="msgAgregarEmp">Agregar empleado</label>
+                    </div>
+                    <div id="inputsEmp">
+                        <label htmlFor="inpNombre">Nombre: <input type="text" id="inpNombre" placeholder="Escribe el nombre del empleado" /></label>
+                        <label htmlFor="selectPuesto">Puesto:</label>
+                        <select id="selectPuesto">
+                            <option value="empleado">Empleado</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="gerente">Gerente</option>
+                        </select>
+                        <label htmlFor="inpTel">Telefono: <input type="text" id="inpTel" placeholder="Escribe el telefono del empleado" /></label>
+                        <label htmlFor="inpUsuario">Usuario: <input type="text" id="inpUsuario" placeholder="Escribe el usuario del empleado" /></label>
+                        <label htmlFor="inpPassword">Contraseña: <input type="text" id="inpPassword" placeholder="Escribe la contraseña del empleado empleado" /></label>
+                    </div>
+                    <div id="divBtnAgregar">
+                        <button id="btnAgregarEmp">Agregar Empleado</button>
+                    </div>
                 </div>
-                <div id="inputsEmp">
-                    <label htmlFor="inpNombre">Nombre: <input type="text" id="inpNombre" placeholder="Escribe el nombre del empleado" /></label>
-                    <label htmlFor="selectPuesto">Puesto:</label>
-                    <select id="selectPuesto">
-                        <option value="empleado">Empleado</option>
-                        <option value="administrador">Administrador</option>
-                        <option value="gerente">Gerente</option>
-                    </select>
-                    <label htmlFor="inpTel">Telefono: <input type="text" id="inpTel" placeholder="Escribe el telefono del empleado" /></label>
-                    <label htmlFor="inpUsuario">Usuario: <input type="text" id="inpUsuario" placeholder="Escribe el usuario del empleado" /></label>
-                    <label htmlFor="inpPassword">Contraseña: <input type="text" id="inpPassword" placeholder="Escribe la contraseña del empleado empleado" /></label>
-                </div>
-                <div id="divBtnAgregar">
-                    <button id="btnAgregarEmp">Agregar Empleado</button>
+
+
+
+                <div id="seccionModificar">
+                    <div id="divMsgModificarEmp">
+                        <label id="msgModificarEmp">Modificar empleado</label>
+                    </div>
+                    <div class="lineaInp">
+                        <label htmlFor="inpNombreAct">Nombre actual: <input type="text" id="inpNombreAct" /></label>
+                        <label htmlFor="inpNuevoNombre">Nuevo nombre: <input type="text" id="inpNuevoNombre" placeholder="Escribe el nombre del empleado" /></label>    
+                    </div>
+                    <div class="lineaInp">
+                        <label htmlFor="inpPuestoAct">Puesto actual:<input type="text" id="inpPuestoAct" /></label>
+                        <label htmlFor="selectNuevoPuesto">Nuevo puesto:</label>
+                        <select id="selectNuevoPuesto">
+                            <option value="empleado">Empleado</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="gerente">Gerente</option>
+                        </select>
+                    </div>
+                    <div class="lineaInp">
+                        <label htmlFor="inpTelefonoAct">Telefono actual: <input type="text" id="inpTelefonoAct" /></label>
+                        <label htmlFor="inpNuevoTelefono">Nuevo telefono: <input type="text" id="inpNuevoTelefono" placeholder="Escribe el telefono del empleado" /></label>    
+                    </div>
+                    <div class="lineaInp">
+                        <label htmlFor="inpUsuarioAct">Usuario actual: <input type="text" id="inpUsuarioAct" /></label>
+                        <label htmlFor="inpNuevoUsuario">Nuevo usuario: <input type="text" id="inpNuevoUsuario" placeholder="Escribe el usuario del empleado" /></label>    
+                    </div>
+                    <div class="lineaInp">
+                        <label htmlFor="inpContraseñaAct">Contraseña actual: <input type="text" id="inpContraseñaAct" /></label>
+                        <label htmlFor="inpNuevaContraseña">Nueva contraseña: <input type="text" id="inpNuevaContraseña" placeholder="Escribe la contraseña del empleado" /></label>    
+                    </div>
+                    <div id="divBtnModificar">
+                        <button id="btnModificarEmp">Modificar Empleado</button>
+                    </div>
                 </div>
             </section>
         </section>
