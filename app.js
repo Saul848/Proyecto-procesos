@@ -11,7 +11,7 @@ const express = require("express");
 
 // const usuarioRoutes = require("./routes/usuarioRoutes");
 const productoRoutes = require("./routes/productoRoutes");
-// const ventaRoutes = require("./routes/ventaRoutes");
+const ventaRoutes = require("./routes/ventaRoutes");
 
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
@@ -29,7 +29,7 @@ app.use(express.static("public"));
 
 // app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);
-// app.use("/api/ventas", ventaRoutes);
+app.use("/api/ventas", ventaRoutes);
 
 /**
  * Montaje del enrutador de alumnos en la ruta base de la API.

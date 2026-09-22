@@ -8,6 +8,11 @@ const express = require("express");
 const router = express.Router();
 
 const empleadoController = require("../controladores/empleadoController");
+/**
+ * @name GET /reporte-desempeno
+ * @description Obtiene el reporte de desempeño y candidatos a promoción de los empleados
+ */
+router.get("/reporte-desempeno", empleadoController.getReporteDesempeno);
 
 /**
  * @name POST /login
