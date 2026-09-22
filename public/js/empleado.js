@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 
     /** 
@@ -95,3 +94,32 @@ eventosUsuario.forEach(evento => {
 
 // Iniciamos el temporizador por primera vez al cargar la página
 reiniciarTemporizador();
+
+
+/**
+ * Listener para el botón que habilita el modal para ver los mensajes
+ */
+document.getElementById("btnMensajes").addEventListener('click', ()=> {
+    const usuario = sessionStorage.getItem('usuarioLogueado');
+
+    fetch('/api/mensajes/verMensajes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ usuario })
+    })
+    .then(res => res.text())
+    .then(html => {
+        document.getElementById('contenedorDetalles').innerHTML = html;
+    })
+    .catch(err => console.error('Error: ', err));
+
+    
+    document.getElementById('checkMensajes').style.display = 'flex';
+});
+
+/**
+ * Listener para ocultar el modal
+ */
+document.getElementById('btnCerrarModal').addEventListener('click', () => {
+    document.getElementById('checkMensajes').style.display = 'none';
+});

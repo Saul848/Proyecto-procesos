@@ -15,6 +15,8 @@ const path = require('path');
 
 const archivo = path.join(__dirname, "../data/xml/empleados.xml");
 
+const empleado = require('../clases/empleadoClass');
+
 /**
  * Obtener un arreglo con todos los empleados en el archivo xml
  * @function obtenerEmpleados
@@ -65,6 +67,32 @@ function obtenerEmpleado(id){
     }
 }
 
+/**
+ * Realiza la busqueda en la base de datos de usuarios buscando en base al
+ * atributo 'usuario'
+ * 
+ * @param {string} usuario Nombre de usuario buscado
+ * @returns 
+ */
+function obtenerEmpleadoPorUsuario(usuario) {
+    try {
+        const xml = fs.readFileSync(archivo, "utf8");
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            isArray: (tagName) => ['empleado'].includes(tagName)
+        });
+
+        const resultado = parser.parse(xml);
+        const empleados = resultado.empleados?.empleado || [];
+
+        const encontrado = empleados.find(empleado => empleado.usuario === usuario);
+        return encontrado || null;
+
+    } catch (error) {
+        console.error("Error al obtener los datos de los empleados:", error);
+        throw error;
+    }
+}
 
 /**
  * Agrega un nuevo empleado a la base de datos.
@@ -88,7 +116,7 @@ function obtenerEmpleado(id){
 function agregarEmpleado(empleado){
     try {
         const xml = fs.readFileSync(archivo, "utf8");
-         const parser = new XMLParser({
+        const parser = new XMLParser({
             ignoreAttributes: false,
             isArray: (tagName) => ['empleado'].includes(tagName)
         });
@@ -280,7 +308,6 @@ module.exports = {
     obtenerEmpleado,
     agregarEmpleado,
     actualizarDatos,
-    obtenerReporteDesempeno
-
-    
+    obtenerReporteDesempeno,
+    obtenerEmpleadoPorUsuario
 };

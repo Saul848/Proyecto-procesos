@@ -319,3 +319,38 @@ document.addEventListener("click", function(event){
         event.target.style.border = "";
     }
 });
+
+/**
+ * Listener para el botón que habilita el modal para enviar un mensaje
+ */
+document.getElementById("btnMensaje").addEventListener('click', ()=> {
+    document.getElementById('formMensaje').style.display = 'flex';
+});
+
+/**
+ * Listener para ocultar el modal
+ */
+document.getElementById('btnCerrarModal').addEventListener('click', () => {
+    document.getElementById('formMensaje').style.display = 'none';
+});
+
+
+/**
+ * Lógica detrás del envio de mensajes
+ */
+document.getElementById('btnEnviarMensaje').addEventListener('click', () => {
+    const destino = document.getElementById("inputDestinatario").value;
+    const contenido = document.getElementById("inputContenido").value;
+
+    fetch('/api/mensajes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ destino, contenido })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('Mensaje enviado:', data);
+        document.getElementById('formMensaje').style.display = 'none';
+    })
+    .catch(err => console.error('Error:', err));
+});

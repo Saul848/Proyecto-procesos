@@ -12,6 +12,7 @@ const express = require("express");
 // const usuarioRoutes = require("./routes/usuarioRoutes");
 const productoRoutes = require("./routes/productoRoutes");
 const ventaRoutes = require("./routes/ventaRoutes");
+const mensajeRoutes = require ("./routes/mensajeRoutes");
 
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
@@ -49,6 +50,10 @@ app.use("/api/empleados", empleadoRoutes);
  */
 app.use("/api/categorias", categoriaRoutes);
 
+/**
+ * apuntador de ruta para mensajes
+ */
+app.use("/api/mensajes", mensajeRoutes);
 
 /**
  * Puerto de escucha predeterminado del servidor.
