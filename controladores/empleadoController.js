@@ -6,6 +6,7 @@
  */
 
 const empleadoDao = require("../dao/empleadoDao");
+
 /**
  * Funcion que verifica si se obtuvieron los datos de los empleados del lado del servidor
  * Regresa un arreglo de empleados con objetos js.
@@ -178,10 +179,18 @@ exports.loginEmpleado = async (req, res) => {
 
         // Obtenemos los empleados desde el DAO (el servidor lee el XML de forma segura)
         const empleados = await empleadoDao.obtenerEmpleados();
+        if (!Array.isArray(empleados)) empleados = [empleados];
 
+        
+        console.log('--- DEBUG LOGIN ---');
+        console.log('Usuario recibido:', JSON.stringify(usuario));
+        console.log('Password recibido:', JSON.stringify(password));
+        console.log('Empleados del XML:', JSON.stringify(empleados, null, 2));
+        console.log('-------------------');
+        
         // Buscamos si coincide el usuario y la contraseña
         const empleadoEncontrado = empleados.find(
-            e => e.usuario === usuario && e.password === password
+            e => String(e.usuario) === usuario && String(e.password) === password
         );
         
 
@@ -198,7 +207,8 @@ exports.loginEmpleado = async (req, res) => {
             mensaje: "Autenticación exitosa.",
             data: {
                 nombre: empleadoEncontrado.nombre,
-                puesto: empleadoEncontrado.puesto.toLowerCase()
+                puesto: empleadoEncontrado.puesto.toLowerCase(),
+                usuario: empleadoEncontrado.usuario
             }
         });
 

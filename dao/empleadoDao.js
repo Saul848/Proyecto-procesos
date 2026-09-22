@@ -56,7 +56,7 @@ function obtenerEmpleado(id){
         const empleados = resultado.empleados?.empleado || [];
         empleados.forEach(empleado => {
             if(empleado.id === id){
-                return element;
+                return empleado;
             }
         return null;
         });

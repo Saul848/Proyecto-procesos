@@ -52,7 +52,7 @@ document.getElementById("boton-login").addEventListener('click', async () => {
             // Guardamos la información limpia de la sesión en el almacenamiento del navegador 
             sessionStorage.setItem("nombreUsuario", resultado.data.nombre);
             sessionStorage.setItem("puestoLogueado", resultado.data.puesto);
-            sessionStorage.setItem("usuarioLogueado", empleadoEncontrado.user);
+            sessionStorage.setItem("usuarioLogueado", resultado.data.usuario);
 
             alert(`¡Bienvenid@, ${resultado.data.nombre}!`);
 
