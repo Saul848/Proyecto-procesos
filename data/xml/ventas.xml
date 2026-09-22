@@ -62,10 +62,52 @@
     <items>
       <item idProducto="2">
         <nombre>Mouse Óptico Inalámbrico</nombre>
-        <precioUnitario>25.50</precioUnitario>
+        <precioUnitario>25.5</precioUnitario>
         <descuento>0.5</descuento>
         <cantidad>1</cantidad>
         <subtotal>12.75</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="8">
+    <fecha>2026-09-22T04:48:31.904Z</fecha>
+    <idEmpleado>Rogelio Lopez Gonzales</idEmpleado>
+    <total>92.74</total>
+    <items>
+      <item idProducto="3">
+        <nombre>Teclado Mecánico RGB</nombre>
+        <precioUnitario>79.99</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>79.99</subtotal>
+      </item>
+      <item idProducto="2">
+        <nombre>Mouse Óptico Inalámbrico</nombre>
+        <precioUnitario>25.5</precioUnitario>
+        <descuento>0.5</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>12.75</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="9">
+    <fecha>2026-09-22T05:04:32.678Z</fecha>
+    <idEmpleado>Rogelio Lopez Gonzales</idEmpleado>
+    <total>83.98</total>
+    <items>
+      <item idProducto="5">
+        <nombre>a</nombre>
+        <precioUnitario>41.99</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>41.99</subtotal>
+      </item>
+      <item idProducto="6">
+        <nombre>fresas</nombre>
+        <precioUnitario>41.99</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>41.99</subtotal>
       </item>
     </items>
   </venta>
