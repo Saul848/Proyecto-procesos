@@ -16,6 +16,9 @@ const ventaRoutes = require("./routes/ventaRoutes");
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
 
+//categorias de productos
+const categoriaRoutes = require("./routes/categoriaRoutes");
+
 const path = require('path');
 
 const app = express();
@@ -41,6 +44,13 @@ app.use("/api/ventas", ventaRoutes);
  * @see module:routes/empleadoRoutes
  */
 app.use("/api/empleados", empleadoRoutes);
+
+/**
+ * Montaje del enrutador de categorias en la ruta base de la API.
+ * @name /api/categorias
+ * @see module:routes/categoriaRoutes
+ */
+app.use("/api/categorias", categoriaRoutes);
 
 
 /**

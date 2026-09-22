@@ -52,8 +52,41 @@
   <producto id="8">
     <nombre>papas</nombre>
     <descripcion>200g</descripcion>
+    <categoria>snacks</categoria>
     <precio>20</precio>
     <stock>38</stock>
+    <descuento>0</descuento>
+  </producto>
+  <producto id="9">
+    <nombre>sardina</nombre>
+    <descripcion>lata de 400 gramos</descripcion>
+    <categoria>enlatados</categoria>
+    <precio>40</precio>
+    <stock>25</stock>
+    <descuento>0</descuento>
+  </producto>
+  <producto id="10">
+    <nombre>atun</nombre>
+    <descripcion>lata 100 gramos</descripcion>
+    <categoria>enlatados</categoria>
+    <precio>25.5</precio>
+    <stock>100</stock>
+    <descuento>0</descuento>
+  </producto>
+  <producto id="11">
+    <nombre>cloro</nombre>
+    <descripcion>marca cloralex 1l</descripcion>
+    <categoria>limpieza</categoria>
+    <precio>24</precio>
+    <stock>50</stock>
+    <descuento>0</descuento>
+  </producto>
+  <producto id="12">
+    <nombre>emmanens</nombre>
+    <descripcion>empaque de 40 gramos</descripcion>
+    <categoria>dulceria</categoria>
+    <precio>15.00</precio>
+    <stock>25</stock>
     <descuento>0</descuento>
   </producto>
 </productos>
