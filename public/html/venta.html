@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Punto de Venta</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/venta.css">
+</head>
+<body>
+
+  <div class="main-container">
+    <header class="header">
+      <h1><i class="fa-solid fa-cash-register"></i> Punto de Venta</h1>
+      <div class="caja-status">
+        <span id="cajaDot" class="status-dot"></span>
+        <span id="cajaTexto">Caja Abierta</span>
+        <button id="btnToggleCaja" class="btn-toggle-caja">Cerrar Caja</button>
+      </div>
+    </header>
+
+    <div class="content-grid">
+
+      <!-- Tabla  -->
+      <section class="products-panel">
+        <div class="search-header-bar">
+          <div class="search-input-wrapper">
+            <input type="text" id="inputBuscar" placeholder="Buscar producto">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <span class="label-id-filter">ID producto</span>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="table-pos">
+            <thead>
+              <tr>
+                <th>Select</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>cantidad</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+            <tbody id="tablaProductosCuerpo">
+              <!-- filas con checkboxes -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Panel Ticket -->
+      <section class="ticket-panel">
+        <div class="ticket-header" id="lblFolioVenta">
+          Venta numero 1
+        </div>
+
+        <div class="ticket-items-list" id="listaItemsTicket">
+          <p style="text-align:center; color:#999; font-size:12px; margin-top:35px;">No hay productos en la cuenta</p>
+        </div>
+
+        <div class="ticket-totals">
+          <div class="row">
+            <span>subtotal</span>
+            <span id="lblSubtotal">$0</span>
+          </div>
+          <div class="row">
+            <span>IVA</span>
+            <span id="lblIva">$0</span>
+          </div>
+          <div class="row row-total">
+            <span>Total</span>
+            <span id="lblTotal">$0</span>
+          </div>
+        </div>
+
+        <div class="payment-area">
+          <div class="methods-row">
+            <button type="button" class="btn-method active" id="btnEfectivo">Efectivo</button>
+            <button type="button" class="btn-method" id="btnTarjeta">Tarjeta</button>
+          </div>
+
+          <div class="inputs-group">
+            <div class="input-row">
+              <span>Monto recibido</span>
+              <input type="number" id="inputMontoRecibido" placeholder="0.00" min="0" step="0.5">
+            </div>
+            <div class="input-row">
+              <span>Cambio</span>
+              <input type="text" id="inputCambio" readonly placeholder="$0.00">
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button type="button" class="btn-registrar" id="btnRegistrarPago" disabled>Registrar pago</button>
+            <button type="button" class="btn-factura" id="btnFactura">Factura</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Ticket -->
+  <div id="modalTicket" class="modal">
+    <div class="modal-content">
+      <h3 style="color: #27ae60;"><i class="fa-solid fa-circle-check"></i> Pago Registrado</h3>
+      <p style="font-size: 13px; color: #555;">Transacción guardada exitosamente</p>
+      <div id="reciboDetalle" class="receipt-body"></div>
+      <button type="button" class="btn-registrar" id="btnCerrarModal" style="width: 100%;">Aceptar y Nueva Venta</button>
+    </div>
+  </div>
+
+  <script src="../js/venta.js"></script>
+</body>
+</html>
