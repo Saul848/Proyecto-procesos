@@ -50,6 +50,10 @@ app.use("/api/empleados", empleadoRoutes);
  */
 app.use("/api/categorias", categoriaRoutes);
 
+/**
+ * apuntador de ruta para mensajes
+ */
+app.use("/api/mensajes", mensajeRoutes);
 
 /**
  * Puerto de escucha predeterminado del servidor.
