@@ -10,6 +10,12 @@ const router = express.Router();
 const empleadoController = require("../controladores/empleadoController");
 
 /**
+ * @name POST /login
+ * @description Valida las credenciales de acceso para iniciar sesión en el sistema
+ */
+router.post("/login", empleadoController.loginEmpleado);
+
+/**
  * @name GET /
  * @description Obtiene la lista de empleados en el sistema
  */
