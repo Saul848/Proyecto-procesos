@@ -65,25 +65,6 @@
     border-color: #003a70;
 }
 
-/* Select de categoría */
-.campo select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    box-sizing: border-box;
-    background-color: white;
-    color: #333;
-    cursor: pointer;
-    width: 100%;
-}
-
-/* Efecto al hacer clic / enfocar el select */
-.campo select:focus {
-    outline: none;
-    border-color: #003a70;
-}
-
 /* Contenedor de botones */
 .contenedor-botones {
     display: flex;
@@ -102,22 +83,22 @@
 }
 
 /* Botón agregar */
-#boton-agregar-producto {
+#boton-agregar-categoria {
     background-color: #00a86b;
     color: white;
 }
 
 /* Botón salir */
-#boton-salir-agregar {
+#boton-salir-agregar-categoria {
     background-color: #d1d5db;
     color: #333;
 }
 
 /* Efecto al pasar el mouse */
-#boton-agregar-producto:hover {
+#boton-agregar-categoria:hover {
     background-color: #008f5b;
 }
 
-#boton-salir-agregar:hover {
+#boton-salir-agregar-categoria:hover {
     background-color: #b8bdc5;
 }
