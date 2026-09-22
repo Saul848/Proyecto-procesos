@@ -1,6 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mensajes>
-    <mensaje>
-        <destino>Cesa7r<destino>
-        <contenido>Muy buen trabajo el de hoy!</contenido>
-    </mensaje>
+  <mensaje>
+    <destino>Cesa7r</destino>
+    <contenido>Muy buen trabajo el de hoy!</contenido>
+  </mensaje>
+  <mensaje>
+    <destino>roger123</destino>
+    <contenido>pinche roger deja de nalguear a los pollos</contenido>
+  </mensaje>
 </mensajes>

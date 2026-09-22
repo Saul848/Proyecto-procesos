@@ -3,20 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/empleado.css">
     <title>OXXO - Empleado</title>
 </head>
 <body>
-    <header>
-        <h2>Panel de Empleado</h2>
+    <section class = "pestañaSuperior">
+        <label id="msgPestaña">Menu empleado</label>
+        <nav>
+        </nav>
+        <button id="btnMensajes"> Mensajes </button>
+        <button id="btnSalir"> Salir</button>
+    </section>
+
+    <div>
         <div>
             <span>Hola, <span id="saludo-nombre">Empleado</span></span>
             <button id="btn-logout">Cerrar sesión</button>
         </div>
 
-        <h1>Bienvenido al panel de empleado</h1>
+        <h3>Bienvenido al panel de empleado</h1>
 
-    </header>
+    </div>
 
-    <script src="../js/cerrarSesion.js"></script>
+
+
+
+    <div id="checkMensajes" class="modal-overlay" style="display: none;">
+        <div class="modal-caja">
+            <h3>Mensajes pendientes:</h3>
+            <div id="contenedorDetalles">
+
+            </div>
+            <div id="contenedorBoton">
+                <button id="btnCerrarModal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    <script src="../js/empleado.js"></script>
 </body>
 </html>

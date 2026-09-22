@@ -342,7 +342,7 @@ document.getElementById('btnEnviarMensaje').addEventListener('click', () => {
     const destino = document.getElementById("inputDestinatario").value;
     const contenido = document.getElementById("inputContenido").value;
 
-    fetch('/mensajes', {
+    fetch('/api/mensajes', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ destino, contenido })
