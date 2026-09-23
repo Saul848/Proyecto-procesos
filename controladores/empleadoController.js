@@ -180,13 +180,6 @@ exports.loginEmpleado = async (req, res) => {
         // Obtenemos los empleados desde el DAO (el servidor lee el XML de forma segura)
         const empleados = await empleadoDao.obtenerEmpleados();
         if (!Array.isArray(empleados)) empleados = [empleados];
-
-        
-        console.log('--- DEBUG LOGIN ---');
-        console.log('Usuario recibido:', JSON.stringify(usuario));
-        console.log('Password recibido:', JSON.stringify(password));
-        console.log('Empleados del XML:', JSON.stringify(empleados, null, 2));
-        console.log('-------------------');
         
         // Buscamos si coincide el usuario y la contraseña
         const empleadoEncontrado = empleados.find(
