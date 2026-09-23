@@ -93,7 +93,7 @@ class Oferta{
             throw new Error("La fecha de inicio es obligatoria.");
         }
 
-        const hoy = new Date().toISOString().slice(0, 10);
+        const hoy = new Date().toLocaleDateString('en-CA');
         if (fechaI < hoy){
             throw new Error("La fecha de inicio no puede ser anterior a la fecha actual.")
         }
@@ -117,7 +117,7 @@ class Oferta{
      * @returns Si la oferta está disponible.
      */
     estado(){
-        const hoy = new Date().toISOString().slice(0, 10);
+        const hoy = new Date().toLocaleDateString('en-CA');
         if (hoy > this.#fechaFin) return "caducada";
         if (hoy < this.#fechaInicio) return "proxima";
         return "disponible";

@@ -12,15 +12,12 @@ const express = require("express");
 // const usuarioRoutes = require("./routes/usuarioRoutes");
 const productoRoutes = require("./routes/productoRoutes");
 const ventaRoutes = require("./routes/ventaRoutes");
-const mensajeRoutes = require ("./routes/mensajeRoutes");
 
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
 
 // const ofertaRoutes
 const ofertaRoutes = require("./routes/ofertaRoutes");
-//categorias de productos
-const categoriaRoutes = require("./routes/categoriaRoutes");
 
 const path = require('path');
 
@@ -34,6 +31,9 @@ app.use(express.json());
  */
 app.use(express.static("public"));
 
+
+app.use('/data', express.static(path.join(__dirname, 'data')));
+
 // app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);
 app.use("/api/ventas", ventaRoutes);
@@ -46,18 +46,6 @@ app.use("/api/ventas", ventaRoutes);
 app.use("/api/empleados", empleadoRoutes);
 
 app.use("/api/ofertas", ofertaRoutes);
-
-/**
- * Montaje del enrutador de categorias en la ruta base de la API.
- * @name /api/categorias
- * @see module:routes/categoriaRoutes
- */
-app.use("/api/categorias", categoriaRoutes);
-
-/**
- * apuntador de ruta para mensajes
- */
-app.use("/api/mensajes", mensajeRoutes);
 
 /**
  * Puerto de escucha predeterminado del servidor.

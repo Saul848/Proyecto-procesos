@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ofertas>
   <oferta>
-    <id>OF-01</id>
-    <idProducto>1</idProducto>
-    <tipoProm>porcentaje</tipoProm>
-    <valorDesc>30</valorDesc>
-    <cantidadRecibe>1</cantidadRecibe>
-    <cantidadPaga>1</cantidadPaga>
-    <fechaInicio>2026-09-24</fechaInicio>
-    <fechaFin>2026-09-30</fechaFin>
-    <estado>proxima</estado>
-  </oferta>
-  <oferta>
     <id>OF-02</id>
     <idProducto>2</idProducto>
     <tipoProm>cantidad</tipoProm>
@@ -19,6 +8,39 @@
     <cantidadRecibe>2</cantidadRecibe>
     <cantidadPaga>1</cantidadPaga>
     <fechaInicio>2026-09-24</fechaInicio>
+    <fechaFin>2026-10-10</fechaFin>
+    <estado>proxima</estado>
+  </oferta>
+  <oferta>
+    <id>OF-03</id>
+    <idProducto>9</idProducto>
+    <tipoProm>cantidad</tipoProm>
+    <valorDesc>1</valorDesc>
+    <cantidadRecibe>3</cantidadRecibe>
+    <cantidadPaga>1</cantidadPaga>
+    <fechaInicio>2026-09-22</fechaInicio>
+    <fechaFin>2026-09-28</fechaFin>
+    <estado>disponible</estado>
+  </oferta>
+  <oferta>
+    <id>OF-03</id>
+    <idProducto>10</idProducto>
+    <tipoProm>porcentaje</tipoProm>
+    <valorDesc>15</valorDesc>
+    <cantidadRecibe>1</cantidadRecibe>
+    <cantidadPaga>1</cantidadPaga>
+    <fechaInicio>2026-09-22</fechaInicio>
+    <fechaFin>2026-10-02</fechaFin>
+    <estado>disponible</estado>
+  </oferta>
+  <oferta>
+    <id>OF-04</id>
+    <idProducto>11</idProducto>
+    <tipoProm>porcentaje</tipoProm>
+    <valorDesc>24</valorDesc>
+    <cantidadRecibe>1</cantidadRecibe>
+    <cantidadPaga>1</cantidadPaga>
+    <fechaInicio>2026-10-02</fechaInicio>
     <fechaFin>2026-10-10</fechaFin>
     <estado>proxima</estado>
   </oferta>
