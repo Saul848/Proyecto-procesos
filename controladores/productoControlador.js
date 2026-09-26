@@ -5,12 +5,12 @@ const categoriaDao = require("../dao/categoriaDao");
  * Guarda los datos de un producto.
  *
  * @async
- * @function guardarAlumno
+ * @function agregarProducto
  * @param {Object} req - Objeto de petición HTTP con los datos del producto en el cuerpo.
  * @param {Object} res - Objeto de respuesta HTTP.
  * @returns {Promise<void>} Respuesta HTTP indicando si el producto fue creado o actualizado.
  */
-agregarProducto = async (req, res) => {
+const agregarProducto = async (req, res) => {
     try {
         const { nombre, descripcion, categoria, precio, stock } = req.body;
 
@@ -155,8 +155,65 @@ const consultarInventarioYReportes = (req, res) => {
     }
 };
 
+/**
+ * Elimina un producto.
+ *
+ * @async
+ * @function guardarAlumno
+ * @param {Object} req - Objeto de petición HTTP con los datos del producto en el cuerpo.
+ * @param {Object} res - Objeto de respuesta HTTP.
+ * @returns {Promise<void>} Respuesta HTTP indicando si el producto fue eliminado.
+ */
+const eliminarProducto = async (req, res) => {
+    try {
+        const idProducto = req.params.id;
+
+        if (!idProducto) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: "Ingrese un id valido"
+            });
+        }
+
+        const productoExiste = await productoDao.existeProductoId(idProducto);
+
+        // Si el producto no existe con el mismo id, se regresa un error de elemento no encontrado
+        if (!productoExiste) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: "El id de producto no se encuentra registrado"
+            });
+        }
+
+        // Creacion de nuevo alumno
+        const productoEliminado = await productoDao.eliminarProducto(idProducto);
+
+        // Validacion creacion de producto
+        if (productoEliminado.ok) {
+            return res.status(201).json({
+                ok: true,
+                mensaje: "Producto eliminado correctamente"
+            });
+        } else {
+            // Devolucion de eliminacion fallida
+            return res.status(201).json({
+                ok: true,
+                mensaje: "Producto no se pudo eliminar"
+            });
+        }
+
+    } catch (error) {
+        // Resolucion en caso de error
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error en el servidor al eliminar el producto"
+        });
+    }
+};
+
 module.exports = {
     agregarProducto,
     consultarCatalogo,
     consultarInventarioYReportes,
+    eliminarProducto
 };

@@ -17,6 +17,12 @@ router.post("/", productoControlador.agregarProducto);
  */
 router.get("/", productoControlador.consultarCatalogo);
 
+/**
+ * @name DELETE /
+ * @description Elimina un producto por su id.
+ */
+router.delete("/:id", productoControlador.eliminarProducto);
+
 router.get("/inventario-reportes", productoControlador.consultarInventarioYReportes);
 
 module.exports = router;

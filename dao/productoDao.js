@@ -1,4 +1,6 @@
 const Producto = require("../clases/producto");
+const idProductoDao = require("./idProductoDao");
+
 
 const fs = require("fs");
 const path = require('path');
@@ -46,7 +48,7 @@ function agregarProducto(producto) {
         const productos = resultado.productos?.producto || [];
         
         // Obtener el ID
-        const nuevoId = obtenerSiguienteId();
+        const nuevoId = idProductoDao.obtenerIdDisponible();
 
         const nuevoProducto = {
             "@_id": nuevoId,
@@ -72,6 +74,8 @@ function agregarProducto(producto) {
 
         // Sobrescribir el archivo XML en disco
         fs.writeFileSync(archivo, nuevoXml, "utf8");
+
+        idProductoDao.guardarSiguienteId();
 
         return { ok: true };
 
@@ -115,8 +119,12 @@ function existeProducto(nombre) {
     }
 }
 
-// Busca el nuevo id disponible para asignar
-function obtenerSiguienteId() {
+/**
+ * Verifica si ya existe un producto registrado con el mismo nombre.
+ * @param {Number} idProducto - Id del producto a verificar.
+ * @returns {boolean} true si el producto existe, false si no.
+ */
+function existeProductoId(idProducto) {
     try {
         const xml = fs.readFileSync(archivo, "utf8");
 
@@ -129,19 +137,21 @@ function obtenerSiguienteId() {
         const resultado = parser.parse(xml);
         const productos = resultado.productos?.producto || [];
 
-        // Calcular el ID numérico más alto y sumar 1
-        const maxId = productos.reduce((max, prod) => {
-            const idActual = parseInt(prod["@_id"], 10) || 0;
-            return idActual > max ? idActual : max;
-        }, 0);
+        // Normalizar id a buscar para comparación limpia
+        const idBusqueda = Number(idProducto);
 
-        return String(maxId + 1);
+        // Retorna true tan pronto encuentra la primera coincidencia
+        return productos.some((prod) => {
+            const idProd = prod["@_id"] ? String(prod["@_id"]).toLowerCase() : "";
+            return Number(idProd) === idBusqueda;
+        });
 
     } catch (error) {
-        console.error("Error al obtener el siguiente ID:", error);
+        console.error("Error al verificar la existencia del producto:", error);
         throw error;
     }
 }
+
 /**
  * Obtiene la lista de productos, permitiendo filtrar por nombre, ID o categoría,
  * y verificando el estado del stock.
@@ -213,13 +223,78 @@ const obtenerReporteInventario = () => {
     };
 };
 
+/**
+ * Elimina un producto del archivo XML mediante su ID y actualiza el almacenamiento en disco.
+ *
+ * @param {number|string} id - Identificador único del producto a eliminar.
+ * @returns {{ok: boolean, eliminado: boolean, mensaje?: string}} Objeto indicando el resultado de la operación.
+ * @throws {Error} Lanza un error si ocurre un fallo al leer o escribir el archivo XML.
+ */
+function eliminarProducto(id) {
+    try {
+        const idNumero = Number(id);
+
+        if (isNaN(idNumero)) {
+            return { ok: false, eliminado: false, mensaje: "El ID proporcionado no es un número válido." };
+        }
+
+        // Verificar si el archivo existe antes de leerlo
+        if (!fs.existsSync(archivo)) {
+            return { ok: false, eliminado: false, mensaje: "El archivo XML no existe." };
+        }
+
+        const xml = fs.readFileSync(archivo, "utf8");
+
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            attributeNamePrefix: "@_",
+            isArray: (tagName) => ['producto'].includes(tagName)
+        });
+
+        // Convertir XML a Objeto JS
+        const resultado = parser.parse(xml);
+
+        // Si el XML está vacío o no tiene la estructura
+        if (!resultado.productos) {
+            resultado.productos = { producto: [] };
+        }
+
+        const productos = resultado.productos.producto || [];
+
+        // Filtrar excluyendo el ID indicado
+        const productosFiltrados = productos.filter(prod => Number(prod["@_id"]) !== idNumero);
+
+        // Asignar el nuevo arreglo filtrado
+        resultado.productos.producto = productosFiltrados;
+
+        // Reconstruir el formato XML
+        const builder = new XMLBuilder({
+            format: true,
+            ignoreAttributes: false,
+            attributeNamePrefix: "@_"
+        });
+
+        const nuevoXml = builder.build(resultado);
+
+        // Guardar cambios en disco
+        fs.writeFileSync(archivo, nuevoXml, "utf8");
+
+        return { ok: true, eliminado: true };
+
+    } catch (error) {
+        console.error("Error al eliminar producto BD:", error);
+        throw error;
+    }
+}
 
 
 module.exports = {
     agregarProducto,
     existeProducto,
+    existeProductoId,
     obtenerProductos,
     obtenerReporteInventario,
+    eliminarProducto
 };
 
 

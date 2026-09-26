@@ -57,6 +57,18 @@ if (btnBuscarProducto) {
     });
 }
 
+document.querySelector(".product-list").addEventListener("click", (event) => {
+    const boton = event.target.closest(".btn-eliminar");
+
+    if (!boton) return;
+    const idProducto = Number(boton.dataset.id);
+
+    console.log("clic");
+    console.log("ID producto:", idProducto);
+
+    eliminarProducto(idProducto);
+});
+
 /**
  * Carga todos los productos desde la API y los almacena
  * en la lista global de productos.
@@ -241,7 +253,16 @@ async function filtrarProductosPorCategoria(categoria) {
 
 
 /**
- * Realiza la búsqueda de productos por ID (exacto) o Nombre (parcial).
+ * Realiza la búsqueda de productos dentro del listado en memoria.
+ * 
+ * Evalúa el término ingresado en el input `#info_busqueda`:
+ * - Si es numérico (`/^\d+$/`), realiza una búsqueda exacta por `id`.
+ * - Si es texto, realiza una búsqueda parcial insensible a mayúsculas/minúsculas por `nombre`.
+ * - Si está vacío, restablece la vista a la lista completa de productos.
+ *
+ * @async
+ * @function buscarProducto
+ * @returns {Promise<void>} No retorna valor; actualiza directamente el DOM mediante `mostrarProductos()`.
  */
 async function buscarProducto() {
     const inputElement = document.getElementById("info_busqueda");
@@ -275,6 +296,31 @@ async function buscarProducto() {
     }
 
     mostrarProductos(resultado);
+}
+
+async function eliminarProducto(id){
+    console.log("en cliente eliminar");
+    // Enviar solicitud eliminacion a Express
+    const respuesta = await fetch(`/api/productos/${id}`, {
+        method: "DELETE",
+
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+
+
+    // Obtener resultado de la respuesta
+    const resultado = await respuesta.json();
+
+
+    // Validación de respuesta del servidor
+    if (respuesta.ok) {
+        alert(resultado.mensaje);
+        mostrarProductos();
+    } else {
+        alert(resultado.mensaje);
+    }
 }
 
 

@@ -74,7 +74,7 @@
     <nombre>emmanens</nombre>
     <descripcion>empaque de 40 gramos</descripcion>
     <categoria>dulceria</categoria>
-    <precio>15.00</precio>
+    <precio>15</precio>
     <stock>25</stock>
   </producto>
 </productos>
