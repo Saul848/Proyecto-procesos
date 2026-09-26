@@ -62,10 +62,16 @@ function cargarOfertas() {
                     'precioFijo': 'Precio especial'
                 }[o.tipoProm] || o.tipoProm;
 
-                let descuentoTexto = o.valorDesc;
-                if (o.tipoProm === 'porcentaje') descuentoTexto += '%';
-                else if (o.tipoProm === 'cantidad') descuentoTexto += 'x' + (o.valorDesc - 1) + ' (llevas ' + o.valorDesc + ' pagas 1)';
-                else descuentoTexto = '$' + o.valorDesc;
+                let descuentoTexto;
+                if (o.tipoProm === 'porcentaje'){
+                    descuentoTexto = o.valorDesc + '%';
+                } else if (o.tipoProm === 'cantidad'){
+                    descuentoTexto = o.cantidadRecibe + 'x' + o.cantidadPaga + ' (llevas ' + o.cantidadRecibe + ' pagas ' + o.cantidadPaga + ')';
+                } else if (o.tipoProm === 'precioFijo'){
+                    descuentoTexto = '$' + o.valorDesc;
+                } else {
+                    descuentoTexto = o.valorDesc;
+                }
 
                 fila.innerHTML = `
                     <td>${o.id}</td>

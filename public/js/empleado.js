@@ -29,3 +29,24 @@ document.addEventListener("DOMContentLoaded", () => {
         spanNombre.textContent = nombreEmpleado;
     }
 });
+
+/**
+ * Listener para el botón que habilita el modal para ver los mensajes
+ */
+document.getElementById("btnMensajes").addEventListener('click', ()=> {
+    const usuario = sessionStorage.getItem('usuarioLogueado');
+
+    fetch('/api/mensajes/verMensajes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ usuario })
+    })
+    .then(res => res.text())
+    .then(html => {
+        document.getElementById('contenedorDetalles').innerHTML = html;
+    })
+    .catch(err => console.error('Error: ', err));
+
+    
+    document.getElementById('checkMensajes').style.display = 'flex';
+});
