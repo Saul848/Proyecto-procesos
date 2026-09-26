@@ -7,7 +7,7 @@ export { inicializarModalProducto, abrirModalProducto };
  *
  * Configura los eventos de los botones para cerrar y agregar productos,
  * carga las categorías disponibles y establece las restricciones de
- * entrada para precio, stock y descuento.
+ * entrada para precio, stock.
  *
  * @function inicializarModalProducto
  * @returns {void}
@@ -32,7 +32,6 @@ function inicializarModalProducto() {
 
     const inputPrecio = document.getElementById("input-precio-producto");
     const inputStock = document.getElementById("input-stock-producto");
-    const inputDescuento = document.getElementById("input-descuento-producto");
 
 
     // ------------------ PRECIO ------------------
@@ -101,40 +100,6 @@ function inicializarModalProducto() {
             }
         });
     }
-
-
-    // ------------------ DESCUENTO ------------------
-
-    if (inputDescuento) {
-
-        inputDescuento.addEventListener("keydown", (e) => {
-            if (["e", "E", "+", "-", "."].includes(e.key)) {
-                e.preventDefault();
-            }
-        });
-
-        inputDescuento.addEventListener("input", (e) => {
-            const val = e.target.value;
-
-            if (val !== "") {
-                const num = Number(val);
-
-                if (num < 0) {
-                    e.target.value = 0;
-                }
-
-                if (num > 1) {
-                    e.target.value = 1;
-                }
-            }
-        });
-
-        inputDescuento.addEventListener("blur", (e) => {
-            if (e.target.value === "") {
-                e.target.value = 0;
-            }
-        });
-    }
 }
 
 
@@ -185,7 +150,6 @@ function limpiarCamposProducto() {
     document.getElementById("select-categoria-producto").value = "";
     document.getElementById("input-precio-producto").value = "";
     document.getElementById("input-stock-producto").value = "";
-    document.getElementById("input-descuento-producto").value = "";
 }
 
 
@@ -213,7 +177,6 @@ async function agregarProducto() {
     const categoria = document.getElementById("select-categoria-producto").value;
     let precio = document.getElementById("input-precio-producto").value;
     let stock = document.getElementById("input-stock-producto").value;
-    let descuento = document.getElementById("input-descuento-producto").value;
 
 
     // Transformación y sanitización de tipos
@@ -224,7 +187,6 @@ async function agregarProducto() {
 
     const precioNum = parseFloat(precio);
     const stockNum = parseInt(stock, 10);
-    const descuentoNum = parseFloat(descuento);
 
 
     // Enviar producto a Express
@@ -240,8 +202,7 @@ async function agregarProducto() {
             descripcion: descripcion,
             categoria: categoriaNormalizada,
             precio: precioNum,
-            stock: stockNum,
-            descuento: descuentoNum
+            stock: stockNum
         })
     });
 
@@ -274,7 +235,7 @@ async function agregarProducto() {
  * al servidor.
  *
  * Verifica que el nombre, descripción y categoría no estén vacíos,
- * además de comprobar que el precio, stock y descuento se encuentren
+ * además de comprobar que el precio, stock se encuentren
  * dentro de los rangos permitidos.
  *
  * @function validarDatosProducto
@@ -288,7 +249,6 @@ function validarDatosProducto() {
     const categoria = document.getElementById("select-categoria-producto").value;
     const precio = Number(document.getElementById("input-precio-producto").value);
     const stock = Number(document.getElementById("input-stock-producto").value);
-    const descuento = Number(document.getElementById("input-descuento-producto").value);
 
 
     // Validar nombre
@@ -322,17 +282,6 @@ function validarDatosProducto() {
     // Validar stock
     if (!Number.isInteger(stock) || stock < 0 || stock > 9999) {
         alert("El stock debe ser un número entero entre 0 y 9999.");
-        return false;
-    }
-
-
-    // Validar descuento
-    if (
-        !Number.isFinite(descuento) ||
-        descuento < 0 ||
-        descuento > 1
-    ) {
-        alert("El descuento debe ser un número entre 0 y 1.");
         return false;
     }
 

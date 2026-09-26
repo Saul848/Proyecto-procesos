@@ -50,6 +50,13 @@ if (selectCategoria) {
     });
 }
 
+const btnBuscarProducto = document.getElementById("btn-buscar-producto");
+if (btnBuscarProducto) {
+    btnBuscarProducto.addEventListener("click", () => {
+        buscarProducto();
+    });
+}
+
 /**
  * Carga todos los productos desde la API y los almacena
  * en la lista global de productos.
@@ -113,14 +120,26 @@ async function mostrarProductos(listaCategoria = null) {
     let cadenaHtml = "";
     productos.forEach((prod) => {
         cadenaHtml += `
-        <div class="product-item">
-            <span class="product-name">Producto ${prod.id} (${prod.nombre})</span>
-            <div class="product-actions">
-              <button class="icon-btn" title="Más información"><i class="fa-regular fa-circle-plus"></i></button>
-              <button class="icon-btn" title="Eliminar"><i class="fa-solid fa-basket-shopping"></i></button>
-              <button class="icon-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-            </div>
-        </div>`;
+            <div class="product-item">
+                <span class="product-name">
+                    Producto ${prod.id} (${prod.nombre})
+                </span>
+
+                <div class="product-actions">
+                    <button class="icon-btn btn-eliminar" 
+                            title="Eliminar"
+                            data-id="${prod.id}">
+                        <img src="/img/icon-eliminar.svg" alt="Icono_eliminar">
+                    </button>
+                    
+
+                    <button class="icon-btn btn-editar" 
+                            title="Editar"
+                            data-id="${prod.id}">
+                        <img src="/img/icon-editar.svg" alt="Icono_editar">
+                    </button>
+                </div>
+            </div>`
     });
 
     seccionProductos.innerHTML = cadenaHtml;
@@ -178,11 +197,11 @@ async function mostrarCategorias() {
     const categorias = await cargarCategorias();
 
     // Opción predeterminada para ver todos los productos
-    let cadenaHtml = `<option value="todos" selected>Todas las categorías</option>`;
+    let cadenaHtml = `<option value = "todos" selected > Todas las categorías</option> `;
 
     if (categorias && categorias.length > 0) {
         categorias.forEach((categoria) => {
-            cadenaHtml += `<option value="${categoria.nombre}">${categoria.nombre}</option>`;
+            cadenaHtml += `<option value = "${categoria.nombre}" > ${ categoria.nombre }</option> `;
         });
     }
 
@@ -219,6 +238,45 @@ async function filtrarProductosPorCategoria(categoria) {
 
     await mostrarProductos(productosFiltrados);
 }
+
+
+/**
+ * Realiza la búsqueda de productos por ID (exacto) o Nombre (parcial).
+ */
+async function buscarProducto() {
+    const inputElement = document.getElementById("info_busqueda");
+    if (!inputElement) return;
+
+    const input = inputElement.value.trim();
+
+    // Si no hay lista en memoria, nos aseguramos de cargarla
+    if (listaProductos.length === 0) {
+        await cargarProductos();
+    }
+
+    // Si el campo de búsqueda está vacío, restablece a la lista completa
+    if (!input) {
+        mostrarProductos(listaProductos);
+        return;
+    }
+
+    // Evalúa si el valor es puramente numérico
+    const esNumero = /^\d+$/.test(input);
+    let resultado = [];
+
+    if (esNumero) {
+        const idBuscar = Number(input);
+        resultado = listaProductos.filter(producto => Number(producto.id) === idBuscar);
+    } else {
+        const termino = input.toLowerCase();
+        resultado = listaProductos.filter(producto => 
+            producto.nombre && producto.nombre.toLowerCase().includes(termino)
+        );
+    }
+
+    mostrarProductos(resultado);
+}
+
 
 /**
  * Inicializa la página cargando primero los productos

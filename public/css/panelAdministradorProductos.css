@@ -156,26 +156,28 @@ body {
 }
 
 .icon-btn {
-  background-color: #ffffff;
-  border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #333;
-  font-size: 14px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: background-color 0.2s;
+    background-color: #ffffff;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: background-color 0.2s;
+}
+
+.icon-btn img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
 }
 
 .icon-btn:hover {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
-
-
 
 /* Ajusta los estilos de right-section */
 .right-section {

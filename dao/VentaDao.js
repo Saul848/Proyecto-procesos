@@ -69,8 +69,7 @@ function registrarVenta(datosVenta) {
             }
 
             const precioUnitario = Number(producto.precio) || 0;
-            const descuento = Number(producto.descuento) || 0;
-            const precioFinal = descuento > 0 ? precioUnitario * (1 - descuento) : precioUnitario;
+            const precioFinal = precioUnitario;
             const subtotal = precioFinal * cantidadSolicitada;
             totalVenta += subtotal;
 
@@ -78,7 +77,6 @@ function registrarVenta(datosVenta) {
                 "@_idProducto": extraerId(producto),
                 nombre: producto.nombre,
                 precioUnitario: precioUnitario.toFixed(2),
-                descuento: descuento,
                 cantidad: cantidadSolicitada,
                 subtotal: subtotal.toFixed(2),
             });

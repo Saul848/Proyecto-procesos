@@ -19,7 +19,6 @@ const archivo = path.join(__dirname, "../data/xml/productos.xml");
  * @param {string} producto.categoria - Categoria del producto.
  * @param {number} producto.precio - Precio del producto.
  * @param {number} producto.stock - Stock del producto.
- * @param {number} producto.descuento - Descuento del producto
  * @returns {Object} Resultado de la operación.
  * @throws {Error} Si ocurre un error al leer, modificar o escribir el archivo XML.
  */
@@ -55,8 +54,7 @@ function agregarProducto(producto) {
             descripcion: producto.descripcion,
             categoria: producto.categoria.toLowerCase().trim(),
             precio: Number(producto.precio).toFixed(2),
-            stock: Number(producto.stock),
-            descuento: Number(producto.descuento)
+            stock: Number(producto.stock)
         };
 
         // Agregar al arreglo existente
@@ -184,7 +182,6 @@ function obtenerProductos(busqueda = "") {
                 categoria: prod.categoria,
                 precio: prod.precio,
                 stock: stockActual,
-                descuento: prod.descuento,
                 sinStock: stockActual <= 0 
             };
         });
