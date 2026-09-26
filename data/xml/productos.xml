@@ -85,8 +85,16 @@
     <nombre>emmanens</nombre>
     <descripcion>empaque de 40 gramos</descripcion>
     <categoria>dulceria</categoria>
-    <precio>15.00</precio>
+    <precio>15</precio>
     <stock>25</stock>
+    <descuento>0</descuento>
+  </producto>
+  <producto id="13">
+    <nombre>bebida energética</nombre>
+    <descripcion>400 ml</descripcion>
+    <categoria>bebidas</categoria>
+    <precio>25.00</precio>
+    <stock>30</stock>
     <descuento>0</descuento>
   </producto>
 </productos>
