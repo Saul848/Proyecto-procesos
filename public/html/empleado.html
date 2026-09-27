@@ -1,53 +1,73 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración básica de metadatos y codificación de caracteres -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OXXO - Punto de Venta (Empleado)</title>
+
+    <!-- Hojas de estilos externas e internas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/empleado.css">
-    <title>OXXO - Empleado</title>
     <link rel="stylesheet" href="../css/venta.css">
 </head>
 <body>
 
-    
+    <!-- ====================================================================
+         1. BARRA SUPERIOR DE SESIÓN
+         Muestra la identidad de la tienda, saludo al empleado activo,
+         acceso a la mensajería interna y botón para cerrar sesión.
+         ==================================================================== -->
     <header class="barra-sesion">
-        <div>
+        <div class="sesion-info">
             <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Empleado</span></span>
-            <label id="msgPestaña">Menu empleado</label>
+            <label id="msgPestaña" class="badge-rol">Menu empleado</label>
         </div>
 
-    <div>
-        <div>
-            <button id="btnMensajes"> Mensajes </button>
-            <button id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</button>
+        <div class="sesion-acciones">
+            <!-- Botón para desplegar bandeja de mensajería interna -->
+            <button type="button" id="btnMensajes">
+                <i class="fa-solid fa-envelope"></i> Mensajes
+            </button>
+            <!-- Botón para cerrar sesión de forma segura -->
+            <button type="button" id="btn-logout" onclick="cerrarSesion()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión
+            </button>
         </div>
     </header>
 
+    
+        <!--2. CONTENEDOR PRINCIPAL DEL PUNTO DE VENTA (POS)-->
+    
     <div class="main-container" style="margin-top: 15px;">
 
-        
+        <!-- Cabecera del módulo con indicador de estado de caja -->
         <header class="header">
             <h1><i class="fa-solid fa-cash-register"></i> Punto de Venta</h1>
             <div class="caja-status">
                 <span id="cajaDot" class="status-dot"></span>
                 <span id="cajaTexto">Caja Abierta</span>
-                <button id="btnToggleCaja" class="btn-toggle-caja">Cerrar Caja</button>
+                <button type="button" id="btnToggleCaja" class="btn-toggle-caja">Cerrar Caja</button>
             </div>
         </header>
 
-        
+        <!-- Cuadrícula de trabajo (Catálogo a la izquierda, Ticket a la derecha) -->
         <main class="content-grid">
 
             
+            <!--PANEL IZQUIERDO: Catálogo de Productos y Búsqueda-->
+                 
             <section class="products-panel">
+                <!-- Barra de búsqueda por texto o ID -->
                 <div class="search-header-bar">
                     <div class="search-input-wrapper">
-                        <input type="text" id="inputBuscar" placeholder="Buscar producto">
+                        <input type="text" id="inputBuscar" placeholder="Buscar producto por nombre o ID...">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                     <span class="label-id-filter">ID producto</span>
                 </div>
 
+                <!-- Tabla responsiva del catálogo de productos -->
                 <div class="table-wrapper">
                     <table class="table-pos">
                         <thead>
@@ -55,44 +75,49 @@
                                 <th>Select</th>
                                 <th>Producto</th>
                                 <th>Precio</th>
-                                <th>cantidad</th>
+                                <th>Oferta</th>   <!-- Sincronizado con módulo de ofertas -->
+                                <th>Cantidad</th> <!-- Stock disponible en inventario -->
                                 <th>ID</th>
                             </tr>
                         </thead>
                         <tbody id="tablaProductosCuerpo">
-                            
+                            <!-- Filas generadas dinámicamente desde venta.js -->
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- Ticket de cuenta -->
+            <!-- PANEL DERECHO: Resumen de Venta, Totales y Métodos de Cobro -->
             <section class="ticket-panel">
+                <!-- Folio autoincrementable de la transacción actual -->
                 <div class="ticket-header" id="lblFolioVenta">
                     Venta numero 1
                 </div>
 
+                <!-- Lista de artículos agregados a la cuenta actual con controles +/- -->
                 <div id="listaItemsTicket" class="ticket-items-list">
                     <p style="text-align: center; color: #888; font-size: 13px; margin-top: 30px;">
                         No hay productos en la cuenta
                     </p>
                 </div>
 
+                <!-- Desglose de totales financieros -->
                 <div class="ticket-totals">
                     <div class="row">
                         <span>subtotal</span>
-                        <span id="lblSubtotal">$0</span>
+                        <span id="lblSubtotal">$0.00</span>
                     </div>
                     <div class="row">
                         <span>IVA</span>
-                        <span id="lblIva">$0</span>
+                        <span id="lblIva">$0.00</span>
                     </div>
                     <div class="row row-total">
                         <span>Total</span>
-                        <span id="lblTotal">$0</span>
+                        <span id="lblTotal">$0.00</span>
                     </div>
                 </div>
 
+                <!-- Zona de liquidación, selección de método y cálculo de cambio -->
                 <div class="payment-area">
                     <div class="methods-row">
                         <button type="button" id="btnEfectivo" class="btn-method active">Efectivo</button>
@@ -111,7 +136,7 @@
                     </div>
 
                     <div class="actions-row">
-                        <button id="btnRegistrarPago" class="btn-registrar" disabled>Registrar pago</button>
+                        <button type="button" id="btnRegistrarPago" class="btn-registrar" disabled>Registrar pago</button>
                         <button type="button" class="btn-factura">Factura</button>
                     </div>
                 </div>
@@ -120,28 +145,36 @@
         </main>
     </div>
 
-    <!-- Ticket -->
+    <!-- 3. VENTANAS MODALES EMERGENTES-->
+
+    <!-- Modal 1: Comprobante / Recibo de venta confirmada -->
     <div id="modalTicket" class="modal">
         <div class="modal-content">
-            <h3>Comprobante</h3>
+            <h3 style="color: #27ae60;"><i class="fa-solid fa-circle-check"></i> Comprobante</h3>
             <div id="reciboDetalle" class="receipt-body"></div>
-            <button id="btnCerrarModal" class="btn-registrar" style="width: 100%; margin-top: 10px;">Aceptar</button>
+            <button type="button" id="btnCerrarModal" class="btn-registrar" style="width: 100%; margin-top: 10px;">
+                Aceptar y Nueva Venta
+            </button>
         </div>
     </div>
 
-    
+    <!-- Modal 2: Notificaciones y Mensajes Internos -->
     <div id="checkMensajes" class="modal-overlay" style="display: none;">
         <div class="modal-caja">
-            <h3>Mensajes pendientes:</h3>
+            <h3><i class="fa-solid fa-bell"></i> Mensajes pendientes:</h3>
             <div id="contenedorDetalles">
-
+                <!-- Se inyectan dinámicamente los avisos o campos de mensaje -->
             </div>
-            <div id="contenedorBoton">
-                <button id="btnCerrarModal">Cerrar</button>
+            <div id="contenedorBoton" style="margin-top: 15px; text-align: right;">
+                <!-- ID diferenciado para evitar colisión con el modal del ticket -->
+                <button type="button" id="btnCerrarModalMensajes" class="btn-toggle-caja">Cerrar</button>
             </div>
         </div>
     </div>
-    
+
+    <!--4. CARGA DE SCRIPTS
+         Se cargan en orden: lógica general del empleado, gestión de sesión,
+         y lógica operativa del punto de venta con ofertas integradas.-->
     <script src="../js/empleado.js"></script>
     <script src="../js/cerrarSesion.js"></script>
     <script src="../js/venta.js"></script>

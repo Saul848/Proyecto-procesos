@@ -7,8 +7,8 @@
     <telefono>3453244576</telefono>
     <usuario>roger01</usuario>
     <password>rogelio123</password>
-    <numVentas>5</numVentas>
-    <numTransacciones>3</numTransacciones>
+    <numVentas>8</numVentas>
+    <numTransacciones>6</numTransacciones>
   </empleado>
   <empleado>
     <id>2</id>

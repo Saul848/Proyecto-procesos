@@ -1,10 +1,36 @@
+/**
+ * Controlador para la gestión de ventas, folios y estado de caja.
+ * @module controladores/ventaControlador
+ */
+
 const ventaDao = require('../dao/ventaDao');
+
+/**
+ * Estado en memoria de la caja registradora.
+ * @type {boolean}
+ */
 let cajaAbierta = true;
 
+/**
+ * Retorna el estado actual de la caja registradora.
+ * 
+ * @function obtenerEstadoCaja
+ * @param {import('express').Request} req - Objeto de petición Express.
+ * @param {import('express').Response} res - Objeto de respuesta Express.
+ * @returns {void} JSON con la bandera `cajaAbierta`.
+ */
 function obtenerEstadoCaja(req, res) {
     res.json({ cajaAbierta });
 }
 
+/**
+ * Modifica el estado de apertura/cierre de la caja registradora.
+ * 
+ * @function cambiarEstadoCaja
+ * @param {import('express').Request} req - Petición con `{ abierta: boolean }` en el body.
+ * @param {import('express').Response} res - Respuesta con mensaje confirmando el cambio.
+ * @returns {void}
+ */
 function cambiarEstadoCaja(req, res) {
     const { abierta } = req.body;
     cajaAbierta = Boolean(abierta);
@@ -14,6 +40,14 @@ function cambiarEstadoCaja(req, res) {
     });
 }
 
+/**
+ * Procesa y registra una venta validando el estado de la caja y los productos recibidos.
+ * 
+ * @function procesarVenta
+ * @param {import('express').Request} req - Objeto de petición que incluye `{ idEmpleado, items }`.
+ * @param {import('express').Response} res - Objeto de respuesta Express.
+ * @returns {void}
+ */
 function procesarVenta(req, res) {
     try {
         if (!cajaAbierta) {
@@ -29,6 +63,18 @@ function procesarVenta(req, res) {
             return res.status(400).json({
                 ok: false,
                 mensaje: 'No se proporcionaron items válidos para la venta.'
+            });
+        }
+
+        // Validación estructural de cada ítem
+        const itemsInvalidos = items.some(
+            (it) => !it.idProducto || isNaN(Number(it.cantidad)) || Number(it.cantidad) <= 0
+        );
+
+        if (itemsInvalidos) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Todos los productos deben contener un idProducto válido y una cantidad mayor a 0.'
             });
         }
 
@@ -50,6 +96,15 @@ function procesarVenta(req, res) {
         });
     }
 }
+
+/**
+ * Consulta y devuelve el próximo número de folio para la siguiente venta.
+ * 
+ * @function obtenerProximoFolio
+ * @param {import('express').Request} req - Objeto de petición Express.
+ * @param {import('express').Response} res - Objeto de respuesta Express con `{ siguienteFolio }`.
+ * @returns {void}
+ */
 function obtenerProximoFolio(req, res) {
     try {
         const siguienteId = ventaDao.obtenerSiguienteIdVenta();
