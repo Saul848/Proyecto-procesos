@@ -23,7 +23,7 @@ function procesarVenta(req, res) {
             });
         }
 
-        const { idEmpleado, items } = req.body;
+        const { idEmpleado, idCaja, metodoPago, items } = req.body;
 
         if (!items || !Array.isArray(items) || items.length === 0) {
             return res.status(400).json({
@@ -34,6 +34,8 @@ function procesarVenta(req, res) {
 
         const resultado = ventaDao.registrarVenta({
             idEmpleado: idEmpleado || "1",
+            idCaja: idCaja || "1",
+            metodoPago: metodoPago || "Efectivo",
             items
         });
 
