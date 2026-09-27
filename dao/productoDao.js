@@ -1,5 +1,6 @@
 const Producto = require("../clases/producto");
 const idProductoDao = require("./idProductoDao");
+const movimientoProdDao = require("./movimientoProdDao");
 
 
 const fs = require("fs");
@@ -75,7 +76,20 @@ function agregarProducto(producto) {
         // Sobrescribir el archivo XML en disco
         fs.writeFileSync(archivo, nuevoXml, "utf8");
 
+        // Actualiza el siguiente id
         idProductoDao.guardarSiguienteId();
+
+        // Registra el movimiento
+        const date = new Date;
+        const movimientoProd = {
+            fecha: date.toLocaleDateString(),
+            hora: date.toLocaleTimeString(),
+            id_producto: nuevoProducto["@_id"],
+            nombre_producto: nuevoProducto.nombre,
+            tipo: "ALTA"
+        }
+
+        movimientoProdDao.agregarMovimiento(movimientoProd);
 
         return { ok: true };
 
@@ -261,6 +275,9 @@ function eliminarProducto(id) {
 
         const productos = resultado.productos.producto || [];
 
+        // Constante usada para datos del producto a eliminar
+        const productoAEliminar = productos.find(prod => Number(prod["@_id"]) === idNumero);
+
         // Filtrar excluyendo el ID indicado
         const productosFiltrados = productos.filter(prod => Number(prod["@_id"]) !== idNumero);
 
@@ -278,6 +295,18 @@ function eliminarProducto(id) {
 
         // Guardar cambios en disco
         fs.writeFileSync(archivo, nuevoXml, "utf8");
+
+        // Registra el movimiento
+        const date = new Date;
+        const movimientoProd = {
+            fecha: date.toLocaleDateString(),
+            hora: date.toLocaleTimeString(),
+            id_producto: idNumero,
+            nombre_producto: productoAEliminar.nombre,
+            tipo: "BAJA"
+        }
+
+        movimientoProdDao.agregarMovimiento(movimientoProd);
 
         return { ok: true, eliminado: true };
 
