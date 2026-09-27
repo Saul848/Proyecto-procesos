@@ -6,8 +6,22 @@
   <title>Punto de Venta</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../css/venta.css">
+  <link rel="stylesheet" href="../css/barra_sesion.css">
 </head>
 <body>
+      <header class="barra-sesion-empleado">
+        <div>
+            <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Empleado</span></span>
+        </div>
+
+    <div>
+        <div>
+            <button id="btnMensajes"> Mensajes </button>
+            <button id="btn-logout"> Cerrar sesión </button>
+        </div>
+    </div>
+    </header>
+
 
   <div class="main-container">
     <header class="header">
@@ -111,6 +125,8 @@
     </div>
   </div>
 
+  <script src="../js/empleado.js"></script>
   <script src="../js/venta.js"></script>
+  <script src="../js/cerrar_sesion.js"></script>
 </body>
 </html>

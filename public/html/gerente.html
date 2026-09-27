@@ -4,15 +4,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oxxo - Gerente</title>
     <link rel="stylesheet" href="../css/gerente.css">
+    <link rel="stylesheet" href="../css/barra_sesion.css">
 </head>
 <body>
-    <section class = "pestaña">
-        <label id="msgPestaña">Menu Gerente</label>
-        <nav>
-        </nav>
-        <button id="btnMensaje"> Mensaje </button>
-        <button id="btnSalir"> Salir</button>
-    </section>
+    
+    <header class="barra-sesion-gerente">
+        <div>
+            <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Gerente</span></span>
+        </div>
+
+    <div>
+        <div>
+            <button id="btnMensajes"> Mensajes </button>
+            <button id="btn-logout"> Cerrar sesión </button>
+        </div>
+    </div>
+    </header>
+
     <section class = "contenido">
         <section class = "datos">
             <section class = "perfil">
@@ -80,3 +88,5 @@
 </body>
 </html>
 <script src="../js/gerente.js" defer></script>
+<script src="../js/cerrar_sesion.js"></script>
+<script src="../js/empleado.js"></script>
