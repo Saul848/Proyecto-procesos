@@ -11,7 +11,7 @@
     <nombre>Mouse Óptico Inalámbrico</nombre>
     <descripcion>Diseño ergonómico con batería recargable y clicks silenciosos.</descripcion>
     <precio>25.5</precio>
-    <stock>117</stock>
+    <stock>110</stock>
     <descuento>0.5</descuento>
   </producto>
   <producto id="3">
@@ -46,7 +46,7 @@
     <nombre>fresas con crema</nombre>
     <descripcion>33 gramos</descripcion>
     <precio>41.22</precio>
-    <stock>109</stock>
+    <stock>108</stock>
     <descuento>0.1</descuento>
   </producto>
   <producto id="8">

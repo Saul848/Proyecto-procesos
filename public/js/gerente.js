@@ -4,34 +4,76 @@
 const listaActDom = document.querySelector(".listaAct"); //Contenedor gris de lista
 const seccionEmpDom = document.getElementById("seccionEmp") //Contenedor con scrollbar para la lista
 
-//Inputs del formulario agregar estudiantes
+//Dom de las secciones
+const seccionOpcciones= document.getElementById("opcciones");
+const seccionAgregar = document.getElementById("seccionAgregar");
+const seccionMod = document.getElementById("seccionModificar");
+
+//Botones de opcciones
+const btnAgregarEmpDom = document.getElementById("btnAgregarEmpleado");
+const btnModificarEmpDom = document.getElementById("btnModificarEmpleado");
+
+//Inputs de seccion agregar estudiantes
 const inpNombreDom = document.getElementById("inpNombre");
 const selectPuestoDom = document.getElementById("selectPuesto");
 const inpTelefonoDom = document.getElementById("inpTel");
 const inpUsuarioDom = document.getElementById("inpUsuario");
 const inpPasswordDom = document.getElementById("inpPassword");
-const btnAgregarEmpDom= document.getElementById("btnAgregarEmp") 
+const btnGuardarDatosDom= document.getElementById("btnGuardarDatos") 
+
+//Inputs de seccion mod estudiantes
+const inpNombreAct = document.getElementById("inpNombreAct");
+const inpNuevoNombre = document.getElementById("inpNuevoNombre");
+const inpPuestoAct = document.getElementById("inpPuestoAct");
+const selectNuevoPuesto = document.getElementById("selectNuevoPuesto");
+const inpTelefonoAct = document.getElementById("inpTelefonoAct");
+const inpNuevoTelefono = document.getElementById("inpNuevoTelefono");
+const inpUsuarioAct = document.getElementById("inpUsuarioAct");
+const inpNuevoUsuario = document.getElementById("inpNuevoUsuario");
+const inpPasswordAct = document.getElementById("inpPasswordAct");
+const inpNuevoPassword = document.getElementById("inpNuevoPassword");
+const btnActualizarDatosDom = document.getElementById("btnActualizarDatos");
+
+
+//Listener de los botones regresar
+// Se obtienen todos los botones de la clase btnRegresar 
+const botonesRegresar = document.querySelectorAll('.btnRegresar');
+//Se recorre una lista y se asigna un listener para habilitar la opccion de regresar
+botonesRegresar.forEach(boton => {
+    boton.addEventListener('click', function(){
+        setEnModificacion(null);
+    });
+});
 
 //Elementos bandera
-let verificado=false;
+let verificado=false; 
+let enModificacion="";
 //Arreglo para obtener los datos de los estudiantes
 let datosEmp =null;
+//Variable para almacenar el id de un empleado
+let idEmp= null;
+
+//Escondemos el boton btnModificarEmpleadoDom desde un inicio
+btnModificarEmpDom.classList.add('escondido');
+//Variable de gestion de paneles empleado
+let ultimoPanelEmpSeleccionado=null;
 
 //Patrones para validacion de campos
 let patronNombre = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ\x20]+$/; //Patron que permite todo el abcdario, la ñ y espacios
 let patronTel = /^[0-9]{10}$/;   //Patron que permite validar numeros enteros
-let patronContraseña = /^[a-zA-Z0-9ÁÉÍÓÚáéíóúñÑ\x20]+$/; //Patron que permite todo el abcdario, la ñ, espacios y numeros positivos del 0-9
-
+let patronPassword = /^[a-zA-Z0-9ÁÉÍÓÚáéíóúñÑ\x20]+$/; //Patron que permite todo el abcdario, la ñ, espacios y numeros positivos del 0-9
 
 /**
  * 
  * Listener de tipo DOMContentLoaded
  * Cada vez que se inicia la pagina se obtiene la lista de empleados en el servidor
- * y la pagina carga recuadros para cada empleado
+ * y la pagina carga paneles para cada empleado
  * 
  */
 document.addEventListener("DOMContentLoaded", async function(){
-     //Limpiamos el contenido de la lista activa
+    //Mostrar la seccion de opcciones unicamente
+    setEnModificacion(null);
+    //Limpiamos el contenido de la lista activa
     seccionEmpDom.innerHTML="" ;
     //Obtenemos los datos de los empleados
     datosEmp= await obtenerEmpleados();
@@ -47,14 +89,12 @@ document.addEventListener("DOMContentLoaded", async function(){
             let nombre = datosEmp[n].nombre;
             //Se inyectan los datos en el panel
             seccionEmpDom.innerHTML+=`
-                <div class="panelEmpleado">
+                <div class="panelEmpleado" id="panelEmpleado${id}" onclick="iluminarEmpleado(${id})">
                     <div class="cajaTexto">
                         <div class="emp#">${"Empleado# "+id}</div>
                         <div class="nombreCompleto">${nombre}</div>
                     </div>
-                    <button class="btnInfo">Info<img src="" alt=""></button>
-                    <button class="btnEliminar">E<img src="" alt=""></button>
-                    <button class="btnModificar">M<img src="" alt=""></button>
+                    <button class="btnEliminar" onclick="eliminarEmpleado(${id})">E<img src="" alt=""></button>
                 </div>`;
         }
     }
@@ -62,7 +102,6 @@ document.addEventListener("DOMContentLoaded", async function(){
 
 /**
  * Obtiene un arreglo de empleados desde el servidor
- * 
  * @async
  * @function obtenerEmpleados Devuelve un arreglo con los empleados registrados en la base de datos
  * @returns {Promise <Array>} Arreglo con los empleados registrados
@@ -88,15 +127,15 @@ async function obtenerEmpleados(){
     return empleados;
 }  
 
-
 /**
- * Funcion para verificar los campos de cada input
+ * Funcion para verificar los campos de la seccion agregar empleado
  * Si los inputs estan mal señala los errores
- * @async
  * @function verificarCampos
- * @returns {void} Cambios visuales en los inputs
+ * @returns {Boolean} Una variable booleana que expresa dos significados
+ * Si se regresa true, el contenido de los inputs es valido
+ * Si se regresa false, el contenido de los inputs no es valido
  */
-function verificarCampos(){
+function verificarCamposAdd(){
     //Levantamos una bandera, si llega al final sin ningun cambio despues de realizar todas las verificaciones, entonces la informacion es valida.
     verificado=true;
     //Agrupo los inputs en un arreglo para recorrerlo
@@ -133,23 +172,33 @@ function verificarCampos(){
                     elemento.placeholder="Se requiere un telefono valido"
                     verificado=false;
                 }else{
-                    elemento.style.border="2px solid blue"
+                    //Si el contenido es valido verificamos que no sea igual a otro telefono
+                    if(verificarTelUnico(elemento)){
+                        elemento.style.border="2px solid blue"
+                    }else{
+                        verificado = false;
+                    }
                 }
             }
             //El usuario del empleado
             if(elemento===inpUsuarioDom){
-                if(!patronContraseña.test(elemento.value.trim())){
+                if(!patronPassword.test(elemento.value.trim())){
                     elemento.style.border="2px solid red"
                     elemento.value=""
-                    elemento.placeholder=""
+                    elemento.placeholder="Ingrese un nuevo nombre de usuario"
                     verificado=false;
                 }else{
-                    elemento.style.border="2px solid blue"
+                    //Si el contenido es valido verificamos que no sea igual a otro usuario
+                    if(verificarUsuarioUnico(inpPasswordDom)){
+                        elemento.style.border="2px solid blue"
+                    }else{
+                        verificado = false;
+                    }
                 }
             }
             //La contraseña del empleado
             if(elemento===inpPasswordDom){
-                if(!patronContraseña.test(elemento.value.trim())){
+                if(!patronPassword.test(elemento.value.trim())){
                     elemento.style.border="2px solid red"
                     elemento.value="";
                     elemento.placeholder="Ingrese numeros, simbolos y caracteres"
@@ -162,6 +211,112 @@ function verificarCampos(){
     })
     //Regresa la bandera
     return verificado;
+}
+
+/**
+ * Funcion para validar los campos de la seccion modificar empleado
+ * @function verificarCampos
+ * @returns {Boolean} Regresa una variable booleana con dos significados
+ * Regresa true si el contenido de los inputs es valido
+ * Regresa false si el contenido de los inputs no es valido
+ */
+function verificarCamposMod(){
+    //Establecemos la bandera en true, si llega hasta el final despues de todas las verificaciones sin ningun cambio entonces el contenido es valido
+    let verificado = true
+    //Se crea un arreglo con los inputs a verificar
+    const inputs = [inpNuevoNombre, inpNuevoTelefono, inpNuevoUsuario, inpNuevoPassword]
+    //Se recorren cada uno de los inputs
+    inputs.forEach(inp=>{
+        //Si mi input esta lleno
+        if(inp.value.trim()!==""){
+            //Si mi input es identificado se aplican sus verificaciones correspondientes
+            if(inp===inpNuevoNombre){
+                if(!patronNombre.test(inp.value.trim())){
+                    inp.style.border="2px solid red"
+                    inp.value="";
+                    inp.placeholder="El nombre no debe llevar numeros o simbolos"
+                    verificado=false;
+                }else{
+                    inp.style.border="2px solid blue"
+                }
+            }
+            if(inp===inpNuevoTelefono){
+                if(!patronTel.test(inp.value.trim())){
+                    inp.style.border="2px solid red"
+                    inp.value="";
+                    inp.placeholder="Se requiere un telefono valido"
+                    verificado=false;
+                }else{
+                    //Si el contenido es valido verificamos que no sea igual a otro telefono
+                    if(verificarTelUnico(inp)){
+                        inp.style.border="2px solid blue"
+                    }else{
+                        verificado = false;
+                    }
+                }
+            }
+            if(inp===inpNuevoUsuario){
+                if(!patronPassword.test(inp.value.trim())){
+                    inp.style.border="2px solid red"
+                    inp.value="";
+                    inp.placeholder="Ingrese un nuevo nombre de usuario"
+                    verificado=false;
+                }else{
+                    //Si el contenido es valido verificamos que no sea igual a otro usuario
+                    if(verificarUsuarioUnico(inp)){
+                        inp.style.border="2px solid blue"
+                    }else{
+                        verificado = false;
+                    }
+                }
+            }
+            if(inp===inpNuevoPassword){
+                if(!patronPassword.test(inp.value.trim())){
+                    inp.style.border="2px solid red"
+                    inp.value="";
+                    inp.placeholder="Ingrese numeros, simbolos y caracteres"
+                    verificado=false;
+                }else{
+                    inp.style.border="2px solid blue"
+                }
+            }
+        
+        }
+    })
+    //Verificamos que los datos no sean iguales a los que ya se ingresaron
+    if(!verificarCamposNuevos()){
+        return verificado = false;
+    }    
+    return verificado;
+}
+
+/**
+ * Funcion que verifica los campos de la seccion modificar no tengan los mismos valores 
+ * Comprueba que el nuevo valor no sea igual que el antiguo valor
+ * @returns {Boolean} Regresa una variable booleana con dos significados
+ * Regresa true si no hay campos repetidos
+ * Regresa false si hay campos repetidos
+ */
+function verificarCamposNuevos(){
+    //Se declara una bandera como true y se aplican una serie de ifs, si esta
+    // variable llega al final del metodo sin modificaciones entonces el contenido de los inputs es valido
+    let datosNuevos= true
+    //Se realizan las verificaciones y si se detecta una condicion invalida se modifica el input
+    if(inpNuevoNombre.value.trim()===inpNombreAct.value){
+        inpNuevoNombre.style.border="2px solid red"
+        inpNuevoNombre.value="";
+        inpNuevoNombre.placeholder="El valor es el mismo"
+    //Regresamos el valor false y termina la ejecucion del metodo
+        datosNuevos=false;
+    }
+    if(inpNuevoPassword.value.trim()===inpPasswordAct.value){
+        inpNuevoPassword.style.border="2px solid red"
+        inpNuevoPassword.value="";
+        inpNuevoPassword.placeholder="El valor es el mismo"
+        datosNuevos=false;
+    }
+    //Regresamos el valor de la variable
+    return datosNuevos;
 }
 
 /**
@@ -198,22 +353,27 @@ function calcularId(){
  * @async
  * @function verificarUsuarioIdentico
  * @returns {boolean} Una bandera para verificar esta situacion
+ * Si regresa true, entonces el usuario ingresado es unico
+ * Si regresa false, entonces el usuario ingresado ya existe en el sistema
  */
-function verificarUsuarioIdentico(){
+function verificarUsuarioUnico(inputDom){
     //Si no hay empleados en el sistema regresa true y marca bien la casilla
     if(!datosEmp){
-        inpUsuarioDom.style.border="2px solid blue"
         return true;
     //Si existen empleados ya registrados entonces verificamos sus usuarios
     }else{
-        datosEmp.forEach(empleado =>{
+        //Se itera sobre los empleados existentes
+        for(let n=0;n<datosEmp.length;n++){
             //Recorremos todos los usuarios y verificamos si su usuario es igual al que estoy ingresando
-            if(empleado.usuario===inpUsuarioDom.value.trim()){
-                inpUsuarioDom.style.border="2px solid red"
-                inpUsuarioDom.value="";
-                inpUsuarioDom.placeholder="El usuario ya existe en el sistema"
+            if(datosEmp[n].usuario===inputDom.value.trim()){
+                inputDom.style.border="2px solid red"
+                inputDom.value="";
+                inputDom.placeholder="El usuario ya existe en el sistema"
+                //Si hay coincidencia se regresa el valor false
+                return false;
             }
-        })
+        }
+        //Regresar el valor true
         return true;
     }
 }
@@ -224,25 +384,41 @@ function verificarUsuarioIdentico(){
  * @async
  * @function verificarTelIdentico
  * @returns {boolean} Una bandera para verificar esta situacion
- */
-function verificarTelIdentico(){
+ * Si regresa true, entonces el telefono ingresado es unico
+ * Si regresa false, entonces el telefono ingresado ya existe en el sistema 
+*/
+function verificarTelUnico(inputDom){
     //Si no hay empleados regresa true y marca el input como correcto
     if(!datosEmp){
-        inpTelefonoDom.style.border="2px solid blue"
         return true;
     //Si hay empleados registrados en el sistema
     }else{
-        datosEmp.forEach(empleado =>{
-            if(empleado.telefono===inpTelefonoDom.value.trim()){
-                inpTelefonoDom.style.border="2px solid red"
-                inpTelefonoDom.value="";
-                inpTelefonoDom.placeholder="El telefono ya existe en el sistema"
+        //Se recorren los datos de los empleados y se verifica si hay un telefono que coincida con el valor ingresado
+        for(let n=0;n<datosEmp.length;n++){
+            if(Number(datosEmp[n].telefono)===Number(inputDom.value.trim())){
+                inputDom.style.border="2px solid red"
+                inputDom.value="";
+                inputDom.placeholder="El telefono ya existe en el sistema"
+                //Si hay coincidencias se regresa el valor false
                 return false;
             }
-        })
+        }
+        //Si no hay coincidencias se regresa el valor true
         return true;
     }
 }
+
+//Listener del boton "btnAgregarEmpDom" que al ser presionado muestra la seccion de agregar
+btnAgregarEmpDom.addEventListener("click", function (){
+    //Se muestra la seccion modificar
+    setEnModificacion(false);
+})
+
+//Listener del boton "btnModificarEmpDom" que al ser presionado muestra la seccion de modificacion
+btnModificarEmpDom.addEventListener("click", function (){
+    //Preparamos la seccion de modificacion
+    prepararSeccionMod(Number(ultimoPanelEmpSeleccionado.replace("panelEmpleado", "")))
+})
 
 /**
  * 
@@ -251,17 +427,31 @@ function verificarTelIdentico(){
  * y si son superadas se procede a hacer la peticion al servidor
  *
  */
-btnAgregarEmpDom.addEventListener("click", function(){
+btnGuardarDatosDom.addEventListener("click", function(){
     //Se da de alta una bandera, si llega al final del metodo y pasa las verificaciones el empleado es valido.
-    let empleadoValido=verificarCampos();
+    let empleadoValido=verificarCamposAdd();
     //Se verifican la informacion ingresada en los campos
-    if(!verificarTelIdentico() | !verificarUsuarioIdentico()){
-        empleadoValido=false;
-    }
     if(empleadoValido){
         guardarEmpleado()
     }
 })
+
+/**
+ * 
+ * Listener del boton Agregar Empleado
+ * Realiza las verificaciones del lado del cliente correspondiente
+ * y si son superadas se procede a hacer la peticion al servidor
+ *
+ */
+btnActualizarDatosDom.addEventListener("click", function(){
+    //Se da de alta una bandera, si llega al final del metodo y pasa las verificaciones el empleado es valido.
+    let empleadoValido=verificarCamposMod();
+    if(empleadoValido){
+        modificarEmpleado(idEmp);
+    }
+})
+
+//Solicitudes
 
 /**
  * Funcion que construye los datos del empleado y realiza la peticion correspondiente
@@ -303,20 +493,193 @@ async function guardarEmpleado() {
         alert(resultado.mensaje)
         //Disparamos el listener del DOMContentLoaded para actualizar la lista de empleados
         document.dispatchEvent(new Event("DOMContentLoaded"));
+        //Se limpian los campos de la seccion agregar
+        limpiarCamposAdd();
+        //Se regresa a las opcciones principales
+        setEnModificacion(null);
     }else{
         alert(resultado.mensaje);
     }
 }
 
 /**
- * 
- * Listener que devuelve los estados de los inputs a la normalidad cuando se da click sobre ellos.
+ * Funcion que hace la solicitud para eliminar a un empleado 
+ * @param {Number} El id del empleado a eliminar
+ * @returns {res} Respuesta del servidor 
+ */
+async function eliminarEmpleado(id){
+    const respuesta =await fetch(`/api/empleados`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON .stringify({
+            id: id
+        })
+    });
+
+    //Obtencion de la respuesta
+    const resultado = await respuesta.json();
+
+    if(resultado.ok){
+        alert(resultado.mensaje)
+        //Disparamos el listener del DOMContentLoaded para actualizar la lista
+        document.dispatchEvent(new Event("DOMContentLoaded"));
+    }else{
+        alert(resultado.mensaje);
+    }
+}
+
+/**
+ * Funcion que recupera la informacion para modificar a un empleado
+ * y realiza la solicitud al servidor
+ * @param {Number} id 
+ * @returns {res} Respuesta del servidor
+ */
+async function modificarEmpleado(id) {
+    //Obtenemos toda la informacion del nuevo empleado
+    let nombreP= inpNuevoNombre.value.trim();
+    let puestoP= selectNuevoPuesto.value;
+    let tel= inpNuevoTelefono.value.trim();
+    let usuarioP= inpNuevoUsuario.value.trim();
+    let passwordP= inpNuevoPassword.value.trim();
+    //Ejecutamos la solicitud al servidor
+    const respuesta= await fetch(`/api/empleados`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON .stringify({
+            id: id,
+            nombre: nombreP,
+            puesto: puestoP,
+            telefono: tel,
+            usuario: usuarioP,
+            password: passwordP
+        })
+    });
+    //Obtencion de la repuesta
+    const resultado = await respuesta.json();
+
+    // Validacion respuesta del servidor
+    if(resultado.ok){
+        alert(resultado.mensaje)
+        //Disparamos el listener del DOMContentLoaded para actualizar la lista de empleados
+        document.dispatchEvent(new Event("DOMContentLoaded"));
+        //Se limpian los campos
+        limpiarCamposMod();
+        //Se muestran las opcciones principales
+        setEnModificacion(null);
+    }else{
+        alert(resultado.mensaje);
+    }
+}
+
+
+//Listener para la bandera "enModificacion" oyendo a evento personalizado
+window.addEventListener('modificandoDatos', (evento)=>{
+    const estadoActual = evento.detail.activo;
+    //Si la bandera "enModificacion" es true entonces se activan los botones
+    if(estadoActual){
+        seccionOpcciones.classList.add('escondido')
+        seccionAgregar.classList.add('escondido')
+        seccionMod.classList.remove('escondido')
+        alert("Ingrese los campos que desea modificar");
+    //Si la bandera "enModificacion" es null entonces no se muestra ninguna seccion        
+    }else if(estadoActual===null){
+        seccionOpcciones.classList.remove('escondido')
+        seccionAgregar.classList.add('escondido')
+        seccionMod.classList.add('escondido')
+    }else{
+        seccionOpcciones.classList.add('escondido')
+        seccionAgregar.classList.remove('escondido')
+        seccionMod.classList.add('escondido')
+        alert("Ingrese los campos del nuevo empleado");
+
+    }
+});
+
+/**
+ * Funcion que cambia la bandera y dispara mi evento personalizado el cual es cambiar el estado de la bandera "enRegistro"
+ * @param {Boolean or null} nuevoValor que puede ser true, false o null
+ * @returns {event} Dispara un evento personalizado que se trata del cambio de valor en la bandera "enModificacion"
+ */
+function setEnModificacion(nuevoValor){
+    if(enModificacion !== nuevoValor){
+        enModificacion= nuevoValor;
+
+        //Emitir el evento personalizado pasando el nuevo valor en "detail"
+        const evento = new CustomEvent('modificandoDatos', {
+            detail: { activo: enModificacion}
+        });
+        window.dispatchEvent(evento);
+    }
+};
+
+/**
+ * Funcion que le asigna el valor true a la bandera "enModificacion" 
+ * y gestiona los campos inpAct en la seccion modificar empleado
+ * con la intencion de mostrar los datos actuales del empleado
+ * @param {Number} El id del empleado a modificar
+ *  
+ */
+function prepararSeccionMod(id){
+    //Se le da el valor true a la bandera "enModificacion" y se muestra la seccion modificar empleado
+    setEnModificacion(true);
+    //Se hace un recorrido para obtener los datos del empleado a modificar
+    datosEmp.forEach(empleado =>{
+        if(empleado.id === id){
+            //Se actualiza la variable auxiliar idEmp con el id del empleado
+            idEmp=id;
+            //Se le asigna el valor al campo correspondiente
+            inpNombreAct.value = empleado.nombre;
+            //Se bloquea el contenido para que no pueda se borrado por el usuario
+            inpNombreAct.readOnly=true;
+            selectNuevoPuesto.value=empleado.puesto;
+            inpPuestoAct.value = empleado.puesto;
+            inpPuestoAct.readOnly=true;
+            inpTelefonoAct.value = empleado.telefono;
+            inpTelefonoAct.readOnly=true;
+            inpUsuarioAct.value = empleado.usuario;
+            inpUsuarioAct.readOnly=true;
+            inpPasswordAct.value = empleado.password;
+            inpPasswordAct.readOnly=true;
+        }    
+    }
+    )
+}
+
+
+/**
+ * Listener que detecta los clicks en pantalla para realizar acciones
+ * y que devuelve los estados de los inputs a la normalidad cuando se da click sobre ellos.
  * 
  */
-//Listener para reiniciar la apariencia de los inputs despues de hacer click sobre ellos
+
 document.addEventListener("click", function(event){
-    if(event.target.tagName === "INPUT"){
-        event.target.style.border = "";
+    let empleadoSeleccionado= event.target.closest('.panelEmpleado')
+    if(empleadoSeleccionado){
+        //Si el click fue en un boton del panel esconde el boton "btnModificarEmpDom" 
+        if(event.target.closest('button')){
+            btnModificarEmpDom.classList.add('escondido')
+            return
+        //Si se hizo en el panel entonces muestra el boton
+        }else{
+            btnModificarEmpDom.classList.remove('escondido') 
+        }
+    //Si el click se hizo fuera del panel panelEmpleado
+    }else{
+        //Si no se esta en proceso de modificacion entonces se realizan las siguientes opcciones
+        if(enModificacion!==true){
+            //Se limpia el ultimo panel de empleado seleccionado
+            document.getElementById(ultimoPanelEmpSeleccionado).style.backgroundColor="";
+            //Se oculta el boton
+            btnModificarEmpDom.classList.add('escondido')
+        }
+        //Evalua si se hizo sobre un input y regresa su estado a la normalidad
+        if(event.target.tagName === "INPUT"){
+            event.target.style.border = "";
+        }
     }
 });
 
@@ -354,3 +717,85 @@ document.getElementById('btnEnviarMensaje').addEventListener('click', () => {
     })
     .catch(err => console.error('Error:', err));
 });
+
+/*
+ * Funcion para iluminar al empleado seleccionado
+ * @param {Number} El id del empleado
+ * @returns {void} Se utiliza un return para cortar la ejecucion del metodo
+ */
+function iluminarEmpleado(id){
+    if(enModificacion!==true){
+        //Si hay un panel de empleado seleccionado anteriormente se devuelve a la normalidad
+        if(ultimoPanelEmpSeleccionado!==null){
+            document.getElementById(ultimoPanelEmpSeleccionado).style.backgroundColor="";    
+        }
+        //Construimos el id del ultimo panel seleccionado y lo guardamos en una variable
+        ultimoPanelEmpSeleccionado=("panelEmpleado"+id);
+        //Iluminamos el panel actual
+        document.getElementById(ultimoPanelEmpSeleccionado).style.setProperty('background-color', 'blue', 'important');
+    }else{
+        return
+    }
+}
+
+/**
+ * Funcion que limpia los campos de la seccion agregar empleado
+ */
+function limpiarCamposAdd(){
+    //Se agrupan todos los inputs de la seccion correspondiente
+    const inputs =[inpNombreDom, selectPuestoDom, inpTelefonoDom, inpUsuarioDom, inpPasswordDom]
+    //Se itera sobre cada uno de estos
+    inputs.forEach(iter=>{
+        //Se borra su contenido
+        iter.value=""
+        //Se devuelve su aspecto a la normalidad
+        iter.style.border=""
+        //Se identifica el inp de la iteracion y se le asigna su placeholder correspondiente
+        if(iter===inpNombreDom){
+            iter.placeholder="Escribe el nombre del empleado"
+        }
+        if(iter===selectPuestoDom){
+            iter.value="empleado"
+        }
+        if(iter===inpTelefonoDom){
+            iter.placeholder="Escribe el telefono del empleado"
+        }
+        if(iter===inpUsuarioDom){
+            iter.placeholder="Escribe el usuario del empleado"
+        }
+        if(iter===inpPasswordDom){
+            iter.placeholder="Escribe la contraseña del usuario"
+        }
+    });
+}
+
+/**
+ * Funcion que limpia los campos de la seccion agregar empleado
+ */
+function limpiarCamposMod(){
+    //Se agrupan todos los inputs de la seccion correspondiente
+    const inputs =[inpNuevoNombre, selectNuevoPuesto, inpNuevoTelefono, inpNuevoUsuario, inpNuevoPassword]
+    //Se itera sobre cada uno de estos
+    inputs.forEach(iter=>{
+        //Se borra su contenido
+        iter.value=""
+        //Se devuelve su aspecto a la normalidad
+        iter.style.border=""
+        //Se identifica el inp de la iteracion y se le asigna su placeholder correspondiente
+        if(iter===inpNuevoNombre){
+            iter.placeholder="Escribe el nombre del empleado"
+        }
+        if(iter===selectNuevoPuesto){
+            iter.value="empleado"
+        }
+        if(iter===inpNuevoTelefono){
+            iter.placeholder="Escribe el telefono del empleado"
+        }
+        if(iter===inpNuevoUsuario){
+            iter.placeholder="Escribe el usuario del empleado"
+        }
+        if(iter===inpNuevoPassword){
+            iter.placeholder="Escribe la contraseña del usuario"
+        }
+    });
+}

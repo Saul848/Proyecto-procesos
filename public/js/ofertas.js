@@ -4,22 +4,43 @@ const campoRecibe = document.getElementById('campoRecibe');
 const campoPaga = document.getElementById('campoPaga');
 const labelValor = document.getElementById('labelValor');
 
+let todosProductos = [];
+
 //carga productos-desplegable
 fetch('/api/productos')
     .then(r => r.json())
     .then(data => {
-        const select = document.getElementById('producto');
-        select.innerHTML = '';
-        data.productos.forEach(p => {
-            const opcion = document.createElement('option');
-            opcion.value = p.id;
-            opcion.textContent = p.nombre;
-            select.appendChild(opcion);
-        });
-    })
-    .catch(() => {
-        document.getElementById('producto').innerHTML = '<option value="">Error al cargar productos</option>';
+        todosProductos = data.productos;
+        llenarSelect(todosProductos);
     });
+
+function llenarSelect(productos){
+    const select = document.getElementById('producto');
+    select.innerHTML = '';
+    if(productos.length === 0){
+        select.innerHTML = '<option value="">Sin resultados</option>';
+        return;
+    }
+    productos.forEach(p => {
+        const opcion = document.createElement('option');
+        opcion.value = p.id;
+        opcion.textContent = p.id + ' - ' + p.nombre + ' ($' + Number(p.precio).toFixed(2) + ')';
+        select.appendChild(opcion);
+    });
+}
+    
+function filtrarProductos(){
+    const texto = document.getElementById('buscarProducto').value.toLowerCase();
+    if (!texto){
+        llenarSelect(todosProductos);
+        return;
+    }
+    const filtrados = todosProductos.filter(p =>
+        p.nombre.toLowerCase().startsWith(texto) ||
+        String(p.id) === texto
+    );
+    llenarSelect(filtrados);
+}
 
 function actualizarFormulario(){
     const tipo = tipoSelect.value;
@@ -68,7 +89,7 @@ function cargarOfertas() {
                 } else if (o.tipoProm === 'cantidad'){
                     descuentoTexto = o.cantidadRecibe + 'x' + o.cantidadPaga + ' (llevas ' + o.cantidadRecibe + ' pagas ' + o.cantidadPaga + ')';
                 } else if (o.tipoProm === 'precioFijo'){
-                    descuentoTexto = '$' + o.valorDesc;
+                    descuentoTexto = 'Precio final: $' + o.valorDesc;
                 } else {
                     descuentoTexto = o.valorDesc;
                 }
@@ -78,6 +99,7 @@ function cargarOfertas() {
                     <td>${o.nombreProducto || o.idProducto}</td>
                     <td>${tipoTexto}</td>
                     <td>${descuentoTexto}</td>
+                    <td>${formatearFecha(o.fechaInicio)} - ${formatearFecha(o.fechaFin)}</td>
                     <td>${o.estado}</td>
                     <td><button class="btn-eliminar" onclick="eliminarOferta('${o.id}')">Eliminar</button></td>
                 `;
@@ -85,8 +107,14 @@ function cargarOfertas() {
             });
         })
         .catch(() => {
-            document.getElementById('tablaOfertas').innerHTML = '<tr><td colspan="6">Error al cargar ofertas</td></tr>';
+            document.getElementById('tablaOfertas').innerHTML = '<tr><td colspan="7">Error al cargar ofertas</td></tr>';
         });
+}
+
+function formatearFecha(fecha){
+    if (!fecha) return '-';
+    const [anio, mes, dia] = fecha.split('-');
+    return dia + '/' + mes + '/' + anio;
 }
 
 //guarda una oferta
@@ -141,15 +169,16 @@ function eliminarOferta(id) {
             if (respuesta.ok) {
                 cargarOfertas();
             } else {
-                alert(respuesta.mensaje || 'Error al eliminar.');
+                mostrarMensaje(respuesta.mensaje || 'Error al eliminar.');
             }
         })
-        .catch(() => alert('Error de conexión con el servidor.'));
+        .catch(() => mostrarMensaje('Error de conexión con el servidor.'));
 }
 
 //limpiar formulario
 function cancelar() {
     document.getElementById('producto').value = '';
+    document.getElementById('buscarProducto').value = '';
     document.getElementById('valor').value = '';
     document.getElementById('inicio').value = '';
     document.getElementById('fin').value = '';
@@ -157,6 +186,8 @@ function cancelar() {
     document.getElementById('mensaje').textContent = '';
     document.getElementById('recibe').value = '';
     document.getElementById('paga').value = '';
+    llenarSelect(todosProductos);
+    actualizarFormulario();
 }
 
 //mensajes
