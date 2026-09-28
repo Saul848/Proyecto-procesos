@@ -21,8 +21,8 @@ const empleadoRoutes = require("./routes/empleadoRoutes");
 const ofertaRoutes = require("./routes/ofertaRoutes");
 //categorias de productos
 const categoriaRoutes = require("./routes/categoriaRoutes");
-
-const path = require('path');
+//cajas
+const cajasRoutes = require("./routes/cajasRoutes");
 
 const app = express();
 /**
@@ -58,6 +58,9 @@ app.use("/api/categorias", categoriaRoutes);
  * apuntador de ruta para mensajes
  */
 app.use("/api/mensajes", mensajeRoutes);
+
+
+app.use("/api/cajas", cajasRoutes);
 
 /**
  * Puerto de escucha predeterminado del servidor.

@@ -1,8 +1,7 @@
 <cajas>
-  <cajaGeneral>2957.07</cajaGeneral>
+  <cajaGeneral>1957.07</cajaGeneral>
   <detalleCajas>
-    <caja id="1">2922.07</caja>
-    <caja id="2">35.00</caja>
-    <caja id="3">0</caja>
+    <caja id="1">500.00</caja>
+    <caja id="2">500.00</caja>
   </detalleCajas>
 </cajas>

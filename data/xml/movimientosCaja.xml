@@ -1,0 +1,47 @@
+<movimientos>
+  <movimiento>
+    <fecha>2026-09-28T00:08:04.123Z</fecha>
+    <tipoMovimiento>APORTACION</tipoMovimiento>
+    <idCaja>2</idCaja>
+    <monto>500</monto>
+    <motivo>fondo de inicio</motivo>
+    <autorizadoPor>martha01</autorizadoPor>
+    <rol>administrador</rol>
+  </movimiento>
+  <movimiento>
+    <fecha>2026-09-28T00:18:23.478Z</fecha>
+    <tipoMovimiento>APORTACION</tipoMovimiento>
+    <idCaja>1</idCaja>
+    <monto>1000</monto>
+    <motivo>fondo</motivo>
+    <autorizadoPor>martha01</autorizadoPor>
+    <rol>administrador</rol>
+  </movimiento>
+  <movimiento>
+    <fecha>2026-09-28T00:21:15.315Z</fecha>
+    <tipoMovimiento>APORTACION</tipoMovimiento>
+    <idCaja>1</idCaja>
+    <monto>200</monto>
+    <motivo>depósito a caja</motivo>
+    <autorizadoPor>martha01</autorizadoPor>
+    <rol>administrador</rol>
+  </movimiento>
+  <movimiento>
+    <fecha>2026-09-28T00:22:12.012Z</fecha>
+    <tipoMovimiento>RETIRO</tipoMovimiento>
+    <idCaja>1</idCaja>
+    <monto>1200</monto>
+    <motivo>retiro parcial</motivo>
+    <autorizadoPor>martha01</autorizadoPor>
+    <rol>administrador</rol>
+  </movimiento>
+  <movimiento>
+    <fecha>2026-09-28T00:23:09.398Z</fecha>
+    <tipoMovimiento>APORTACION</tipoMovimiento>
+    <idCaja>1</idCaja>
+    <monto>500.00</monto>
+    <motivo>fondo de inicio</motivo>
+    <autorizadoPor>martha01</autorizadoPor>
+    <rol>administrador</rol>
+  </movimiento>
+</movimientos>
