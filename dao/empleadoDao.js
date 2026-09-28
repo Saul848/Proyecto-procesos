@@ -44,6 +44,10 @@ function obtenerEmpleados() {
     }
 }
 
+/**
+ * Funcion para obtener a un objeto js empleado desde la base de datos.
+ * @param {} id 
+ */
 function obtenerEmpleado(id){
     try {
         const xml = fs.readFileSync(archivo, "utf8");
@@ -54,12 +58,12 @@ function obtenerEmpleado(id){
 
         const resultado = parser.parse(xml);
         const empleados = resultado.empleados?.empleado || [];
-        empleados.forEach(empleado => {
-            if(empleado.id === id){
-                return empleado;
+        for(let n=0; n<empleados.length;n++){
+            if(Number(empleados[n].id)=== Number(id)){
+                return empleados[n];
             }
+        }
         return null;
-        });
 
     } catch (error) {
         console.error("Error al obtener los datos de los empleados:", error);
@@ -172,6 +176,64 @@ function agregarEmpleado(empleado){
 }
 
 /**
+ * Funcion para eliminar a un empleado del archivo xml
+ * @param {*} id 
+ * @returns 
+ */
+function eliminarEmpleado(id){
+    try {
+        const xml = fs.readFileSync(archivo, "utf8");
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            isArray: (tagName) => ['empleado'].includes(tagName)
+        });
+
+        //Convertir el xml a un arreglo de objetos js
+        const resultado = parser.parse(xml);
+
+        //Si mi xml no tiene la estructura se agrega y se manda una variable que indica que no hay una estructura en el sistema.
+        if(!resultado.empleados){
+            return{
+                ok: false,
+                errorXml: true
+            }
+        }
+        
+        //Simplificamos el arreglo de empleados
+        const empleados = resultado.empleados?.empleado || [];
+
+        // Buscar al empleado, recorro el arreglo empleados y busco al empleado a eliminar mediante su id, cuando se encuentra se elimina del arreglo.
+        for(n=0;n<empleados.length;n++){
+            if(empleados[n].id===id){
+                empleados.splice(n,1);
+            }
+        }
+
+        //Agregamos el nuevo contenido a resultado
+        resultado.empleados.empleado = empleados;
+
+        // Crear una instancia XMLBuilder
+        const builder = new XMLBuilder({
+            format: true,
+            ignoreAttributes: false
+        });
+
+        //Creamos un nuevo archivo xml con la estructura de la variable resultado
+        const nuevoXml = builder.build(resultado);
+
+        // Sobrescribir el archivo XML en disco
+        fs.writeFileSync(archivo, nuevoXml, "utf8");
+        return {
+            ok: true,
+            eliminado: true
+        };
+    } catch (error) {
+        console.error("Error al eliminar al empleado de la BD:", error);
+        throw error;
+    }
+}
+
+/**
  * Modifica los datos de un empleado a la base de datos.
  * 
  * Convierte el contenido del archivo XML a un objeto de JavaScript,
@@ -188,14 +250,14 @@ function agregarEmpleado(empleado){
  * @returns {res} Resultado de la operacion.
  * @throws {Error} Si ocurre un error al leer, modificar o escribir el archivoXML
  */
-function actualizarDatos(empleado) {
+function actualizarEmpleado(id , datosEmpleado) {
     try {
+        //Obtenemos el xml en una cadena de texto
         const xml = fs.readFileSync(archivo, "utf8");
-
         const parser = new XMLParser({
             ignoreAttributes: false,
             isArray: (tagName) => ['empleado'].includes(tagName)
-        });
+        })
 
         // Convertir XML a Objeto de JS
         const resultado = parser.parse(xml);
@@ -205,27 +267,37 @@ function actualizarDatos(empleado) {
         if (!resultado.empleados) {
             resultado.empleados = {
                 empleado: []
-            };
+            }
         }
-
         // Obtencion array de Empleados
         const empleados = resultado.empleados?.empleado || [];
 
-        // Buscar al empleado
-        const empleadoExistente = empleados.find(
-            empleadoIt => empleadoIt.id === empleado.id
-        );
-
+        // Buscar al empleado a modificar
+        let empleadoExistente = empleados.find(
+            empleadoIt => Number(empleadoIt.id) === Number(id)
+        )
         // Actualizacion datos
-        empleadoExistente.nombre = empleado.nombre;
-        empleadoExistente.puesto = empleado.puesto;
-        empleadoExistente.telefono = empleado.telefono;
-        empleadoExistente.usuario = empleado.usuario;
-        empleadoExistente.password = empleado.password;
-
+        for(let n=0;n<datosEmpleado.length;n++){
+            //Identifico el campo del objeto js iterado
+            if(datosEmpleado[n].campo==='nombre'){
+                empleadoExistente.nombre = datosEmpleado[n].valor
+            }
+            if(datosEmpleado[n].campo==='puesto'){
+                empleadoExistente.puesto = datosEmpleado[n].valor
+            }
+            if(datosEmpleado[n].campo==='telefono'){
+                empleadoExistente.telefono = datosEmpleado[n].valor
+            }
+            if(datosEmpleado[n].campo==='usuario'){
+                empleadoExistente.usuario = datosEmpleado[n].valor
+            }
+            if(datosEmpleado[n].campo==='password'){
+                empleadoExistente.password = datosEmpleado[n].valor
+            }
+        }
         // Guarda a los empleados excepto al que se quiere actualizar
         const nuevosEmpleados = empleados.filter(
-            empleadoIt => empleadoIt.id !== empleado.id
+            empleadoIt => empleadoIt.id !== id
         );
 
         // Se pushea el empleado existente
@@ -242,15 +314,15 @@ function actualizarDatos(empleado) {
             format: true,
             ignoreAttributes: false
         });
-
+        //Generar el nuevo xml
         const nuevoXml = builder.build(resultado);
 
         // Sobrescribir el archivo XML en disco
         fs.writeFileSync(archivo, nuevoXml, "utf8");
-
+        //Regresar una respuesta
         return {
             ok: true,
-            encontrado: true
+            actualizado: true
         };
 
     // Resolucion en caso de error
@@ -309,5 +381,7 @@ module.exports = {
     agregarEmpleado,
     actualizarDatos,
     obtenerReporteDesempeno,
-    obtenerEmpleadoPorUsuario
+    obtenerEmpleadoPorUsuario,
+    actualizarEmpleado,
+    eliminarEmpleado
 };
