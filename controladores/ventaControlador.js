@@ -82,6 +82,7 @@ function procesarVenta(req, res) {
             idEmpleado: idEmpleado || "1",
             items
         });
+        
 
         res.status(200).json({
             ok: true,

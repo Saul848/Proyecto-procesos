@@ -98,6 +98,8 @@ function obtenerEmpleadoPorUsuario(usuario) {
     }
 }
 
+
+
 /**
  * Agrega un nuevo empleado a la base de datos.
  * 
