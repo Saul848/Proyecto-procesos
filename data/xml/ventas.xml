@@ -69,4 +69,165 @@
       </item>
     </items>
   </venta>
+  <venta id="10">
+    <fecha>2026-09-27T05:43:36.272Z</fecha>
+    <idEmpleado>Aurelio</idEmpleado>
+    <total>1250</total>
+    <items>
+      <item idProducto="1">
+        <nombre>Laptop Gamer Avanzada</nombre>
+        <precioUnitario>1250</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>1250</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="11">
+    <fecha>2026-09-27T06:17:44.741Z</fecha>
+    <idEmpleado>Aurelio</idEmpleado>
+    <total>1250</total>
+    <items>
+      <item idProducto="1">
+        <nombre>Laptop Gamer Avanzada</nombre>
+        <precioUnitario>1250</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>1250</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="12">
+    <fecha>2026-09-27T06:18:34.638Z</fecha>
+    <idEmpleado>Aurelio</idEmpleado>
+    <total>79.99</total>
+    <items>
+      <item idProducto="3">
+        <nombre>Teclado Mecánico RGB</nombre>
+        <precioUnitario>79.99</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>79.99</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="13">
+    <fecha>2026-09-27T06:18:46.723Z</fecha>
+    <idEmpleado>Aurelio</idEmpleado>
+    <total>11</total>
+    <items>
+      <item idProducto="4">
+        <nombre>d</nombre>
+        <precioUnitario>11</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>11</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="14">
+    <fecha>2026-09-27T06:37:38.600Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>41.99</total>
+    <items>
+      <item idProducto="6">
+        <nombre>fresas</nombre>
+        <precioUnitario>41.99</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>41.99</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="15">
+    <fecha>2026-09-27T06:37:56.762Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>41.99</total>
+    <items>
+      <item idProducto="6">
+        <nombre>fresas</nombre>
+        <precioUnitario>41.99</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>41.99</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="16">
+    <fecha>2026-09-27T06:41:05.811Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>20</total>
+    <items>
+      <item idProducto="8">
+        <nombre>papas</nombre>
+        <precioUnitario>20</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>20</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="17">
+    <fecha>2026-09-27T06:44:43.623Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>35</total>
+    <items>
+      <item idProducto="8">
+        <nombre>papas</nombre>
+        <precioUnitario>20</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>20</subtotal>
+      </item>
+      <item idProducto="12">
+        <nombre>emmanens</nombre>
+        <precioUnitario>15</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>15</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="18">
+    <fecha>2026-09-27T06:45:43.780Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>35</total>
+    <items>
+      <item idProducto="8">
+        <nombre>papas</nombre>
+        <precioUnitario>20</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>20</subtotal>
+      </item>
+      <item idProducto="12">
+        <nombre>emmanens</nombre>
+        <precioUnitario>15</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>15</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="19">
+    <fecha>2026-09-27T06:46:14.918Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>35.00</total>
+    <items>
+      <item idProducto="8">
+        <nombre>papas</nombre>
+        <precioUnitario>20.00</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>20.00</subtotal>
+      </item>
+      <item idProducto="12">
+        <nombre>emmanens</nombre>
+        <precioUnitario>15.00</precioUnitario>
+        <descuento>0</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>15.00</subtotal>
+      </item>
+    </items>
+  </venta>
 </ventas>

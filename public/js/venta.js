@@ -31,6 +31,7 @@ const modalTicket = document.getElementById("modalTicket");
 const reciboDetalle = document.getElementById("reciboDetalle");
 const btnCerrarModal = document.getElementById("btnCerrarModal");
 const lblFolioVenta = document.getElementById("lblFolioVenta");
+const idCajaSeleccionada = document.getElementById('selectCaja').value; // Tomará "1" o "2"
 
 document.addEventListener("DOMContentLoaded", () => {
     verificarEstadoCaja();
@@ -69,18 +70,49 @@ function configurarEventos() {
     });
 
     inputMontoRecibido.addEventListener("input", calcularCambio);
-    btnRegistrarPago.addEventListener("click", procesarVenta);
+    btnRegistrarPago.addEventListener("click", () => {
 
-    btnCerrarModal.addEventListener("click", () => {
-        modalTicket.style.display = "none";
-        itemsCuenta = [];
-        inputMontoRecibido.value = "";
-        inputCambio.value = "$0.00";
-        actualizarTicket();
-        cargarFolioActual();
-        cargarDatos();
+        // 1. Obtenemos la caja seleccionada del menú desplegable
+        const idCajaSeleccionada = document.getElementById('selectCaja').value;
+        
+        // 2. Armamos el objeto con todos los datos incluyendo el método de pago
+        const datosVenta = {
+            idEmpleado: "1",               // O tu variable dinámica de empleado
+            idCaja: idCajaSeleccionada,    // "1" o "2" según el menú
+            metodoPago: metodoPago,        // <--- Aquí viaja "Efectivo" o "Tarjeta"
+            items: itemsCuenta.map((i) => ({
+                idProducto: i.id,
+                cantidad: i.cantidad
+        }))
+        };
+
+        // 3. Enviamos los datos al servidor
+        fetch('/api/ventas/confirmar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datosVenta)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.ok) {
+                console.log(`Venta registrada con éxito con tarjeta/efectivo en la Caja ${idCajaSeleccionada}`);
+                // Aquí muestras tu ticket o modal de éxito
+            } else {
+                alert(data.mensaje);
+            }
+        })
+        .catch(err => console.error("Error:", err));
     });
-}
+        btnCerrarModal.addEventListener("click", () => {
+            modalTicket.style.display = "none";
+            itemsCuenta = [];
+            inputMontoRecibido.value = "";
+            inputCambio.value = "$0.00";
+            actualizarTicket();
+            cargarFolioActual();
+            cargarProductos();
+        });
+    }
 
 /**
  * Obtiene del servidor el siguiente número de folio para mostrarlo en pantalla.
@@ -464,8 +496,15 @@ async function procesarVenta() {
                           || sessionStorage.getItem("idUsuario") 
                           || "1";
 
+                          
+    // capturamos la caja del menú y el método de pago activo
+    const idCajaSeleccionada = document.getElementById("selectCaja") ? document.getElementById("selectCaja").value : "1";
+    const metodoPagoActual = typeof metodoPago !== 'undefined' ? metodoPago : "Efectivo";
+
     const payload = {
-        idEmpleado: idEmpleadoActivo,
+        idEmpleado: idEmpleadoActivo, // Asigna el empleado real de la sesión activa
+        idCaja: idCajaSeleccionada,   // <--- Enviamos la caja dinámicamente
+        metodoPago: metodoPagoActual, // <--- Enviamos Efectivo o Tarjeta
         items: itemsCuenta.map((i) => ({
             idProducto: i.id,
             cantidad: i.cantidad
