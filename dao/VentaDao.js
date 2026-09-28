@@ -110,6 +110,9 @@ function registrarVentaEmpleado(idEmpleado) {
  * @throws {Error} Si algún producto no existe o si no hay stock suficiente.
  */
 function registrarVenta(datosVenta) {
+    console.log("Datos de venta recibidos en DAO:", datosVenta);
+    console.log("ID de caja recibida:", datosVenta.idCaja);
+    
     try {
         const parser = new XMLParser(parserConfig);
         const builder = new XMLBuilder(builderConfig);
@@ -215,6 +218,11 @@ function registrarVenta(datosVenta) {
                 xmlVentas = contenido;
             }
         }
+        
+        // 6. Abonar el total de la venta a la caja general y de la empresa
+        const cajaDao = require('./cajaDao');
+        const cajaDestino = datosVenta.idCaja || "1";
+        cajaDao.abonarACaja(totalVenta, cajaDestino); 
 
         const resVentas = parser.parse(xmlVentas);
         if (!resVentas.ventas) resVentas.ventas = { venta: [] };

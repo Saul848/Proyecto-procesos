@@ -4,15 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OXXO - Administrador</title>
+    <link rel="stylesheet" href="../css/barra_sesion.css">
 </head>
 <body>
-    <header>
-        <h2>Panel de Administrador</h2>
+    
+    <header class="barra-sesion-administrador">
         <div>
-            <span>Hola, <span id="saludo-nombre">Administrador</span></span>
-            <button id="btn-logout">Cerrar sesión</button>
+            <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Administrador</span></span>
         </div>
 
+    <div>
+        <div>
+            <button id="btnMensajes"> Mensajes </button>
+            <button id="btn-logout"> Cerrar sesión </button>
+        </div>
+    </div>
+    </header>
+
+    <header>
+        <h2>Panel de Administrador</h2>
         <h1>Bienvenido al panel de administrador</h1>
 
         <button onclick="window.location.href='./ofertas.html'"
@@ -23,5 +33,6 @@
     </header>
 
     <script src="../js/cerrar_sesion.js"></script>
+    <script src="../js/empleado.js"></script>
 </body>
 </html>
