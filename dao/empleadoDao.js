@@ -379,7 +379,6 @@ module.exports = {
     obtenerEmpleados,
     obtenerEmpleado,
     agregarEmpleado,
-    actualizarDatos,
     obtenerReporteDesempeno,
     obtenerEmpleadoPorUsuario,
     actualizarEmpleado,
