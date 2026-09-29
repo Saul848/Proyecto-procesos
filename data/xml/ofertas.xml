@@ -22,4 +22,26 @@
     <fechaFin>2026-10-10</fechaFin>
     <estado>proxima</estado>
   </oferta>
+  <oferta>
+    <id>OF-03</id>
+    <idProducto>3</idProducto>
+    <tipoProm>porcentaje</tipoProm>
+    <valorDesc>30</valorDesc>
+    <cantidadRecibe>1</cantidadRecibe>
+    <cantidadPaga>1</cantidadPaga>
+    <fechaInicio>2026-09-26</fechaInicio>
+    <fechaFin>2026-09-30</fechaFin>
+    <estado>disponible</estado>
+  </oferta>
+  <oferta>
+    <id>OF-04</id>
+    <idProducto>1</idProducto>
+    <tipoProm>cantidad</tipoProm>
+    <valorDesc>1</valorDesc>
+    <cantidadRecibe>2</cantidadRecibe>
+    <cantidadPaga>1</cantidadPaga>
+    <fechaInicio>2026-09-26</fechaInicio>
+    <fechaFin>2026-09-30</fechaFin>
+    <estado>disponible</estado>
+  </oferta>
 </ofertas>

@@ -4,7 +4,7 @@
     <nombre>Laptop Gamer Avanzada</nombre>
     <descripcion>Procesador de última generación, 16GB RAM, 512GB SSD.</descripcion>
     <precio>1250</precio>
-    <stock>10</stock>
+    <stock>4</stock>
     <descuento></descuento>
   </producto>
   <producto id="2">

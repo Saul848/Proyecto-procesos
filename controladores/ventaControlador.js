@@ -114,9 +114,54 @@ function obtenerProximoFolio(req, res) {
     }
 }
 
+/**
+ * Consulta el historial completo de ventas registradas.
+ * GET /api/ventas
+ */
+function listarVentas(req, res) {
+    try {
+        const ventas = ventaDao.obtenerVentas();
+        res.json({ ok: true, ventas });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            mensaje: 'Error al obtener historial de ventas.',
+            error: error.message
+        });
+    }
+}
+
+/**
+ * Consulta una venta específica por su identificador para reimpresión.
+ * GET /api/ventas/:id
+ */
+function obtenerVentaPorId(req, res) {
+    try {
+        const { id } = req.params;
+        const venta = ventaDao.obtenerVentaPorId(id);
+
+        if (!venta) {
+            return res.status(404).json({
+                ok: false,
+                mensaje: 'Venta no encontrada.'
+            });
+        }
+
+        res.json({ ok: true, venta });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            mensaje: 'Error al obtener la venta.',
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     obtenerEstadoCaja,
     cambiarEstadoCaja,
     procesarVenta,
-    obtenerProximoFolio
+    obtenerProximoFolio,
+    listarVentas,
+    obtenerVentaPorId
 };
