@@ -119,4 +119,20 @@
     <puesto>gerente</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-09-29</fecha>
+    <hora>23:52:37</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-29</fecha>
+    <hora>23:56:26</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
