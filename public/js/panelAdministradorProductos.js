@@ -61,10 +61,12 @@ document.querySelector(".product-list").addEventListener("click", (event) => {
     const boton = event.target.closest(".btn-eliminar");
 
     if (!boton) return;
+
     const idProducto = Number(boton.dataset.id);
 
-    console.log("clic");
-    console.log("ID producto:", idProducto);
+    const confirmar = confirm("¿Estás seguro de que deseas eliminar este producto?");
+
+    if (!confirmar) return;
 
     eliminarProducto(idProducto);
 });
@@ -129,29 +131,37 @@ async function mostrarProductos(listaCategoria = null) {
         return;
     }
 
-    let cadenaHtml = "";
+    // LOS PRODUCTOS CON STOCK POR DEBAJO SERAN MARCADOS EN ALERTA
+    const limiteStock = 20;
+    let cadenaHtml = "<p>*Los productos con bajo stock(menor a 20) son resaltados en color rojo</p>";
+
     productos.forEach((prod) => {
+        // Evaluamos si requiere la clase de alerta
+        const esAlerta = Number(prod.stock) < limiteStock;
+        const claseAlerta = esAlerta ? "alert-product" : "";
+
         cadenaHtml += `
-            <div class="product-item">
-                <span class="product-name">
-                    Producto ${prod.id} (${prod.nombre})
-                </span>
-
-                <div class="product-actions">
-                    <button class="icon-btn btn-eliminar" 
-                            title="Eliminar"
-                            data-id="${prod.id}">
-                        <img src="/img/icon-eliminar.svg" alt="Icono_eliminar">
-                    </button>
-                    
-
-                    <button class="icon-btn btn-editar" 
-                            title="Editar"
-                            data-id="${prod.id}">
-                        <img src="/img/icon-editar.svg" alt="Icono_editar">
-                    </button>
+            <div class="product-item ${esAlerta ? 'alert-product' : ''}">
+                <div class="product-info">
+                    <span class="product-id">#${prod.id}</span>
+                    <span class="product-name">${prod.nombre}</span>
                 </div>
-            </div>`
+
+                <div class="product-meta">
+                    <span class="stock-badge ${esAlerta ? 'stock-low' : 'stock-ok'}">
+                        ${esAlerta ? '⚠️ ' : ''}Stock: ${prod.stock}
+                    </span>
+
+                    <div class="product-actions">
+                        <button class="icon-btn btn-eliminar" title="Eliminar" data-id="${prod.id}">
+                            <img src="/img/icon-eliminar.svg" alt="Eliminar">
+                        </button>
+                        <button class="icon-btn btn-editar" title="Editar" data-id="${prod.id}">
+                            <img src="/img/icon-editar.svg" alt="Editar">
+                        </button>
+                    </div>
+                </div>
+            </div>`;
     });
 
     seccionProductos.innerHTML = cadenaHtml;
@@ -173,7 +183,7 @@ async function cargarCategorias() {
                 "Content-Type": "application/json"
             }
         });
-        
+
         const resultado = await respuesta.json();
 
         if (resultado.ok) {
@@ -213,7 +223,7 @@ async function mostrarCategorias() {
 
     if (categorias && categorias.length > 0) {
         categorias.forEach((categoria) => {
-            cadenaHtml += `<option value = "${categoria.nombre}" > ${ categoria.nombre }</option> `;
+            cadenaHtml += `<option value = "${categoria.nombre}" > ${categoria.nombre}</option> `;
         });
     }
 
@@ -290,7 +300,7 @@ async function buscarProducto() {
         resultado = listaProductos.filter(producto => Number(producto.id) === idBuscar);
     } else {
         const termino = input.toLowerCase();
-        resultado = listaProductos.filter(producto => 
+        resultado = listaProductos.filter(producto =>
             producto.nombre && producto.nombre.toLowerCase().includes(termino)
         );
     }
@@ -298,7 +308,7 @@ async function buscarProducto() {
     mostrarProductos(resultado);
 }
 
-async function eliminarProducto(id){
+async function eliminarProducto(id) {
     console.log("en cliente eliminar");
     // Enviar solicitud eliminacion a Express
     const respuesta = await fetch(`/api/productos/${id}`, {
