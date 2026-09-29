@@ -44,5 +44,9 @@ router.get("/", ventaControlador.listarVentas);
  * @name GET /api/ventas/:id
  */
 router.get("/:id", ventaControlador.obtenerVentaPorId);
+ * @name GET /historial
+ * @description Obtiene el historial de ventas filtrado por rango de fechas o empleado
+ */
+router.get("/historial", ventaControlador.obtenerHistorialVentas);
 
 module.exports = router;

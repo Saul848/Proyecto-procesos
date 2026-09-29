@@ -83,14 +83,6 @@ body{
     border: solid 2px black;
 }
 
-.formulario div{
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    justify-content: space-between;
-    border-bottom: solid;
-}
-
 .formulario input{
     width: 400px;
 }
@@ -119,6 +111,117 @@ body{
     gap: 20px 20px;
 }
 
+.formulario input{
+    width: 200px;
+}
+
+.formulario button{
+    width: 200px;
+}
+
+.formulario select{
+    width: 200px;
+}
+
+#opcciones{
+    display: flex;
+    flex-direction: row;
+    gap: 5px 5px;
+    padding: 5px 5px;
+    justify-content: space-between;
+    margin-left: 100px;
+    margin-right: 100px;   
+}
+
+#opcciones button{
+    width: 200px;
+    height: 40px;
+}
+
+#seccionAgregar{
+    display: flex;
+    flex-direction: column;
+}
+
+#divBtnGuardarDatos{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#divMsgAgregarEmp{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: solid 2px black;     
+}
+
+#MsgAgregarEmp{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 70%;
+}
+
+.espacioBtnRegresar{
+    padding: 5px 5px;
+}
+
+.btnRegresar{
+    width: 100px;
+    height: 25px;
+}
+
+
+
+.lineaInp{
+    display: flex;
+    flex-direction: row;
+    gap: 5px 5px;
+    padding: 5px 5px;
+}
+
+.lineaInp select{
+    width: 200px;
+    height: 20px;
+    margin-right: 30px;
+}
+
+.lineaInp label{
+    margin-left: 30px;
+    width: 130px;
+}
+
+.lineaInp input{
+    margin-right: 30px;
+    width: 200px;
+}
+
+#seccionModificar{
+    display: flex;
+    flex-direction: column;
+}
+
+#divMsgModificarEmp{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: solid 2px black;   
+}
+
+#msgModificarEmp{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 70%;
+}
+
+#divBtnActualizarDatos{
+    display: flex;
+    justify-content: center;
+    padding: 5px 5px;
+}
+
 .panelEmpleado{
     display: flex;
     flex-direction: row;
@@ -141,6 +244,19 @@ body{
     background-color: #a37bc0;
 }
 
+.panelEmpleado{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: solid 2px black;       
+}
+
+.cajaTexto{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -159,5 +275,9 @@ body{
     padding: 20px;
     border-radius: 8px;
     min-width: 300px;
+}           
+
+.escondido{
+    display: none !important;
 }
 

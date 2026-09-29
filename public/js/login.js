@@ -59,7 +59,7 @@ document.getElementById("boton-login").addEventListener('click', async () => {
             // Redirección dinámica según el puesto obtenido desde el servidor
             switch (resultado.data.puesto) {
                 case "administrador":
-                    window.location.href = "administrador.html";
+                    window.location.href = "panelAdministradorProductos.html";
                     break;
                 case "gerente":
                     window.location.href = "gerente.html";

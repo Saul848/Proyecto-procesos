@@ -50,3 +50,10 @@ document.getElementById("btnMensajes").addEventListener('click', ()=> {
     
     document.getElementById('checkMensajes').style.display = 'flex';
 });
+
+/**
+ * Listener para ocultar el modal de mensajes
+ */
+document.getElementById("btnCerrarModalMensajes").addEventListener('click', ()=> {
+    document.getElementById('checkMensajes').style.display = 'none';
+})

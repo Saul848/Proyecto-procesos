@@ -31,6 +31,13 @@
     <cantidadPaga>1</cantidadPaga>
     <fechaInicio>2026-09-26</fechaInicio>
     <fechaFin>2026-09-30</fechaFin>
+    <idProducto>9</idProducto>
+    <tipoProm>cantidad</tipoProm>
+    <valorDesc>1</valorDesc>
+    <cantidadRecibe>3</cantidadRecibe>
+    <cantidadPaga>2</cantidadPaga>
+    <fechaInicio>2026-09-26</fechaInicio>
+    <fechaFin>2026-10-07</fechaFin>
     <estado>disponible</estado>
   </oferta>
   <oferta>
@@ -42,6 +49,13 @@
     <cantidadPaga>1</cantidadPaga>
     <fechaInicio>2026-09-26</fechaInicio>
     <fechaFin>2026-09-30</fechaFin>
+    <idProducto>3</idProducto>
+    <tipoProm>precioFijo</tipoProm>
+    <valorDesc>70</valorDesc>
+    <cantidadRecibe>1</cantidadRecibe>
+    <cantidadPaga>1</cantidadPaga>
+    <fechaInicio>2026-09-28</fechaInicio>
+    <fechaFin>2026-09-28</fechaFin>
     <estado>disponible</estado>
   </oferta>
 </ofertas>

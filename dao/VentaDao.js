@@ -10,6 +10,7 @@ const { XMLParser, XMLBuilder } = require('fast-xml-parser');
 const Venta = require('../clases/ventaClass'); 
 const ofertaDao = require('./ofertaDao');
 const Oferta = require('../clases/ofertaClass');
+const msjController = require ("../controladores/mensajesController");
 
 const archivoVentas = path.join(__dirname, '../data/xml/ventas.xml');
 const archivoProductos = path.join(__dirname, '../data/xml/productos.xml');
@@ -214,6 +215,10 @@ function registrarVenta(datosVenta) {
             const idBuscado = String(item.idProducto).trim();
             const producto = listaProductos.find((p) => extraerId(p) === idBuscado);
             producto.stock = (parseInt(producto.stock, 10) || 0) - Number(item.cantidad);
+
+            if(producto.stock <=3){
+                msjController.mensajeBajoStock(producto.nombre);
+            }
         }
 
         // Guardar nuevo stock en productos.xml
@@ -274,6 +279,15 @@ function registrarVenta(datosVenta) {
  * @returns {Array} Lista de ventas.
  */
 function obtenerVentas() {
+ * Consulta el historial de ventas filtrado por rango de fechas y/o empleado.
+ * @function obtenerHistorialVentas
+ * @param {Object} filtros  Criterios de filtrado.
+ * @param {string} [filtros.fechaInicio] Fecha inicial (YYYY-MM-DD).
+ * @param {string} [filtros.fechaFin]  Fecha final (YYYY-MM-DD).
+ * @param {string|number} [filtros.idEmpleado]  ID del empleado que realizó la venta.
+ * @returns {Array<Object>} Lista de ventas filtradas.
+ */
+function obtenerHistorialVentas(filtros = {}) {
     try {
         if (!fs.existsSync(archivoVentas)) {
             return [];
@@ -307,10 +321,51 @@ function obtenerVentaPorId(id) {
 }
 
 
+        const xmlData = fs.readFileSync(archivoVentas, 'utf-8');
+        const parser = new XMLParser(parserConfig);
+        const resultado = parser.parse(xmlData);
+        let ventas = resultado.ventas?.venta || [];
+
+        // Asegurar que sea un arreglo
+        if (!Array.isArray(ventas)) {
+            ventas = [ventas];
+        }
+
+        const { fechaInicio, fechaFin, idEmpleado } = filtros;
+
+        return ventas.filter(v => {
+            const fechaVentaStr = v.fecha ? v.fecha.substring(0, 10) : ""; // Formato YYYY-MM-DD
+            const empVenta = String(v.idEmpleado || "").trim();
+
+            // Filtro por Empleado
+            if (idEmpleado && idEmpleado !== "" && empVenta !== String(idEmpleado).trim()) {
+                return false;
+            }
+
+            // Filtro por Fecha de Inicio
+            if (fechaInicio && fechaInicio !== "" && fechaVentaStr < fechaInicio) {
+                return false;
+            }
+
+            // Filtro por Fecha de Fin
+            if (fechaFin && fechaFin !== "" && fechaVentaStr > fechaFin) {
+                return false;
+            }
+
+            return true;
+        });
+    } catch (error) {
+        console.error("Error al obtener el historial de ventas:", error);
+        return [];
+    }
+}
+
 module.exports = {
     registrarVenta,
     obtenerSiguienteIdVenta,
     registrarVentaEmpleado,
     obtenerVentas,
-    obtenerVentaPorId
+    obtenerVentaPorId,
+    obtenerHistorialVentas
+
 };
