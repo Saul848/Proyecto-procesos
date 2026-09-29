@@ -11,8 +11,11 @@
 
   <div class="main-container">
     <header class="header">
-      <h1><i class="fa-solid fa-cash-register"></i> Punto de Venta</h1>
-      <div class="caja-status">
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <h1><i class="fa-solid fa-cash-register"></i> Punto de Venta</h1>
+      </div>
+      
+      <div class="caja-status" style="display: flex; align-items: center; gap: 12px;">
         <span id="cajaDot" class="status-dot"></span>
         <span id="cajaTexto">Caja Abierta</span>
         <button id="btnToggleCaja" class="btn-toggle-caja">Cerrar Caja</button>
@@ -21,7 +24,7 @@
 
     <div class="content-grid">
 
-      <!-- Tabla  -->
+      <!-- Tabla de productos -->
       <section class="products-panel">
         <div class="search-header-bar">
           <div class="search-input-wrapper">
@@ -38,12 +41,13 @@
                 <th>Select</th>
                 <th>Producto</th>
                 <th>Precio</th>
+                <th>Oferta</th>   
                 <th>cantidad</th>
                 <th>ID</th>
               </tr>
             </thead>
             <tbody id="tablaProductosCuerpo">
-              <!-- filas con checkboxes -->
+              <!-- Filas renderizadas dinámicamente desde venta.js -->
             </tbody>
           </table>
         </div>
@@ -62,15 +66,15 @@
         <div class="ticket-totals">
           <div class="row">
             <span>subtotal</span>
-            <span id="lblSubtotal">$0</span>
+            <span id="lblSubtotal">$0.00</span>
           </div>
           <div class="row">
             <span>IVA</span>
-            <span id="lblIva">$0</span>
+            <span id="lblIva">$0.00</span>
           </div>
           <div class="row row-total">
             <span>Total</span>
-            <span id="lblTotal">$0</span>
+            <span id="lblTotal">$0.00</span>
           </div>
         </div>
 
@@ -101,7 +105,7 @@
     </div>
   </div>
 
-  <!-- Ticket -->
+  <!-- Modal Comprobante / Ticket -->
   <div id="modalTicket" class="modal">
     <div class="modal-content">
       <h3 style="color: #27ae60;"><i class="fa-solid fa-circle-check"></i> Pago Registrado</h3>

@@ -64,8 +64,8 @@ class Oferta{
 
     set valorDesc(valorDesc){
         const cant = Number(valorDesc);
-        if (isNaN(cant) || cant <= 0 || cant > 100){
-            throw new Error("El valor de descuento debe ser un número entre 0 y 100.")
+        if (isNaN(cant) || cant <= 0){
+            throw new Error("El valor de descuento debe ser un número entre 0")
         }
         this.#valorDesc = cant;
     }

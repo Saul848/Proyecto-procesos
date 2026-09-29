@@ -1,3 +1,12 @@
+/**
+ * Estilos generales del Punto de Venta (POS)
+ * Incluye maquetación responsiva en grid, panel de catálogo,
+ * ticket de liquidación, modal de comprobante e insignias de oferta.
+ */
+
+/* ==========================================================================
+   1. Reseteo y Base
+   ========================================================================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,7 +16,7 @@
 
 body {
   background-color: #f4f6f9;
-  color: #333;
+  color: #333333;
   padding: 20px;
 }
 
@@ -16,10 +25,42 @@ body {
   margin: 0 auto;
 }
 
-/* Header rojo de la tienda */
+/* ==========================================================================
+   2. Barra de Sesión de Empleado
+   ========================================================================== */
+.barra-sesion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c3e50;
+  color: #ffffff;
+  padding: 10px 24px;
+  font-size: 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.barra-sesion button {
+  background-color: #e74c3c;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.barra-sesion button:hover {
+  background-color: #c0392b;
+}
+
+/* ==========================================================================
+   3. Encabezado Principal y Estado de Caja
+   ========================================================================== */
 .header {
   background-color: #d63031;
-  color: white;
+  color: #ffffff;
   padding: 14px 20px;
   border-radius: 8px;
   display: flex;
@@ -53,8 +94,8 @@ body {
 }
 
 .btn-toggle-caja {
-  background: white;
-  color: #333;
+  background: #ffffff;
+  color: #333333;
   border: none;
   padding: 4px 10px;
   border-radius: 4px;
@@ -63,7 +104,9 @@ body {
   cursor: pointer;
 }
 
-/* Grilla de dos columnas */
+/* ==========================================================================
+   4. Distribución de Contenido (Grilla 2 Columnas)
+   ========================================================================== */
 .content-grid {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
@@ -71,12 +114,14 @@ body {
   align-items: start;
 }
 
-/* Panel Izquierdo: Tabla de productos */
+/* ==========================================================================
+   5. Panel Izquierdo: Catálogo y Buscador
+   ========================================================================== */
 .products-panel {
   background: #ffffff;
   border-radius: 8px;
   border: 1px solid #e1e8ed;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
@@ -91,7 +136,7 @@ body {
 
 .search-input-wrapper {
   flex: 1;
-  background: white;
+  background: #ffffff;
   border: 1px solid #dcdfe6;
   border-radius: 6px;
   display: flex;
@@ -156,6 +201,7 @@ body {
   cursor: pointer;
 }
 
+/* Insignias de Tabla */
 .badge-stock {
   background-color: #eef2f7;
   color: #409eff;
@@ -170,12 +216,29 @@ body {
   font-weight: 600;
 }
 
-/* Panel Derecho: Ticket de cuenta */
+.badge-oferta {
+  background-color: #ffeaa7;
+  color: #d63031;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  border: 1px solid #fab1a0;
+}
+
+.sin-oferta {
+  color: #b2bec3;
+  font-size: 11px;
+}
+
+/* ==========================================================================
+  6. Panel Derecho: Ticket de Cuenta y Métodos de Pago
+========================================================================== */
 .ticket-panel {
   background: #ffffff;
   border: 1px solid #dcdfe6;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   padding: 18px;
   display: flex;
   flex-direction: column;
@@ -200,9 +263,27 @@ body {
 .ticket-item-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 13px;
   margin-bottom: 6px;
   color: #4a5568;
+}
+
+/* Botones de control de cantidad (+ / -) */
+.btn-qty-control {
+  padding: 1px 7px;
+  border: 1px solid #dcdfe6;
+  background-color: #f5f7fa;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 1;
+  transition: background-color 0.15s ease;
+}
+
+.btn-qty-control:hover {
+  background-color: #e4e7ed;
 }
 
 .ticket-totals {
@@ -222,11 +303,10 @@ body {
 .ticket-totals .row-total {
   font-size: 16px;
   font-weight: 800;
-  color: #111;
+  color: #111111;
   margin-top: 4px;
 }
 
-/* Métodos y pagos */
 .payment-area {
   margin-top: 10px;
   display: flex;
@@ -253,7 +333,7 @@ body {
 
 .btn-method.active {
   background: #0984e3;
-  color: white;
+  color: #ffffff;
   border-color: #0984e3;
 }
 
@@ -290,13 +370,14 @@ body {
 .btn-registrar {
   flex: 1.4;
   background-color: #27ae60;
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 9px;
   border-radius: 5px;
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .btn-registrar:disabled {
@@ -307,7 +388,7 @@ body {
 .btn-factura {
   flex: 1;
   background-color: #636e72;
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 9px;
   border-radius: 5px;
@@ -316,7 +397,9 @@ body {
   cursor: pointer;
 }
 
-/*Ticket*/
+/* ==========================================================================
+  7. Modal de Comprobante / Recibo
+========================================================================== */
 .modal {
   display: none;
   position: fixed;
@@ -331,7 +414,7 @@ body {
 }
 
 .modal-content {
-  background: white;
+  background: #ffffff;
   padding: 20px;
   border-radius: 8px;
   width: 320px;
@@ -341,34 +424,9 @@ body {
 .receipt-body {
   font-family: 'Courier New', Courier, monospace;
   background: #faf8f5;
-  border: 1px dashed #bbb;
+  border: 1px dashed #bbbbbb;
   padding: 10px;
   margin: 12px 0;
   font-size: 12px;
   text-align: left;
-}
-/* Barra de sesión del empleado */
-.barra-sesion {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #2c3e50;
-    color: #ffffff;
-    padding: 10px 24px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-}
-
-.barra-sesion button {
-    background-color: #e74c3c;
-    color: #ffffff;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.barra-sesion button:hover {
-    background-color: #c0392b;
 }

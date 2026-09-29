@@ -1,6 +1,14 @@
-let todosLosProductos = []; // Catálogo original completo
-let catalogoProductos = []; // Catálogo visible
-let itemsCuenta = [];       // Productos seleccionados en el ticket 
+/**
+ * Lógica del lado del cliente para el Punto de Venta.
+ * Gestiona el catálogo, cálculo de ofertas y descuentos dinámicos,
+ * control de stock, gestión del ticket de venta y confirmación de transacciones.
+ * @module public/js/venta
+ */
+
+let todosLosProductos = []; // Catálogo original completo cargado de la API
+let catalogoProductos = []; // Catálogo filtrado en la vista
+let itemsCuenta = [];       // Productos seleccionados en el carrito 
+let ofertasActivas = [];    // Ofertas vigentes obtenidas de /api/ofertas
 let metodoPago = "Efectivo";
 let cajaAbierta = true;
 
@@ -27,12 +35,14 @@ const lblFolioVenta = document.getElementById("lblFolioVenta");
 document.addEventListener("DOMContentLoaded", () => {
     verificarEstadoCaja();
     cargarFolioActual();
-    cargarProductos();
+    cargarDatos();
     configurarEventos();
 });
 
+/**
+ * Configura los escuchadores de eventos para la interfaz de usuario.
+ */
 function configurarEventos() {
-    // Búsqueda instantánea en tiempo real por ID o por nombre
     inputBuscar.addEventListener("input", (e) => {
         filtrarProductos(e.target.value);
     });
@@ -68,11 +78,14 @@ function configurarEventos() {
         inputCambio.value = "$0.00";
         actualizarTicket();
         cargarFolioActual();
-        cargarProductos();
+        cargarDatos();
     });
 }
 
-// 1. Folio de la siguiente venta
+/**
+ * Obtiene del servidor el siguiente número de folio para mostrarlo en pantalla.
+ * @async
+ */
 async function cargarFolioActual() {
     try {
         const res = await fetch("/api/ventas/folio/siguiente");
@@ -87,7 +100,10 @@ async function cargarFolioActual() {
     }
 }
 
-// 2. Control de estado de caja
+/**
+ * Consulta el estado actual de la caja registradora en el servidor.
+ * @async
+ */
 async function verificarEstadoCaja() {
     try {
         const res = await fetch("/api/ventas/caja/estado");
@@ -99,6 +115,10 @@ async function verificarEstadoCaja() {
     }
 }
 
+/**
+ * Alterna entre abrir y cerrar la caja en el servidor.
+ * @async
+ */
 async function alternarCaja() {
     try {
         const res = await fetch("/api/ventas/caja/estado", {
@@ -114,6 +134,9 @@ async function alternarCaja() {
     }
 }
 
+/**
+ * Actualiza los elementos visuales que representan el estado de la caja.
+ */
 function actualizarVistaCaja() {
     if (cajaAbierta) {
         cajaDot.style.backgroundColor = "#2ecc71";
@@ -127,27 +150,44 @@ function actualizarVistaCaja() {
     validarBotonCobro();
 }
 
-async function cargarProductos() {
+/**
+ * Carga los productos y las ofertas activas en paralelo desde la API.
+ * @async
+ */
+async function cargarDatos() {
     try {
-        const res = await fetch("/api/productos");
-        const data = await res.json();
-        
-        // Extraemos el arreglo de data.productos
-        const lista = data.productos || (Array.isArray(data) ? data : []);
-        
-        todosLosProductos = lista;
+        const [resProd, resOf] = await Promise.all([
+            fetch("/api/productos"),
+            fetch("/api/ofertas")
+        ]);
+
+        const dataProd = await resProd.json();
+        todosLosProductos = dataProd.productos || (Array.isArray(dataProd) ? dataProd : []);
         catalogoProductos = [...todosLosProductos];
-        
+
+        if (resOf.ok) {
+            const dataOfertas = await resOf.json();
+            const listado = Array.isArray(dataOfertas) ? dataOfertas : (dataOfertas.ofertas || []);
+            // Filtra únicamente las ofertas vigentes
+            ofertasActivas = listado.filter(o => o.estado === "disponible");
+        } else {
+            ofertasActivas = [];
+        }
+
         if (inputBuscar && inputBuscar.value.trim() !== "") {
             filtrarProductos(inputBuscar.value);
         } else {
             renderizarTabla();
         }
     } catch (err) {
-        console.error("Error al obtener catálogo:", err);
+        console.error("Error al cargar productos u ofertas:", err);
     }
 }
 
+/**
+ * Filtra los productos en memoria según el término ingresado por ID o nombre.
+ * @param {string} termino - Texto a buscar.
+ */
 function filtrarProductos(termino) {
     const busqueda = String(termino || "").trim().toLowerCase();
 
@@ -155,10 +195,8 @@ function filtrarProductos(termino) {
         catalogoProductos = [...todosLosProductos];
     } else {
         catalogoProductos = todosLosProductos.filter((prod) => {
-            // Maneja id normal o @_id por si viene directo del parser XML
             const idVal = prod.id !== undefined ? String(prod.id) : (prod["@_id"] !== undefined ? String(prod["@_id"]) : "");
             const nombreVal = prod.nombre ? String(prod.nombre).toLowerCase() : "";
-
             return idVal.trim() === busqueda || idVal.includes(busqueda) || nombreVal.includes(busqueda);
         });
     }
@@ -166,19 +204,40 @@ function filtrarProductos(termino) {
     renderizarTabla();
 }
 
+/**
+ * Dibuja las filas de la tabla de productos vinculando las promociones correspondientes.
+ */
 function renderizarTabla() {
     tablaProductosCuerpo.innerHTML = "";
 
     if (catalogoProductos.length === 0) {
-        tablaProductosCuerpo.innerHTML = `<tr><td colspan="5" style="color:#888; padding:15px;">No hay productos que coincidan</td></tr>`;
+        tablaProductosCuerpo.innerHTML = `<tr><td colspan="6" style="color:#888; padding:15px;">No hay productos que coincidan</td></tr>`;
         return;
     }
 
     catalogoProductos.forEach((prod) => {
-        const idProd = prod.id !== undefined ? prod.id : prod["@_id"];
-        const estaMarcado = itemsCuenta.some((i) => String(i.id) === String(idProd));
+        const idProd = String(prod.id !== undefined ? prod.id : prod["@_id"]);
+        const estaMarcado = itemsCuenta.some((i) => String(i.id) === idProd);
         const stockActual = Number(prod.stock) || 0;
         const precioActual = Number(prod.precio) || 0;
+
+        // Empatar con ofertas del módulo de ofertas
+        const oferta = ofertasActivas.find(o => String(o.idProducto) === idProd);
+        let textoOferta = "-";
+        let claseOferta = "sin-oferta";
+
+        if (oferta) {
+            claseOferta = "badge-oferta";
+            if (oferta.tipoProm === "porcentaje") {
+                textoOferta = `${oferta.valorDesc}%`;
+            } else if (oferta.tipoProm === "cantidad") {
+                textoOferta = `${oferta.cantidadRecibe}x${oferta.cantidadPaga}`;
+            } else if (oferta.tipoProm === "precioFijo") {
+                textoOferta = `$${oferta.valorDesc}`;
+            } else {
+                textoOferta = "Oferta";
+            }
+        }
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -190,6 +249,7 @@ function renderizarTabla() {
             </td>
             <td style="text-transform: capitalize; text-align: left; padding-left: 10px;">${prod.nombre}</td>
             <td>$${precioActual.toFixed(0)}</td>
+            <td><span class="${claseOferta}">${textoOferta}</span></td>
             <td><span class="badge-stock">${stockActual}</span></td>
             <td><span class="badge-id">${idProd}</span></td>
         `;
@@ -198,18 +258,27 @@ function renderizarTabla() {
     });
 }
 
-// 4. Carrito / Cuenta actual
+/**
+ * Agrega o quita un producto del carrito según el estado del checkbox.
+ * @param {string} idProducto - ID del producto seleccionado.
+ * @param {boolean} checked - Indica si el checkbox fue marcado o desmarcado.
+ */
 window.toggleSeleccion = function(idProducto, checked) {
-    const prod = todosLosProductos.find((p) => String(p.id) === String(idProducto));
+    const prod = todosLosProductos.find((p) => {
+        const idVal = String(p.id !== undefined ? p.id : p["@_id"]);
+        return idVal === String(idProducto);
+    });
     if (!prod) return;
 
     if (checked) {
+        const oferta = ofertasActivas.find(o => String(o.idProducto) === String(idProducto));
         itemsCuenta.push({
-            id: prod.id,
+            id: prod.id !== undefined ? prod.id : prod["@_id"],
             nombre: prod.nombre,
-            precio: Number(prod.precio),
+            precioOriginal: Number(prod.precio) || 0,
+            oferta: oferta || null,
             cantidad: 1,
-            stockMax: Number(prod.stock)
+            stockMax: Number(prod.stock) || 0
         });
     } else {
         itemsCuenta = itemsCuenta.filter((item) => String(item.id) !== String(idProducto));
@@ -218,13 +287,78 @@ window.toggleSeleccion = function(idProducto, checked) {
     actualizarTicket();
 };
 
+/**
+ * Modifica la cantidad de unidades de un producto en el carrito (+1 o -1).
+ * @param {string} idProducto - ID del producto a modificar.
+ * @param {number} delta - Variación en la cantidad (+1 o -1).
+ */
+window.cambiarCantidadTicket = function(idProducto, delta) {
+    const item = itemsCuenta.find(i => String(i.id) === String(idProducto));
+    if (!item) return;
+
+    const nuevaCantidad = item.cantidad + delta;
+
+    if (nuevaCantidad <= 0) {
+        itemsCuenta = itemsCuenta.filter(i => String(i.id) !== String(idProducto));
+        renderizarTabla();
+    } else if (nuevaCantidad > item.stockMax) {
+        alert(`Stock insuficiente. Solo quedan ${item.stockMax} unidades disponibles.`);
+        return;
+    } else {
+        item.cantidad = nuevaCantidad;
+    }
+
+    actualizarTicket();
+};
+
+/**
+ * Calcula el subtotal monetario de una línea del ticket aplicando la promoción correspondiente.
+ * @param {Object} item - Elemento de la cuenta con datos de precio, cantidad y oferta.
+ * @returns {number} Subtotal de la línea.
+ */
+function calcularSubtotalItem(item) {
+    const base = item.precioOriginal;
+    const cant = item.cantidad;
+    const of = item.oferta;
+
+    if (!of) return base * cant;
+
+    if (of.tipoProm === "porcentaje") {
+        const factor = Number(of.valorDesc) / 100;
+        return (base * (1 - factor)) * cant;
+    }
+
+    if (of.tipoProm === "precioFijo") {
+        return Number(of.valorDesc) * cant;
+    }
+
+    if (of.tipoProm === "cantidad") {
+        const recibe = Number(of.cantidadRecibe) || 1;
+        const paga = Number(of.cantidadPaga) || 1;
+        if (recibe > 0 && paga > 0) {
+            const paquetes = Math.floor(cant / recibe);
+            const sobrantes = cant % recibe;
+            return ((paquetes * paga) + sobrantes) * base;
+        }
+    }
+
+    return base * cant;
+}
+
+/**
+ * Calcula los totales acumulados del ticket de venta.
+ * @returns {{subtotal: number, iva: number, total: number}}
+ */
 function calcularTotales() {
-    const subtotal = itemsCuenta.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
-    const iva = subtotal * 0.16;
-    const total = subtotal + iva;
+    const subtotal = itemsCuenta.reduce((acc, i) => acc + calcularSubtotalItem(i), 0);
+    const total = subtotal;
+    const iva = total * 0.16;
     return { subtotal, iva, total };
 }
 
+/**
+ * Calcula el cambio a devolver al cliente cuando el método de pago es efectivo.
+ */
 function calcularCambio() {
     const { total } = calcularTotales();
     const recibido = parseFloat(inputMontoRecibido.value) || 0;
@@ -248,6 +382,9 @@ function calcularCambio() {
     validarBotonCobro();
 }
 
+/**
+ * Valida si el botón de registrar pago debe habilitarse según el estado de la caja y el pago.
+ */
 function validarBotonCobro() {
     const { total } = calcularTotales();
     const recibido = parseFloat(inputMontoRecibido.value) || 0;
@@ -264,12 +401,15 @@ function validarBotonCobro() {
     }
 }
 
+/**
+ * Actualiza la lista visual del ticket de venta con los productos y totales actuales.
+ */
 function actualizarTicket() {
     if (itemsCuenta.length === 0) {
         listaItemsTicket.innerHTML = `<p style="text-align:center; color:#999; font-size:12px; margin-top:35px;">No hay productos en la cuenta</p>`;
-        lblSubtotal.textContent = "$0";
-        lblIva.textContent = "$0";
-        lblTotal.textContent = "$0";
+        lblSubtotal.textContent = "$0.00";
+        lblIva.textContent = "$0.00";
+        lblTotal.textContent = "$0.00";
         inputCambio.value = "$0.00";
         validarBotonCobro();
         return;
@@ -280,36 +420,52 @@ function actualizarTicket() {
     itemsCuenta.forEach((item) => {
         const itemLine = document.createElement("div");
         itemLine.className = "ticket-item-row";
+        itemLine.style.display = "flex";
+        itemLine.style.justifyContent = "space-between";
+        itemLine.style.alignItems = "center";
+        itemLine.style.margin = "6px 0";
+
+        const subtotalFila = calcularSubtotalItem(item);
+
         itemLine.innerHTML = `
-            <span>${item.nombre} x${item.cantidad}</span>
-            <span>$${(item.precio * item.cantidad).toFixed(0)}</span>
+            <div style="display: flex; flex-direction: column; text-align: left;">
+                <span style="font-weight: 600; font-size: 13px;">${item.nombre}</span>
+                <div style="display: flex; align-items: center; gap: 6px; margin-top: 3px;">
+                    <button type="button" onclick="cambiarCantidadTicket('${item.id}', -1)" style="padding: 1px 7px; border: 1px solid #ccc; background: #eee; border-radius: 3px; cursor: pointer; font-weight: bold;">-</button>
+                    <span style="font-size: 12px; font-weight: bold;">${item.cantidad}</span>
+                    <button type="button" onclick="cambiarCantidadTicket('${item.id}', 1)" style="padding: 1px 7px; border: 1px solid #ccc; background: #eee; border-radius: 3px; cursor: pointer; font-weight: bold;">+</button>
+                    <span style="font-size: 11px; color: #777;">($${item.precioOriginal.toFixed(2)} c/u)</span>
+                </div>
+            </div>
+            <span style="font-weight: 700; font-size: 13px;">$${subtotalFila.toFixed(2)}</span>
         `;
         listaItemsTicket.appendChild(itemLine);
     });
 
     const { subtotal, iva, total } = calcularTotales();
-    lblSubtotal.textContent = `$${subtotal.toFixed(0)}`;
-    lblIva.textContent = `$${iva.toFixed(0)}`;
-    lblTotal.textContent = `$${total.toFixed(0)}`;
+    lblSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+    lblIva.textContent = `$${iva.toFixed(2)}`;
+    lblTotal.textContent = `$${total.toFixed(2)}`;
 
     calcularCambio();
 }
 
+/**
+ * Envía la venta confirmada al servidor para registrarla en XML y actualizar existencias.
+ * @async
+ */
 async function procesarVenta() {
     if (!cajaAbierta) {
         alert("La caja está cerrada.");
         return;
     }
 
-    // 1. Extraer el idEmpleado o el nombre del empleado desde sessionStorage
-    
     const idEmpleadoActivo = sessionStorage.getItem("idEmpleado") 
                           || sessionStorage.getItem("idUsuario") 
-                          || sessionStorage.getItem("nombreUsuario") 
                           || "1";
 
     const payload = {
-        idEmpleado: idEmpleadoActivo, // Asigna el empleado real de la sesión activa
+        idEmpleado: idEmpleadoActivo,
         items: itemsCuenta.map((i) => ({
             idProducto: i.id,
             cantidad: i.cantidad
@@ -341,6 +497,10 @@ async function procesarVenta() {
     }
 }
 
+/**
+ * Muestra el modal con el desglose del comprobante de venta emitido por el backend.
+ * @param {Object} ticket - Datos de la venta devueltos por el servidor.
+ */
 function mostrarTicketModal(ticket) {
     const fecha = new Date(ticket.fecha).toLocaleString();
     const items = Array.isArray(ticket.items.item) ? ticket.items.item : [ticket.items.item];
