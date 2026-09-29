@@ -25,18 +25,35 @@ function logout() {
 
 const btnLogout = document.getElementById("btn-logout");
 if (btnLogout) {
-        /**
-         * Evento de escucha para el botón de salida, limpia el almacenamiento 
-         * local de la sesión y redirige al usuario al login.
-         * @listens click
-         */
-        btnLogout.addEventListener("click", () => {
-            // Limpiamos los datos guardados en la sesión del navegador
-            sessionStorage.clear();
-            
-            // redirigimos a la página de inicio de sesión
-            alert("Se ha cerrado la sesión correctamente.");
-            window.location.href = "login.html";
+
+    /**
+     * Evento de escucha para el botón de salida, limpia el almacenamiento 
+     * local de la sesión y redirige al usuario al login.
+     * @listens click
+     */
+    btnLogout.addEventListener("click", async () => {
+        const nombre = sessionStorage.getItem("nombreUsuario");
+        const usuario = sessionStorage.getItem("usuarioLogueado");
+        const puesto = sessionStorage.getItem("puestoLogueado");
+
+        if(usuario){
+            try {
+                await fetch("/api/accesos/registrar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nombre, usuario, puesto, evento: "salida" })
+                });
+            } catch (error) {
+                console.error("Error al registrar salida:", error);
+            }
+        }
+        
+        // Limpiamos los datos guardados en la sesión del navegador
+        sessionStorage.clear();
+        
+        // redirigimos a la página de inicio de sesión
+        alert("Se ha cerrado la sesión correctamente.");
+        window.location.href = "login.html";
     });
 }
 
@@ -55,6 +72,18 @@ let temporizadorInactividad;
  * Función que ejecuta el cierre de sesión al cumplirse el tiempo límite
  */
 function cerrarSesionPorInactividad() {
+    const nombre = sessionStorage.getItem("nombreUsuario");
+    const usuario = sessionStorage.getItem("usuarioLogueado");
+    const puesto = sessionStorage.getItem("puestoLogueado");
+
+    if(usuario){
+        fetch("/api/accesos/registrar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre, usuario, puesto, evento: "salida" })
+        }).catch(error => console.error("Error al registrar salida:", error));
+    }
+
     // limpia datos de la sesión en el navegador
     sessionStorage.clear();
     

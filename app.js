@@ -24,6 +24,8 @@ const ofertaRoutes = require("./routes/ofertaRoutes");
 //categorias de productos
 const categoriaRoutes = require("./routes/categoriaRoutes");
 
+const accesoControlador = require("./controladores/accesoControlador");
+
 const path = require('path');
 
 const app = express();
@@ -65,6 +67,10 @@ app.use("/api/categorias", categoriaRoutes);
  * apuntador de ruta para mensajes
  */
 app.use("/api/mensajes", mensajeRoutes);
+
+
+app.post('/api/accesos/registrar', accesoControlador.registrarAcceso);
+app.get('/api/accesos', accesoControlador.obtenerAccesos);
 
 /**
  * Puerto de escucha predeterminado del servidor.
