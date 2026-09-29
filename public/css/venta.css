@@ -430,3 +430,189 @@ body {
   font-size: 12px;
   text-align: left;
 }
+/* Botón de historial en la cabecera */
+.btn-historial {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-historial i {
+    color: #c0392b !important; /* Ícono en rojo OXXO */
+}
+
+.btn-historial:hover {
+    background-color: #f2f2f2 !important;
+    transform: translateY(-1px);
+}
+
+/* Modales y estructura de tarjetas */
+.modal-historial-card {
+    background: #ffffff;
+    width: 680px;
+    max-height: 80vh;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eeeeee;
+    padding-bottom: 10px;
+}
+
+.modal-historial-header h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.btn-cerrar-icono {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 1.4rem;
+    color: #666666;
+}
+
+.filtro-historial-contenedor {
+    margin: 15px 0;
+}
+
+.filtro-historial-contenedor input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+}
+
+.tabla-historial-scroll {
+    overflow-y: auto;
+    flex: 1;
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+}
+
+.tabla-historial {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.tabla-historial thead tr {
+    background: #f8f9fa;
+    border-bottom: 2px solid #dddddd;
+}
+
+.tabla-historial th, 
+.tabla-historial td {
+    padding: 10px;
+}
+
+.modal-historial-footer {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.btn-cerrar-secundario {
+    background: #7f8c8d;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Modal de vista previa del ticket térmico */
+.modal-ticket-card {
+    background: #ffffff;
+    width: 340px;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.ticket-impresion-cuerpo {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    color: #000000;
+    background: #ffffff;
+    padding: 5px;
+}
+
+.ticket-impresion-encabezado {
+    text-align: center;
+    border-bottom: 1px dashed #000000;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ticket-impresion-pie {
+    border-top: 1px dashed #000000;
+    margin-top: 8px;
+    padding-top: 8px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.ticket-acciones-botones {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.btn-imprimir-ticket {
+    flex: 1;
+    background: #e67e22;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-imprimir-ticket:hover {
+    background: #d35400;
+}
+
+.btn-volver-ticket {
+    background: #95a5a6;
+    color: #ffffff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+/* Ocultar modales de historial y ticket por defecto */
+#modalHistorialVentas,
+#modalCorroborarTicket {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
