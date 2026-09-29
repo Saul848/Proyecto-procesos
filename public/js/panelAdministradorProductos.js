@@ -50,6 +50,27 @@ if (selectCategoria) {
     });
 }
 
+const btnBuscarProducto = document.getElementById("btn-buscar-producto");
+if (btnBuscarProducto) {
+    btnBuscarProducto.addEventListener("click", () => {
+        buscarProducto();
+    });
+}
+
+document.querySelector(".product-list").addEventListener("click", (event) => {
+    const boton = event.target.closest(".btn-eliminar");
+
+    if (!boton) return;
+
+    const idProducto = Number(boton.dataset.id);
+
+    const confirmar = confirm("¿Estás seguro de que deseas eliminar este producto?");
+
+    if (!confirmar) return;
+
+    eliminarProducto(idProducto);
+});
+
 /**
  * Carga todos los productos desde la API y los almacena
  * en la lista global de productos.
@@ -110,17 +131,37 @@ async function mostrarProductos(listaCategoria = null) {
         return;
     }
 
-    let cadenaHtml = "";
+    // LOS PRODUCTOS CON STOCK POR DEBAJO SERAN MARCADOS EN ALERTA
+    const limiteStock = 20;
+    let cadenaHtml = "<p>*Los productos con bajo stock(menor a 20) son resaltados en color rojo</p>";
+
     productos.forEach((prod) => {
+        // Evaluamos si requiere la clase de alerta
+        const esAlerta = Number(prod.stock) < limiteStock;
+        const claseAlerta = esAlerta ? "alert-product" : "";
+
         cadenaHtml += `
-        <div class="product-item">
-            <span class="product-name">Producto ${prod.id} (${prod.nombre})</span>
-            <div class="product-actions">
-              <button class="icon-btn" title="Más información"><i class="fa-regular fa-circle-plus"></i></button>
-              <button class="icon-btn" title="Eliminar"><i class="fa-solid fa-basket-shopping"></i></button>
-              <button class="icon-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-            </div>
-        </div>`;
+            <div class="product-item ${esAlerta ? 'alert-product' : ''}">
+                <div class="product-info">
+                    <span class="product-id">#${prod.id}</span>
+                    <span class="product-name">${prod.nombre}</span>
+                </div>
+
+                <div class="product-meta">
+                    <span class="stock-badge ${esAlerta ? 'stock-low' : 'stock-ok'}">
+                        ${esAlerta ? '⚠️ ' : ''}Stock: ${prod.stock}
+                    </span>
+
+                    <div class="product-actions">
+                        <button class="icon-btn btn-eliminar" title="Eliminar" data-id="${prod.id}">
+                            <img src="/img/icon-eliminar.svg" alt="Eliminar">
+                        </button>
+                        <button class="icon-btn btn-editar" title="Editar" data-id="${prod.id}">
+                            <img src="/img/icon-editar.svg" alt="Editar">
+                        </button>
+                    </div>
+                </div>
+            </div>`;
     });
 
     seccionProductos.innerHTML = cadenaHtml;
@@ -142,7 +183,7 @@ async function cargarCategorias() {
                 "Content-Type": "application/json"
             }
         });
-        
+
         const resultado = await respuesta.json();
 
         if (resultado.ok) {
@@ -178,11 +219,11 @@ async function mostrarCategorias() {
     const categorias = await cargarCategorias();
 
     // Opción predeterminada para ver todos los productos
-    let cadenaHtml = `<option value="todos" selected>Todas las categorías</option>`;
+    let cadenaHtml = `<option value = "todos" selected > Todas las categorías</option> `;
 
     if (categorias && categorias.length > 0) {
         categorias.forEach((categoria) => {
-            cadenaHtml += `<option value="${categoria.nombre}">${categoria.nombre}</option>`;
+            cadenaHtml += `<option value = "${categoria.nombre}" > ${categoria.nombre}</option> `;
         });
     }
 
@@ -219,6 +260,79 @@ async function filtrarProductosPorCategoria(categoria) {
 
     await mostrarProductos(productosFiltrados);
 }
+
+
+/**
+ * Realiza la búsqueda de productos dentro del listado en memoria.
+ * 
+ * Evalúa el término ingresado en el input `#info_busqueda`:
+ * - Si es numérico (`/^\d+$/`), realiza una búsqueda exacta por `id`.
+ * - Si es texto, realiza una búsqueda parcial insensible a mayúsculas/minúsculas por `nombre`.
+ * - Si está vacío, restablece la vista a la lista completa de productos.
+ *
+ * @async
+ * @function buscarProducto
+ * @returns {Promise<void>} No retorna valor; actualiza directamente el DOM mediante `mostrarProductos()`.
+ */
+async function buscarProducto() {
+    const inputElement = document.getElementById("info_busqueda");
+    if (!inputElement) return;
+
+    const input = inputElement.value.trim();
+
+    // Si no hay lista en memoria, nos aseguramos de cargarla
+    if (listaProductos.length === 0) {
+        await cargarProductos();
+    }
+
+    // Si el campo de búsqueda está vacío, restablece a la lista completa
+    if (!input) {
+        mostrarProductos(listaProductos);
+        return;
+    }
+
+    // Evalúa si el valor es puramente numérico
+    const esNumero = /^\d+$/.test(input);
+    let resultado = [];
+
+    if (esNumero) {
+        const idBuscar = Number(input);
+        resultado = listaProductos.filter(producto => Number(producto.id) === idBuscar);
+    } else {
+        const termino = input.toLowerCase();
+        resultado = listaProductos.filter(producto =>
+            producto.nombre && producto.nombre.toLowerCase().includes(termino)
+        );
+    }
+
+    mostrarProductos(resultado);
+}
+
+async function eliminarProducto(id) {
+    console.log("en cliente eliminar");
+    // Enviar solicitud eliminacion a Express
+    const respuesta = await fetch(`/api/productos/${id}`, {
+        method: "DELETE",
+
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+
+
+    // Obtener resultado de la respuesta
+    const resultado = await respuesta.json();
+
+
+    // Validación de respuesta del servidor
+    if (respuesta.ok) {
+        alert(resultado.mensaje);
+        mostrarProductos();
+    } else {
+        alert(resultado.mensaje);
+    }
+}
+
 
 /**
  * Inicializa la página cargando primero los productos

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movimientos>
+  <movimiento id="1">
+    <fecha>28/9/2026</fecha>
+    <hora>8:11:48 p.m.</hora>
+    <id_producto>12</id_producto>
+    <nombre_producto>emmanens</nombre_producto>
+    <tipo>BAJA</tipo>
+  </movimiento>
+</movimientos>

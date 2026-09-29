@@ -10,6 +10,7 @@ const { XMLParser, XMLBuilder } = require('fast-xml-parser');
 const Venta = require('../clases/ventaClass'); 
 const ofertaDao = require('./ofertaDao');
 const Oferta = require('../clases/ofertaClass');
+const msjController = require ("../controladores/mensajesController");
 
 const archivoVentas = path.join(__dirname, '../data/xml/ventas.xml');
 const archivoProductos = path.join(__dirname, '../data/xml/productos.xml');
@@ -191,6 +192,10 @@ function registrarVenta(datosVenta) {
             const idBuscado = String(item.idProducto).trim();
             const producto = listaProductos.find((p) => extraerId(p) === idBuscado);
             producto.stock = (parseInt(producto.stock, 10) || 0) - Number(item.cantidad);
+
+            if(producto.stock <=3){
+                msjController.mensajeBajoStock(producto.nombre);
+            }
         }
 
         // Guardar nuevo stock en productos.xml

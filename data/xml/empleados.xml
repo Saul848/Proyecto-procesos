@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <empleados>
   <empleado>
-    <id>1</id>
-    <nombre>Rogelio Lopez Gonzales</nombre>
-    <puesto>empleado</puesto>
-    <telefono>3453244576</telefono>
-    <usuario>roger01</usuario>
-    <password>rogelio123</password>
-    <numVentas>8</numVentas>
-    <numTransacciones>6</numTransacciones>
-  </empleado>
-  <empleado>
     <id>2</id>
     <nombre>Martha Garcia Morales</nombre>
     <puesto>administrador</puesto>
@@ -41,19 +31,10 @@
   </empleado>
   <empleado>
     <id>5</id>
-    <nombre>Rogelio Lopez Gonzales</nombre>
-    <puesto>administrador</puesto>
+    <nombre>Gertrudis</nombre>
+    <puesto>gerente</puesto>
     <usuario>roger134</usuario>
     <password>123</password>
-    <numVentas>0</numVentas>
-    <numTransacciones>0</numTransacciones>
-  </empleado>
-  <empleado>
-    <id>6</id>
-    <nombre>Aurelio</nombre>
-    <puesto>empleado</puesto>
-    <usuario>roger123</usuario>
-    <password>234</password>
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
   </empleado>
@@ -61,37 +42,21 @@
     <id>7</id>
     <nombre>Misael</nombre>
     <puesto>gerente</puesto>
-    <usuario>Misa3l</usuario>
-    <password>misa123</password>
+    <usuario>MisaGoodMvp</usuario>
+    <password>misaReal</password>
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
-  </empleado>
-  <empleado>
-    <id>8</id>
-    <nombre>Pedro Antonio</nombre>
-    <puesto>gerente</puesto>
-    <usuario>Pedro09</usuario>
-    <password>pedro098</password>
-    <numVentas>0</numVentas>
-    <numTransacciones>0</numTransacciones>
+    <telefono>4545454545</telefono>
   </empleado>
   <empleado>
     <id>9</id>
-    <nombre>Emiliano Garcia</nombre>
-    <puesto>administrador</puesto>
+    <nombre>Marcelo Lopez</nombre>
+    <puesto>empleado</puesto>
     <usuario>Cypher34</usuario>
     <password>ueueueue</password>
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
-  </empleado>
-  <empleado>
-    <id>10</id>
-    <nombre>Emiliano Zapata</nombre>
-    <puesto>gerente</puesto>
-    <usuario>Mauricio032</usuario>
-    <password>ueueueue</password>
-    <numVentas>0</numVentas>
-    <numTransacciones>0</numTransacciones>
+    <telefono>8585858585</telefono>
   </empleado>
   <empleado>
     <id>11</id>
@@ -108,6 +73,33 @@
     <puesto>empleado</puesto>
     <usuario>fjd</usuario>
     <password>cjkdsk s</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>13</id>
+    <nombre>Eduardo</nombre>
+    <puesto>administrador</puesto>
+    <usuario>LOS2007</usuario>
+    <password>ertdf</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>14</id>
+    <nombre>Mariano Rosa</nombre>
+    <puesto>administrador</puesto>
+    <usuario>marte098</usuario>
+    <password>jkl</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>15</id>
+    <nombre>Rocio</nombre>
+    <puesto>administrador</puesto>
+    <usuario>UJGY</usuario>
+    <password>efse</password>
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
   </empleado>

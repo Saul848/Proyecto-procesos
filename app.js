@@ -14,6 +14,8 @@ const productoRoutes = require("./routes/productoRoutes");
 const ventaRoutes = require("./routes/ventaRoutes");
 const mensajeRoutes = require ("./routes/mensajeRoutes");
 
+const movimientoProdRoutes = require("./routes/movimientosProdRoutes");//////////////
+
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
 
@@ -41,6 +43,9 @@ app.use('/data', express.static(path.join(__dirname, 'data')));
 // app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);
 app.use("/api/ventas", ventaRoutes);
+
+// Consulta de movimientos sobre inventario
+app.use("/api/movimientosProd", movimientoProdRoutes); 
 
 /**
  * Montaje del enrutador de alumnos en la ruta base de la API.

@@ -5,6 +5,7 @@ const xml2js = require('xml2js');
 const empleadoDao = require("../dao/empleadoDao");
 const rutaXml = path.join(__dirname, '..', 'data', 'xml', 'mensajes.xml');
 
+
 async function agregarMensaje(req, res) {
     const { destino, contenido } = req.body;
 
@@ -49,7 +50,6 @@ async function agregarMensaje(req, res) {
 
 async function leerMensajes(req, res) {
     const { usuario } = req.body;
-    console.log(usuario);
 
     const xmlContent = fs.readFileSync(rutaXml, 'utf-8');
     const parser = new xml2js.Parser({ explicitArray: false });
@@ -66,10 +66,11 @@ async function leerMensajes(req, res) {
     }
 
     let filas = '';
+    let msjTotal = 0;
 
     for(const mensaje of mensajes){
-        console.log(mensaje.destino);
         if(mensaje.destino === usuario){
+            msjTotal += 1;
             filas +=`
                 <tr>
                     <td>${mensaje.destino}</td>
@@ -79,8 +80,9 @@ async function leerMensajes(req, res) {
         }
     }
 
-    const tabla = `
-        <table border="1">
+
+    let tabla = `
+        <table id="tabla_mensajes" border="1">
             <thead>
                 <tr>
                     <th>Destino:</th>
@@ -91,8 +93,48 @@ async function leerMensajes(req, res) {
         </table>
     `
     
+    
+    if(msjTotal <= 0){
+        tabla = `
+            <div>
+                <h3 id="label_cero_mensajes">No hay mensajes para ti hoy :)<h3>
+            </div>
+        `
+    }
+
     res.send(tabla);
 }
 
+function mensajeBajoStock(producto){
+    const xmlContent = fs.readFileSync(rutaXml, 'utf-8');
+    const parser = new xml2js.Parser({ explicitArray: false });
+    const result = parser.parseStringPromise(xmlContent);
 
-module.exports = { agregarMensaje, leerMensajes };
+    let mensajes = result.mensajes.mensaje || [];
+    if (!Array.isArray(mensajes)) mensajes = [mensajes];
+
+    const empleados = empleadoDao.obtenerEmpleados();
+
+    for(const emp of empleados){
+        if(emp.puesto = "administrador"){
+            let destino = emp.usuario;
+            let contenido = "Alerta de bajo Stock por producto:" + producto;
+            const nuevoMensaje = {
+                destino: destino,
+                contenido: contenido
+            };
+
+            mensajes.push(nuevoMensaje);
+        }
+        
+    }
+    
+    result.mensajes.mensaje = mensajes;
+
+    const builder = new xml2js.Builder();
+    const xmlFinal = builder.buildObject(result);
+    fs.writeFileSync(rutaXml, xmlFinal, 'utf-8')
+}
+
+
+module.exports = { agregarMensaje, leerMensajes, mensajeBajoStock };
