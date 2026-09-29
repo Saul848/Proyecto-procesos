@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <empleados>
   <empleado>
-    <id>1</id>
-    <nombre>Rogelio Lopez Gonzales</nombre>
-    <puesto>empleado</puesto>
-    <telefono>3453244576</telefono>
-    <usuario>roger01</usuario>
-    <password>rogelio123</password>
-    <numVentas>8</numVentas>
-    <numTransacciones>6</numTransacciones>
-  </empleado>
-  <empleado>
     <id>2</id>
     <nombre>Martha Garcia Morales</nombre>
     <puesto>administrador</puesto>

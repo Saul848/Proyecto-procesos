@@ -655,7 +655,6 @@ function prepararSeccionMod(id){
  * y que devuelve los estados de los inputs a la normalidad cuando se da click sobre ellos.
  * 
  */
-
 document.addEventListener("click", function(event){
     let empleadoSeleccionado= event.target.closest('.panelEmpleado')
     if(empleadoSeleccionado){
@@ -799,3 +798,32 @@ function limpiarCamposMod(){
         }
     });
 }
+
+
+/**
+ * Listener para el botón que habilita el modal para realizar una devolución
+ */
+document.getElementById("btnDevo").addEventListener('click', ()=> {
+    document.getElementById('formDevolucion').style.display = 'flex';
+});
+
+/**
+ * Listener para ocultar el modal de devolucion
+ */
+document.getElementById('cancelarDevolucion').addEventListener('click', () => {
+    document.getElementById('formDevolucion').style.display = 'none';
+});
+
+
+/**
+ * Lógica detrás del envio de mensajes
+ */
+document.getElementById('confirmarDevolucion').addEventListener('click', () => {
+    const motivo = document.getElementById("inpMotivoDevo").value;
+    const id = document.getElementById("inpIdProducto").value;
+    const cantidad = document.getElementById("inpCantidadProducto").value;
+
+    console.log("Motivo: "+ motivo);
+    console.log("Cantidad: "+cantidad);
+    console.log("id: "+id);
+});
