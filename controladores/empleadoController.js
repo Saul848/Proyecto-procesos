@@ -6,6 +6,7 @@
  */
 
 const empleadoDao = require("../dao/empleadoDao");
+const accesoDao = require("../dao/accesoDao");
 
 /**
  * Funcion que verifica si se obtuvieron los datos de los empleados del lado del servidor
@@ -193,6 +194,8 @@ exports.loginEmpleado = async (req, res) => {
                 mensaje: "Usuario o contraseña incorrectos."
             });
         }
+
+        await accesoDao.registrarAcceso(empleadoEncontrado.nombre, empleadoEncontrado.usuario, empleadoEncontrado.puesto, 'entrada');
 
         // Si coincide, regresamos los datos necesarios para la sesión
         return res.status(200).json({
