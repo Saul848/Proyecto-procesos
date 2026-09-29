@@ -119,4 +119,12 @@
     <puesto>gerente</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-09-29</fecha>
+    <hora>14:29:31</hora>
+    <nombre>d</nombre>
+    <usuario>sde</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
