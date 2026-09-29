@@ -7,4 +7,18 @@
     <nombre_producto>emmanens</nombre_producto>
     <tipo>BAJA</tipo>
   </movimiento>
+  <movimiento id="2">
+    <fecha>29/9/2026</fecha>
+    <hora>3:21:13 p.m.</hora>
+    <id_producto>4</id_producto>
+    <nombre_producto>d</nombre_producto>
+    <tipo>MERMA: CADUCADO (2 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="3">
+    <fecha>29/9/2026</fecha>
+    <hora>3:21:44 p.m.</hora>
+    <id_producto>3</id_producto>
+    <nombre_producto>teclado mecánico rgb</nombre_producto>
+    <tipo>MERMA: CADUCADO (1 UNIDADES)</tipo>
+  </movimiento>
 </movimientos>

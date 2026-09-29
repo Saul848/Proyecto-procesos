@@ -315,6 +315,82 @@ function eliminarProducto(id) {
         throw error;
     }
 }
+/**
+ * Realiza un ajuste de inventario por merma o daño, descontando el stock 
+ * y registrando el motivo en los movimientos.
+ * @param {Object} datosAjuste Datos del ajuste.
+ * @param {number|string} datosAjuste.idProducto iD del producto a ajustar.
+ * @param {number} datosAjuste.cantidadAjustar Cantidad a descontar por merma/daño.
+ * @param {string} datosAjuste.causa Motivo o causa del ajuste (ej. Caducado, Dañado).
+ * @returns {Object} Resultado de la operación.
+ */
+function ajustarInventarioMerma(datosAjuste) {
+    try {
+        const idNumero = Number(datosAjuste.idProducto);
+        const cantidadMerma = Number(datosAjuste.cantidadAjustar);
+
+        if (isNaN(idNumero) || isNaN(cantidadMerma) || cantidadMerma <= 0) {
+            return { ok: false, mensaje: "Datos de ajuste no válidos." };
+        }
+
+        if (!fs.existsSync(archivo)) {
+            return { ok: false, mensaje: "El archivo XML de productos no existe." };
+        }
+
+        const xml = fs.readFileSync(archivo, "utf8");
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            attributeNamePrefix: "@_",
+            isArray: (tagName) => ['producto'].includes(tagName)
+        });
+
+        const resultado = parser.parse(xml);
+        const productos = resultado.productos?.producto || [];
+
+        const producto = productos.find(prod => Number(prod["@_id"]) === idNumero);
+
+        if (!producto) {
+            return { ok: false, mensaje: "Producto no encontrado." };
+        }
+
+        let stockActual = Number(producto.stock) || 0;
+
+        if (stockActual < cantidadMerma) {
+            return { ok: false, mensaje: `Stock insuficiente. Stock actual: ${stockActual}` };
+        }
+
+        // Descontar la cantidad de stock
+        producto.stock = stockActual - cantidadMerma;
+
+        // Guardar cambios en productos.xml
+        const builder = new XMLBuilder({
+            format: true,
+            ignoreAttributes: false,
+            attributeNamePrefix: "@_"
+        });
+        fs.writeFileSync(archivo, builder.build(resultado), "utf8");
+
+        // Registrar el movimiento de merma/daño
+        const date = new Date();
+        const movimientoProd = {
+            fecha: date.toLocaleDateString(),
+            hora: date.toLocaleTimeString(),
+            id_producto: idNumero,
+            nombre_producto: producto.nombre,
+            tipo: `MERMA: ${datosAjuste.causa} (${cantidadMerma} unidades)`
+        };
+
+        if (typeof movimientoProdDao.agregarMovimiento === 'function') {
+            movimientoProdDao.agregarMovimiento(movimientoProd);
+        }
+
+        return { ok: true, mensaje: "Ajuste de inventario realizado correctamente." };
+
+    } catch (error) {
+        console.error("Error al ajustar inventario por merma:", error);
+        throw error;
+    }
+}
 
 
 module.exports = {
@@ -323,7 +399,8 @@ module.exports = {
     existeProductoId,
     obtenerProductos,
     obtenerReporteInventario,
-    eliminarProducto
+    eliminarProducto,
+    ajustarInventarioMerma
 };
 
 

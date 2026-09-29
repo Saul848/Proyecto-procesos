@@ -24,5 +24,10 @@ router.get("/", productoControlador.consultarCatalogo);
 router.delete("/:id", productoControlador.eliminarProducto);
 
 router.get("/inventario-reportes", productoControlador.consultarInventarioYReportes);
+/**
+ * @name POST /merma
+ * @description Realiza un ajuste de inventario por merma o daño especificando la causa.
+ */
+router.post("/merma", productoControlador.ajustarMerma);
 
 module.exports = router;
