@@ -24,10 +24,16 @@
   <div class="main-container">
     <!-- Encabezado -->
     <header class="header">
-      <div><h1>Menu Administrador/Productos</h1></div>
-      <div>
-        <button id="btn-logout">salir</button>
-        <button id="btnMensajes">Mensajes/button>
+      <div id="title">
+      <h1>Menu Administrador/Productos</h1>
+      </div>
+      <div id="seccion-botones">
+        <button class="icon-btn" id="btn-mensajes">
+          <img src="/img/icon-mensaje.svg" alt="Imagen de mensaje">
+        </button>
+      <button class="icon-btn" id="btn-cerrar-sesion">
+        <img src="/img/icon-salida.svg" alt="Imagen de cerrar sesion">
+      </button>
       </div>
     </header>
 
@@ -39,8 +45,8 @@
 
         <div class="search-bar">
           <h2>Buscar producto</h2>
-          <input type="text" id="id_busqueda" placeholder="Ingresar nombre o id">
-          <button class="btn-primary">Buscar</button>
+          <input type="text" id="info_busqueda" placeholder="Ingresar nombre o id">
+          <button class="btn-primary" id="btn-buscar-producto">Buscar</button>
           <div class="campo" id="campo-categoria">
             <select id="selec-categoria-producto" name="categoriaProducto">
             </select>
