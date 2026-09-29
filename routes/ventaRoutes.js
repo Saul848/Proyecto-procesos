@@ -50,4 +50,10 @@ router.post("/confirmar", ventaControlador.procesarVenta);
  */
 router.get("/folio/siguiente", ventaControlador.obtenerProximoFolio);
 
+/**
+ * @name GET /historial
+ * @description Obtiene el historial de ventas filtrado por rango de fechas o empleado
+ */
+router.get("/historial", ventaControlador.obtenerHistorialVentas);
+
 module.exports = router;

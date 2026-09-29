@@ -114,10 +114,41 @@ function obtenerProximoFolio(req, res) {
         res.status(500).json({ siguienteFolio: "1" });
     }
 }
+/**
+ * Obtiene el historial de ventas filtrado por rango de fechas o empleado.
+ * @param {Object} req  Objeto de petición HTTP (puede incluir query params: fechaInicio, fechaFin, idEmpleado).
+ * @param {Object} res  Objeto de respuesta HTTP.
+ */
+function obtenerHistorialVentas(req, res) {
+    try {
+        const { fechaInicio, fechaFin, idEmpleado } = req.query;
+
+        const filtros = {
+            fechaInicio,
+            fechaFin,
+            idEmpleado
+        };
+
+        const ventasFiltradas = ventaDao.obtenerHistorialVentas(filtros);
+
+        return res.status(200).json({
+            ok: true,
+            mensaje: "Historial de ventas obtenido correctamente",
+            data: ventasFiltradas
+        });
+    } catch (error) {
+        console.error("Error en el controlador al obtener historial de ventas:", error);
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error en el servidor al intentar obtener el historial de ventas"
+        });
+    }
+}
 
 module.exports = {
     obtenerEstadoCaja,
     cambiarEstadoCaja,
     procesarVenta,
-    obtenerProximoFolio
+    obtenerProximoFolio,
+    obtenerHistorialVentas
 };
