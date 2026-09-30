@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <empleados>
   <empleado>
+    <id>1</id>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <puesto>empleado</puesto>
+    <telefono>3453244576</telefono>
+    <usuario>roger01</usuario>
+    <password>rogelio123</password>
+    <numVentas>11</numVentas>
+    <numTransacciones>9</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>2</id>
+    <nombre>Martha Garcia Morales</nombre>
+    <puesto>administrador</puesto>
+    <telefono>4564342365</telefono>
+    <usuario>martha01</usuario>
+    <password>martha123</password>
+    <numVentas>6</numVentas>
+    <numTransacciones>5</numTransacciones>
+  </empleado>
+  <empleado>
     <id>3</id>
     <nombre>Ruben Flores Martinez</nombre>
     <puesto>gerente</puesto>

@@ -211,9 +211,67 @@ const eliminarProducto = async (req, res) => {
     }
 };
 
+/**
+ * Realiza el ajuste de inventario por merma o daño de un producto.
+ * 
+ * @async
+ * @function ajustarMerma
+ * @param {Object} req - Objeto de petición HTTP con idProducto, cantidadAjustar y causa en el cuerpo.
+ * @param {Object} res - Objeto de respuesta HTTP.
+ * @returns {Promise<void>} Respuesta HTTP indicando el resultado del ajuste.
+ */
+const ajustarMerma = async (req, res) => {
+    try {
+        const { idProducto, cantidadAjustar, causa } = req.body;
+
+        if (!idProducto || !cantidadAjustar || !causa || causa.trim() === "") {
+            return res.status(400).json({
+                ok: false,
+                mensaje: "Faltan datos obligatorios (idProducto, cantidadAjustar, causa)."
+            });
+        }
+
+        // Verificar si el producto existe
+        const productoExiste = await productoDao.existeProductoId(idProducto);
+        if (!productoExiste) {
+            return res.status(404).json({
+                ok: false,
+                mensaje: "El ID del producto no se encuentra registrado."
+            });
+        }
+
+        // Ejecutar el ajuste en el DAO
+        const resultadoAjuste = productoDao.ajustarInventarioMerma({
+            idProducto,
+            cantidadAjustar: Number(cantidadAjustar),
+            causa: causa.trim()
+        });
+
+        if (resultadoAjuste.ok) {
+            return res.status(200).json({
+                ok: true,
+                mensaje: resultadoAjuste.mensaje
+            });
+        } else {
+            return res.status(400).json({
+                ok: false,
+                mensaje: resultadoAjuste.mensaje
+            });
+        }
+
+    } catch (error) {
+        console.error("Error en el servidor al ajustar inventario por merma:", error);
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error en el servidor al realizar el ajuste de inventario."
+        });
+    }
+};
+
 module.exports = {
     agregarProducto,
     consultarCatalogo,
     consultarInventarioYReportes,
-    eliminarProducto
+    eliminarProducto,
+    ajustarMerma
 };
