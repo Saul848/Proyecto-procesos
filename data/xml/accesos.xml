@@ -1,1 +1,146 @@
-<accesos></accesos>
+<accesos>
+  <acceso>
+    <fecha>2026-09-29</fecha>
+    <hora>17:36:10</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-29</fecha>
+    <hora>17:53:37</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>18:12:46</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>18:49:32</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>18:49:49</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>18:50:44</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>18:53:57</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:03:24</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:03:36</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:03:53</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:08:56</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:08:59</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:09:13</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:10:09</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:11:43</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:30:44</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>20:34:56</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-09-30</fecha>
+    <hora>22:46:22</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>salida</evento>
+  </acceso>
+</accesos>

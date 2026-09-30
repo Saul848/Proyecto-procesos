@@ -58,14 +58,35 @@
   <venta id="7">
     <fecha>2026-09-27T00:41:48.925Z</fecha>
     <idEmpleado>1</idEmpleado>
-    <total>76.50</total>
+    <total>76.5</total>
+    <items>
+      <item idProducto="2">
+        <nombre>Mouse Óptico Inalámbrico</nombre>
+        <precioUnitario>25.5</precioUnitario>
+        <descuento>0%</descuento>
+        <cantidad>3</cantidad>
+        <subtotal>76.5</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="8">
+    <fecha>2026-09-30T02:35:30.666Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>51.00</total>
     <items>
       <item idProducto="2">
         <nombre>Mouse Óptico Inalámbrico</nombre>
         <precioUnitario>25.50</precioUnitario>
         <descuento>0%</descuento>
-        <cantidad>3</cantidad>
-        <subtotal>76.50</subtotal>
+        <cantidad>1</cantidad>
+        <subtotal>25.50</subtotal>
+      </item>
+      <item idProducto="10">
+        <nombre>atun</nombre>
+        <precioUnitario>25.50</precioUnitario>
+        <descuento>0%</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>25.50</subtotal>
       </item>
     </items>
   </venta>

@@ -10,7 +10,7 @@
     <nombre>Mouse Óptico Inalámbrico</nombre>
     <descripcion>Diseño ergonómico con batería recargable y clicks silenciosos.</descripcion>
     <precio>25.5</precio>
-    <stock>117</stock>
+    <stock>116</stock>
   </producto>
   <producto id="3">
     <nombre>Teclado Mecánico RGB</nombre>
@@ -61,7 +61,7 @@
     <descripcion>lata 100 gramos</descripcion>
     <categoria>enlatados</categoria>
     <precio>25.5</precio>
-    <stock>100</stock>
+    <stock>99</stock>
   </producto>
   <producto id="11">
     <nombre>cloro</nombre>
