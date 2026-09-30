@@ -1,0 +1,146 @@
+/* Estilo general de la barra de sesión de empleado*/
+.barra-sesion-empleado {
+    display: flex;
+    justify-content: space-between; /* Manda un bloque a la izquierda y otro a la derecha */
+    align-items: center;            /* Los centra verticalmente */
+    background-color: #78b4f2;      /* Un tono celeste */
+    color: #ffffff;                 /* Texto blanco */
+    padding: 15px 30px;             /* Espaciado interno arriba/abajo y a los lados */
+    font-family: sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Una ligera sombrita abajo */
+}
+
+/* Estilo para el texto de bienvenida de la izquierda */
+.barra-sesion-empleado strong {
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+.barra-sesion-empleado span {
+    font-size: 1rem;
+}
+
+/* Contenedor de los botones de la derecha */
+.barra-sesion-empleado > div:nth-child(2) > div {
+    display: flex;
+    gap: 12px; /* Espacio entre el botón de mensajes y el de cerrar sesión */
+    align-items: center;
+}
+
+/* Estilo para los botones (cuadrados blancos con iconos/texto) */
+.barra-sesion-empleado  button {
+    background-color: #ffffff;
+    color: #333333;
+    border: none;
+    border-radius: 6px;             /* Bordes ligeramente redondeados */
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+/* Efecto al pasar el ratón por encima de los botones */
+.barra-sesion-empleado  button:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilo general de la barra de sesión de gerente */
+.barra-sesion-gerente {
+    display: flex;
+    justify-content: space-between; /* Manda un bloque a la izquierda y otro a la derecha */
+    align-items: center;            /* Los centra verticalmente */
+    background-color: #9b7bb2;      /* Un tono lila/morado similar al de tu imagen */
+    color: #ffffff;                 /* Texto blanco */
+    padding: 15px 30px;             /* Espaciado interno arriba/abajo y a los lados */
+    font-family: sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Una ligera sombrita abajo */
+}
+
+/* Estilo para el texto de bienvenida de la izquierda */
+.barra-sesion-gerente strong {
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+.barra-sesion-gerente span {
+    font-size: 1rem;
+}
+
+/* Contenedor de los botones de la derecha */
+.barra-sesion-gerente > div:nth-child(2) > div {
+    display: flex;
+    gap: 12px; /* Espacio entre el botón de mensajes y el de cerrar sesión */
+    align-items: center;
+}
+
+/* Estilo para los botones (cuadrados blancos con iconos/texto) */
+.barra-sesion-gerente button {
+    background-color: #ffffff;
+    color: #333333;
+    border: none;
+    border-radius: 6px;             /* Bordes ligeramente redondeados */
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+/* Efecto al pasar el ratón por encima de los botones */
+.barra-sesion-gerente button:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilo general de la barra de sesión de administrador */
+.barra-sesion-administrador {
+    display: flex;
+    justify-content: space-between; /* Manda un bloque a la izquierda y otro a la derecha */
+    align-items: center;            /* Los centra verticalmente */
+    background-color: #FDE46FFF;      /* Un tono amarillo */
+    color: #000000;                 /* Texto blanco */
+    padding: 15px 30px;             /* Espaciado interno arriba/abajo y a los lados */
+    font-family: sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Una ligera sombrita abajo */
+}
+
+/* Estilo para el texto de bienvenida de la izquierda */
+.barra-sesion-administrador strong {
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+.barra-sesion-administrador span {
+    font-size: 1rem;
+}
+
+/* Contenedor de los botones de la derecha */
+.barra-sesion-administrador > div:nth-child(2) > div {
+    display: flex;
+    gap: 12px; /* Espacio entre el botón de mensajes y el de cerrar sesión */
+    align-items: center;
+}
+
+/* Estilo para los botones (cuadrados blancos con iconos/texto) */
+.barra-sesion-administrador button {
+    background-color: #ffffff;
+    color: #333333;
+    border: none;
+    border-radius: 6px;             /* Bordes ligeramente redondeados */
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+/* Efecto al pasar el ratón por encima de los botones */
+.barra-sesion-administrador button:hover {
+    background-color: #f0f0f0;
+}
