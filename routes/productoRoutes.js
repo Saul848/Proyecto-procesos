@@ -30,4 +30,10 @@ router.get("/inventario-reportes", productoControlador.consultarInventarioYRepor
  */
 router.post("/merma", productoControlador.ajustarMerma);
 
+/** 
+ * @name PUT
+ * Modifica los datos de un producto existente.
+ */
+router.put('/:id', productoControlador.actualizarProducto);
+
 module.exports = router;
