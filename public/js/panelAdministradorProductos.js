@@ -1,4 +1,4 @@
-import { inicializarModalProducto, abrirModalProducto } from './modal_agregar_producto.js';
+import { inicializarModalProducto, abrirModalProducto, abrirModalEditarProducto } from './modal_agregar_producto.js';
 import { inicializarModalCategoria, abrirModalCategoria } from './modal_agregar_categoria.js';
 
 const contenedorModal = document.getElementById("contenedor-modal");
@@ -11,7 +11,7 @@ fetch("../html/modal_agregar_producto.html")
     .then(respuesta => respuesta.text())
     .then(html => {
         contenedorModal.insertAdjacentHTML('beforeend', html);
-        inicializarModalProducto();
+        inicializarModalProducto(mostrarProductos);
     })
     .catch(error => console.error("Error al cargar modal producto:", error));
 
@@ -56,20 +56,39 @@ if (btnBuscarProducto) {
         buscarProducto();
     });
 }
+// Manejador de eventos delegado para la lista interactiva de productos.
 
 document.querySelector(".product-list").addEventListener("click", (event) => {
-    const boton = event.target.closest(".btn-eliminar");
+    // 1. Eliminar
+    const botonEliminar = event.target.closest(".btn-eliminar");
+    if (botonEliminar) {
+        const idProducto = Number(botonEliminar.dataset.id);
+        const confirmar = confirm("¿Estás seguro de que deseas eliminar este producto?");
+        if (confirmar) {
+            eliminarProducto(idProducto);
+        }
+        return;
+    }
 
-    if (!boton) return;
+    // 2. Editar
+    const botonEditar = event.target.closest(".btn-editar");
+    if (botonEditar) {
+        const idBuscado = String(botonEditar.dataset.id).trim();
 
-    const idProducto = Number(boton.dataset.id);
+        const productoSeleccionado = listaProductos.find(p => {
+            const idActual = String(p.id !== undefined ? p.id : p['@_id']).trim();
+            return idActual === idBuscado;
+        });
 
-    const confirmar = confirm("¿Estás seguro de que deseas eliminar este producto?");
-
-    if (!confirmar) return;
-
-    eliminarProducto(idProducto);
+        if (productoSeleccionado) {
+            abrirModalEditarProducto(productoSeleccionado);
+        } else {
+            alert(`No se encontró el producto con ID: ${idBuscado}`);
+        }
+    }
 });
+
+
 
 /**
  * Carga todos los productos desde la API y los almacena
