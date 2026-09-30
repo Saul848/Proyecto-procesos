@@ -98,6 +98,8 @@ function obtenerEmpleadoPorUsuario(usuario) {
     }
 }
 
+
+
 /**
  * Agrega un nuevo empleado a la base de datos.
  * 
@@ -379,7 +381,6 @@ module.exports = {
     obtenerEmpleados,
     obtenerEmpleado,
     agregarEmpleado,
-    actualizarDatos,
     obtenerReporteDesempeno,
     obtenerEmpleadoPorUsuario,
     actualizarEmpleado,

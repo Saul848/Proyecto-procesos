@@ -58,14 +58,56 @@
   <venta id="7">
     <fecha>2026-09-27T00:41:48.925Z</fecha>
     <idEmpleado>1</idEmpleado>
-    <total>76.50</total>
+    <total>76.5</total>
     <items>
       <item idProducto="2">
         <nombre>Mouse Óptico Inalámbrico</nombre>
-        <precioUnitario>25.50</precioUnitario>
+        <precioUnitario>25.5</precioUnitario>
         <descuento>0%</descuento>
         <cantidad>3</cantidad>
-        <subtotal>76.50</subtotal>
+        <subtotal>76.5</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="8">
+    <fecha>2026-09-27T04:13:07.321Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>2500</total>
+    <items>
+      <item idProducto="1">
+        <nombre>Laptop Gamer Avanzada</nombre>
+        <precioUnitario>1250</precioUnitario>
+        <descuento>0%</descuento>
+        <cantidad>2</cantidad>
+        <subtotal>2500</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="9">
+    <fecha>2026-09-28T04:14:02.453Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>2500</total>
+    <items>
+      <item idProducto="1">
+        <nombre>Laptop Gamer Avanzada</nombre>
+        <precioUnitario>1250</precioUnitario>
+        <descuento>0%</descuento>
+        <cantidad>2</cantidad>
+        <subtotal>2500</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="10">
+    <fecha>2026-09-28T04:23:22.602Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>1250.00</total>
+    <items>
+      <item idProducto="1">
+        <nombre>Laptop Gamer Avanzada</nombre>
+        <precioUnitario>1250.00</precioUnitario>
+        <descuento>2x1</descuento>
+        <cantidad>2</cantidad>
+        <subtotal>1250.00</subtotal>
       </item>
     </items>
   </venta>

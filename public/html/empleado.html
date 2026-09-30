@@ -14,8 +14,19 @@
 </head>
 <body>
 
+<<<<<<< HEAD
     <header class="barra-sesion-empleado">
         <div>
+=======
+    
+    <!-- ====================================================================
+    1. BARRA SUPERIOR DE SESIÓN
+    Muestra la identidad de la tienda, saludo al empleado activo,
+    acceso a la mensajería interna y botón para cerrar sesión.
+    ==================================================================== -->
+    <header class="barra-sesion">
+        <div class="sesion-info">
+>>>>>>> 739361443831361d661b7a3d849565ae3e9b1221
             <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Empleado</span></span>
         </div>
 
@@ -35,7 +46,7 @@
         <!-- Cabecera del módulo con indicador de estado de caja -->
         <header class="header">
             <h1><i class="fa-solid fa-cash-register"></i> Punto de Venta</h1>
-            <div class="caja-status">
+            <div class="caja-status" style="display: flex; align-items: center; gap: 10px;">
                 <span id="cajaDot" class="status-dot"></span>
                 <span id="cajaTexto">Caja Abierta</span>
 
@@ -51,6 +62,10 @@
                 </button> 
 
                 <button id="btnToggleCaja" class="btn-toggle-caja">Cerrar Caja</button>
+                <button type="button" id="btnToggleCaja" class="btn-toggle-caja">Cerrar Caja</button>
+                <button type="button" id="btnHistorialVentas" class="btn-toggle-caja" onclick="abrirHistorialVentas()">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Historial / Reimprimir
+                </button>
             </div>
         </header>
 
@@ -59,7 +74,7 @@
 
             
             <!--PANEL IZQUIERDO: Catálogo de Productos y Búsqueda-->
-                 
+            
             <section class="products-panel">
                 <!-- Barra de búsqueda por texto o ID -->
                 <div class="search-header-bar">
@@ -217,5 +232,69 @@
     <script src="../js/venta.js"></script>
     <script src="../js/movimientoCaja.js"></script>
     <script src="../js/cerrar_sesion.js"></script>
+    <!-- Modal 3: Historial de Ventas -->
+<div id="modalHistorialVentas" class="modal-overlay">
+    <div class="modal-historial-card">
+        <div class="modal-historial-header">
+            <h3><i class="fa-solid fa-receipt"></i> Historial de Ventas</h3>
+            <button type="button" class="btn-cerrar-icono" onclick="cerrarModalHistorial()">&times;</button>
+        </div>
+
+        <div class="filtro-historial-contenedor">
+            <input type="text" id="filtroHistorial" placeholder="Buscar por Folio / ID de venta..." oninput="filtrarHistorialVentas()">
+        </div>
+
+        <div class="tabla-historial-scroll">
+            <table class="tabla-historial">
+                <thead>
+                    <tr>
+                        <th>Folio / ID</th>
+                        <th>Fecha y Hora</th>
+                        <th>Total</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaHistorialCuerpo"></tbody>
+            </table>
+        </div>
+        
+        <div class="modal-historial-footer">
+            <button type="button" onclick="cerrarModalHistorial()" class="btn-cerrar-secundario">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 4: Corroboración de Ticket -->
+<div id="modalCorroborarTicket" class="modal-overlay">
+    <div class="modal-ticket-card">
+        <div id="areaTicketReimpresion" class="ticket-impresion-cuerpo">
+            <div class="ticket-impresion-encabezado">
+                <strong>CADENA COMERCIAL OXXO</strong>
+                <span>*** REIMPRESIÓN DE TICKET ***</span>
+            </div>
+            <div id="detalleTicketReimpresion"></div>
+            <div class="ticket-impresion-pie">
+                <p>Copia para comprobación del cliente</p>
+            </div>
+        </div>
+
+        <div class="ticket-acciones-botones">
+            <button type="button" id="btnImprimirTicketCompra" class="btn-imprimir-ticket" onclick="ejecutarReimpresionTicket()">
+                <i class="fa-solid fa-print"></i> Imprimir ticket de compra
+            </button>
+            <button type="button" class="btn-volver-ticket" onclick="cerrarModalCorroborar()">
+                Volver
+            </button>
+        </div>
+    </div>
+</div>
+
+
+    <!--4. CARGA DE SCRIPTS
+    Se cargan en orden: lógica general del empleado, gestión de sesión,
+    y lógica operativa del punto de venta con ofertas integradas.-->
+    <script src="../js/empleado.js"></script>
+    <script src="../js/venta.js"></script>
+    <script type="module" src="../js/cerrar_sesion.js"></script>
 </body>
 </html>

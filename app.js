@@ -14,6 +14,8 @@ const productoRoutes = require("./routes/productoRoutes");
 const ventaRoutes = require("./routes/ventaRoutes");
 const mensajeRoutes = require ("./routes/mensajeRoutes");
 
+const movimientoProdRoutes = require("./routes/movimientosProdRoutes");//////////////
+
 // const empleadoRoute
 const empleadoRoutes = require("./routes/empleadoRoutes");
 
@@ -23,6 +25,10 @@ const ofertaRoutes = require("./routes/ofertaRoutes");
 const categoriaRoutes = require("./routes/categoriaRoutes");
 //cajas
 const cajasRoutes = require("./routes/cajasRoutes");
+
+const accesoControlador = require("./controladores/accesoControlador");
+
+const path = require('path');
 
 const app = express();
 /**
@@ -39,6 +45,9 @@ app.use('/data', express.static(path.join(__dirname, 'data')));
 // app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);
 app.use("/api/ventas", ventaRoutes);
+
+// Consulta de movimientos sobre inventario
+app.use("/api/movimientosProd", movimientoProdRoutes); 
 
 /**
  * Montaje del enrutador de alumnos en la ruta base de la API.
@@ -63,6 +72,8 @@ app.use("/api/mensajes", mensajeRoutes);
 
 
 app.use("/api/cajas", cajasRoutes);
+app.post('/api/accesos/registrar', accesoControlador.registrarAcceso);
+app.get('/api/accesos', accesoControlador.obtenerAccesos);
 
 /**
  * Puerto de escucha predeterminado del servidor.

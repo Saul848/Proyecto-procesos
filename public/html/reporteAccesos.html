@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Accesos del Sistema</title>
+    <link rel="stylesheet" href="../css/reporteAccesos.css">
+</head>
+<body>
+    <h1>Reporte de Accesos al Sistema</h1>
+
+    <a href="./panelAdministradorProductos.html">Volver al inicio</a>
+
+    <br><br>
+
+    <input type="text" id="filtroUsuario" placeholder="Filtrar por usuario...">
+    <select id="filtroPuesto">
+        <option value="">Todos los puestos</option>
+        <option value="administrador">Administrador</option>
+        <option value="gerente">Gerente</option>
+        <option value="empleado">Empleado</option>
+    </select>
+    <select id="filtroEvento">
+        <option value="">Todos los eventos</option>
+        <option value="entrada">Entradas</option>
+        <option value="salida">Salidas</option>
+    </select>
+    <button onclick="cargarAccesos()">Buscar</button>
+
+    <br><br>
+
+        <table id="tablaAccesos">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Usuario</th>
+                    <th>Puesto</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Evento</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTabla">
+                <tr>
+                    <td>Cargando accesos...</td>
+                </tr>
+            </tbody>
+        </table>
+    <script src="../js/reporteAccesos.js"></script>
+</body>
+</html>

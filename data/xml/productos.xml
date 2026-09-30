@@ -4,58 +4,52 @@
     <nombre>Laptop Gamer Avanzada</nombre>
     <descripcion>Procesador de última generación, 16GB RAM, 512GB SSD.</descripcion>
     <precio>1250</precio>
-    <stock>11</stock>
+    <stock>4</stock>
     <descuento></descuento>
+    <stock>13</stock>
   </producto>
   <producto id="2">
     <nombre>Mouse Óptico Inalámbrico</nombre>
     <descripcion>Diseño ergonómico con batería recargable y clicks silenciosos.</descripcion>
     <precio>25.5</precio>
-    <stock>110</stock>
-    <descuento>0.5</descuento>
+    <stock>116</stock>
   </producto>
   <producto id="3">
     <nombre>Teclado Mecánico RGB</nombre>
     <descripcion>Teclas con switches independientes y retroiluminación personalizada.</descripcion>
     <precio>79.99</precio>
     <stock>43</stock>
-    <descuento></descuento>
   </producto>
   <producto id="4">
     <nombre>d</nombre>
     <descripcion>d</descripcion>
     <precio>11</precio>
-    <stock>10</stock>
-    <descuento></descuento>
+    <stock>9</stock>
   </producto>
   <producto id="5">
     <nombre>a</nombre>
     <descripcion>a</descripcion>
     <precio>41.99</precio>
     <stock>99</stock>
-    <descuento></descuento>
   </producto>
   <producto id="6">
     <nombre>fresas</nombre>
     <descripcion>400 gramos</descripcion>
     <precio>41.99</precio>
-    <stock>97</stock>
-    <descuento></descuento>
+    <stock>99</stock>
   </producto>
   <producto id="7">
     <nombre>fresas con crema</nombre>
     <descripcion>33 gramos</descripcion>
     <precio>41.22</precio>
-    <stock>108</stock>
-    <descuento>0.1</descuento>
+    <stock>109</stock>
   </producto>
   <producto id="8">
     <nombre>papas</nombre>
     <descripcion>200g</descripcion>
     <categoria>snacks</categoria>
     <precio>20</precio>
-    <stock>34</stock>
-    <descuento>0</descuento>
+    <stock>38</stock>
   </producto>
   <producto id="9">
     <nombre>sardina</nombre>
@@ -63,15 +57,13 @@
     <categoria>enlatados</categoria>
     <precio>40</precio>
     <stock>25</stock>
-    <descuento>0</descuento>
   </producto>
   <producto id="10">
     <nombre>atun</nombre>
     <descripcion>lata 100 gramos</descripcion>
     <categoria>enlatados</categoria>
     <precio>25.5</precio>
-    <stock>100</stock>
-    <descuento>0</descuento>
+    <stock>99</stock>
   </producto>
   <producto id="11">
     <nombre>cloro</nombre>
@@ -79,22 +71,12 @@
     <categoria>limpieza</categoria>
     <precio>24</precio>
     <stock>50</stock>
-    <descuento>0</descuento>
   </producto>
   <producto id="12">
     <nombre>emmanens</nombre>
     <descripcion>empaque de 40 gramos</descripcion>
     <categoria>dulceria</categoria>
     <precio>15</precio>
-    <stock>22</stock>
-    <descuento>0</descuento>
-  </producto>
-  <producto id="13">
-    <nombre>bebida energética</nombre>
-    <descripcion>400 ml</descripcion>
-    <categoria>bebidas</categoria>
-    <precio>25</precio>
-    <stock>30</stock>
-    <descuento>0</descuento>
+    <stock>25</stock>
   </producto>
 </productos>

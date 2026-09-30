@@ -84,6 +84,7 @@ function procesarVenta(req, res) {
             metodoPago: metodoPago || "Efectivo",
             items
         });
+        
 
         res.status(200).json({
             ok: true,
@@ -115,10 +116,86 @@ function obtenerProximoFolio(req, res) {
         res.status(500).json({ siguienteFolio: "1" });
     }
 }
+/**
+ * Obtiene el historial de ventas filtrado por rango de fechas o empleado.
+ * @param {Object} req  Objeto de petición HTTP (puede incluir query params: fechaInicio, fechaFin, idEmpleado).
+ * @param {Object} res  Objeto de respuesta HTTP.
+ */
+function obtenerHistorialVentas(req, res) {
+    try {
+        const { fechaInicio, fechaFin, idEmpleado } = req.query;
+
+        const filtros = {
+            fechaInicio,
+            fechaFin,
+            idEmpleado
+        };
+
+        const ventasFiltradas = ventaDao.obtenerHistorialVentas(filtros);
+
+        return res.status(200).json({
+            ok: true,
+            mensaje: "Historial de ventas obtenido correctamente",
+            data: ventasFiltradas
+        });
+    } catch (error) {
+        console.error("Error en el controlador al obtener historial de ventas:", error);
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error en el servidor al intentar obtener el historial de ventas"
+        });
+    }
+}
+
+/**
+ * Consulta el historial completo de ventas registradas.
+ * GET /api/ventas
+ */
+function listarVentas(req, res) {
+    try {
+        const ventas = ventaDao.obtenerVentas();
+        res.json({ ok: true, ventas });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            mensaje: 'Error al obtener historial de ventas.',
+            error: error.message
+        });
+    }
+}
+
+/**
+ * Consulta una venta específica por su identificador para reimpresión.
+ * GET /api/ventas/:id
+ */
+function obtenerVentaPorId(req, res) {
+    try {
+        const { id } = req.params;
+        const venta = ventaDao.obtenerVentaPorId(id);
+
+        if (!venta) {
+            return res.status(404).json({
+                ok: false,
+                mensaje: 'Venta no encontrada.'
+            });
+        }
+
+        res.json({ ok: true, venta });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            mensaje: 'Error al obtener la venta.',
+            error: error.message
+        });
+    }
+}
 
 module.exports = {
     obtenerEstadoCaja,
     cambiarEstadoCaja,
     procesarVenta,
-    obtenerProximoFolio
+    obtenerProximoFolio,
+    listarVentas,
+    obtenerVentaPorId,
+    obtenerHistorialVentas
 };

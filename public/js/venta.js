@@ -571,3 +571,103 @@ function mostrarTicketModal(ticket) {
 
     modalTicket.style.display = "flex";
 }
+/* HISTORIAL Y REIMPRESIÓN DE TICKETS */
+
+let ventasHistorialCache = [];
+
+async function abrirHistorialVentas() {
+    try {
+        const res = await fetch("/api/ventas");
+        const data = await res.json();
+        ventasHistorialCache = data.ventas || [];
+        renderizarHistorial(ventasHistorialCache);
+        document.getElementById("modalHistorialVentas").style.display = "flex";
+    } catch (e) {
+        alert("Error al cargar el historial de ventas.");
+    }
+}
+
+function cerrarModalHistorial() {
+    document.getElementById("modalHistorialVentas").style.display = "none";
+}
+
+function renderizarHistorial(lista) {
+    const tbody = document.getElementById("tablaHistorialCuerpo");
+    if (!tbody) return;
+
+    tbody.innerHTML = lista.length ? "" : `<tr><td colspan="4" style="text-align:center; padding:15px; color:#888;">Sin ventas registradas</td></tr>`;
+
+    [...lista].reverse().forEach((v) => {
+        const id = v["@_id"] || v.id || v.folio;
+        const fecha = v.fecha ? new Date(v.fecha).toLocaleString() : "N/D";
+        const total = Number(v.total || 0).toFixed(2);
+
+        tbody.innerHTML += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td><strong>#${id}</strong></td>
+                <td>${fecha}</td>
+                <td style="color:#27ae60; font-weight:bold;">$${total}</td>
+                <td style="text-align:center;">
+                    <button type="button" class="btn-toggle-caja" style="background:#3498db; padding:4px 8px; font-size:12px;" onclick="seleccionarVentaParaReimpresion('${id}')">
+                        <i class="fa-solid fa-eye"></i> Ver / Reimprimir
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function filtrarHistorialVentas() {
+    const filtro = document.getElementById("filtroHistorial").value.trim().toLowerCase();
+    const filtradas = ventasHistorialCache.filter(v => String(v["@_id"] || v.id || "").toLowerCase().includes(filtro));
+    renderizarHistorial(filtradas);
+}
+
+function seleccionarVentaParaReimpresion(idVenta) {
+    const venta = ventasHistorialCache.find(v => String(v["@_id"] || v.id) === String(idVenta));
+    if (!venta) return alert("Venta no encontrada.");
+
+    const itemsRaw = venta.items?.item || venta.productos?.producto || [];
+    const items = Array.isArray(itemsRaw) ? itemsRaw : [itemsRaw];
+
+    const filas = items.map(it => `
+        <div style="display:flex; justify-content:space-between; margin:2px 0;">
+            <span>${it.cantidad || 1}x ${it.nombre || "Prod"}</span>
+            <span>$${Number(it.subtotal || it.precioUnitario || 0).toFixed(2)}</span>
+        </div>
+    `).join("");
+
+    document.getElementById("detalleTicketReimpresion").innerHTML = `
+        <p style="margin:2px 0;"><strong>Folio:</strong> #${venta["@_id"] || venta.id}</p>
+        <p style="margin:2px 0;"><strong>Fecha:</strong> ${new Date(venta.fecha).toLocaleString()}</p>
+        <hr style="border:none; border-top:1px dashed #000; margin:6px 0;">
+        ${filas}
+        <hr style="border:none; border-top:1px dashed #000; margin:6px 0;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold;">
+            <span>TOTAL:</span>
+            <span>$${Number(venta.total).toFixed(2)}</span>
+        </div>
+    `;
+
+    document.getElementById("modalCorroborarTicket").style.display = "flex";
+}
+
+function cerrarModalCorroborar() {
+    document.getElementById("modalCorroborarTicket").style.display = "none";
+}
+
+function ejecutarReimpresionTicket() {
+    const area = document.getElementById("areaTicketReimpresion");
+    if (!area) return;
+
+    const ventana = window.open("", "_blank", "width=320,height=500");
+    if (!ventana) return alert("Habilite las ventanas emergentes en el navegador.");
+
+    ventana.document.body.innerHTML = area.innerHTML;
+    ventana.document.body.style.fontFamily = "monospace";
+    ventana.document.body.style.padding = "10px";
+
+    ventana.focus();
+    ventana.print();
+    ventana.close();
+}
