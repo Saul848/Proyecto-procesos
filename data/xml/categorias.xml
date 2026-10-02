@@ -17,4 +17,7 @@
   <categoria>
     <nombre>dulceria</nombre>
   </categoria>
+  <categoria>
+    <nombre>bebidas</nombre>
+  </categoria>
 </categorias>

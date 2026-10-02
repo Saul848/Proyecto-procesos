@@ -268,11 +268,39 @@ const ajustarMerma = async (req, res) => {
         });
     }
 };
+//Modifica la información y existencias de un producto específico en el inventario.
+async function actualizarProducto(req, res) {
+    try {
+        const { id } = req.params;
+        const datosActualizados = req.body;
+
+        const resultado = await productoDao.actualizarProducto(id, datosActualizados);
+
+        if (!resultado || !resultado.ok) {
+            return res.status(404).json({
+                ok: false,
+                mensaje: resultado?.mensaje || "Producto no encontrado."
+            });
+        }
+
+        return res.status(200).json({
+            ok: true,
+            mensaje: "Producto modificado con éxito."
+        });
+    } catch (error) {
+        console.error("Error en actualizarProducto:", error);
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error interno al actualizar el producto."
+        });
+    }
+}
 
 module.exports = {
     agregarProducto,
     consultarCatalogo,
     consultarInventarioYReportes,
     eliminarProducto,
-    ajustarMerma
+    ajustarMerma,
+    actualizarProducto
 };
