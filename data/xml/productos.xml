@@ -4,19 +4,19 @@
     <nombre>Laptop Gamer Avanzada</nombre>
     <descripcion>Procesador de última generación, 16GB RAM, 512GB SSD.</descripcion>
     <precio>1250</precio>
-    <stock>13</stock>
+    <stock>6</stock>
   </producto>
   <producto id="2">
     <nombre>Mouse Óptico Inalámbrico</nombre>
     <descripcion>Diseño ergonómico con batería recargable y clicks silenciosos.</descripcion>
     <precio>25.5</precio>
-    <stock>117</stock>
+    <stock>115</stock>
   </producto>
   <producto id="3">
     <nombre>Teclado Mecánico RGB</nombre>
     <descripcion>Teclas con switches independientes y retroiluminación personalizada.</descripcion>
     <precio>79.99</precio>
-    <stock>43</stock>
+    <stock>40</stock>
   </producto>
   <producto id="4">
     <nombre>d</nombre>
@@ -34,7 +34,7 @@
     <nombre>fresas</nombre>
     <descripcion>400 gramos</descripcion>
     <precio>41.99</precio>
-    <stock>99</stock>
+    <stock>98</stock>
   </producto>
   <producto id="7">
     <nombre>fresas con crema</nombre>

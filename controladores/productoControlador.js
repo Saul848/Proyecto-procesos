@@ -244,7 +244,8 @@ const ajustarMerma = async (req, res) => {
         const resultadoAjuste = productoDao.ajustarInventarioMerma({
             idProducto,
             cantidadAjustar: Number(cantidadAjustar),
-            causa: causa.trim()
+            causa: causa.trim(),
+            gerente: req.body.gerente
         });
 
         if (resultadoAjuste.ok) {
