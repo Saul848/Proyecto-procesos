@@ -1,8 +1,9 @@
 const Producto = require("../clases/producto");
 const idProductoDao = require("./idProductoDao");
 const movimientoProdDao = require("./movimientoProdDao");
+const empleadoDao = require("./empleadoDao"); 
 
-
+const mermaDao = require("./mermaDao"); // <--- Importarlo
 const fs = require("fs");
 const path = require('path');
 const { XMLParser, XMLBuilder } = require("fast-xml-parser");
@@ -325,12 +326,37 @@ function eliminarProducto(id) {
  * @returns {Object} Resultado de la operación.
  */
 function ajustarInventarioMerma(datosAjuste) {
+    console.log("Datos de ajuste recibidos en el DAO:", datosAjuste); // <--- Revisa la consola
     try {
+
         const idNumero = Number(datosAjuste.idProducto);
         const cantidadMerma = Number(datosAjuste.cantidadAjustar);
 
         if (isNaN(idNumero) || isNaN(cantidadMerma) || cantidadMerma <= 0) {
             return { ok: false, mensaje: "Datos de ajuste no válidos." };
+        }
+        // --- VALIDACIÓN DE GERENTE ---
+        // Obtenemos todos los empleados del XML
+        const empleados = empleadoDao.obtenerEmpleados(); 
+        const listaEmpleados = Array.isArray(empleados) ? empleados : [empleados];
+
+        // Buscamos si existe un empleado con ese nombre (o usuario) y que su puesto sea "gerente"
+        const gerenteEncontrado = listaEmpleados.find(emp => 
+            (String(emp.nombre).trim().toLowerCase() === String(datosAjuste.gerente).trim().toLowerCase() ||
+             String(emp.usuario).trim().toLowerCase() === String(datosAjuste.gerente).trim().toLowerCase()) &&
+            String(emp.puesto).trim().toLowerCase() === "gerente"
+        );
+
+        if (!gerenteEncontrado) {
+            return { 
+                ok: false, 
+                mensaje: `El gerente "${datosAjuste.gerente}" no está registrado o no cuenta con el puesto de gerente.` 
+            };
+        }
+        // -----------------------------
+
+        if (!fs.existsSync(archivo)) {
+            return { ok: false, mensaje: "El archivo XML de productos no existe." };
         }
 
         if (!fs.existsSync(archivo)) {
@@ -383,6 +409,17 @@ function ajustarInventarioMerma(datosAjuste) {
         if (typeof movimientoProdDao.agregarMovimiento === 'function') {
             movimientoProdDao.agregarMovimiento(movimientoProd);
         }
+        // Registrar la merma en su propio XML con cálculo de pérdida
+        mermaDao.registrarMerma({
+            idProducto: idNumero,
+            nombreProducto: producto.nombre,
+            cantidadAjustar: cantidadMerma,
+            precioUnitario: producto.precio || 0,
+            causa: datosAjuste.causa,
+            gerente: datosAjuste.gerente,
+            fecha: date.toLocaleDateString(),
+            hora: date.toLocaleTimeString()
+        });
 
         return { ok: true, mensaje: "Ajuste de inventario realizado correctamente." };
 
@@ -391,6 +428,7 @@ function ajustarInventarioMerma(datosAjuste) {
         throw error;
     }
 }
+    
 
 // Actualiza los datos y nivel de existencias de un producto en el archivo productos.xml.
 

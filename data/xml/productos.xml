@@ -18,7 +18,7 @@
     <nombre>Teclado Mecánico RGB</nombre>
     <descripcion>Teclas con switches independientes y retroiluminación personalizada.</descripcion>
     <precio>79.99</precio>
-    <stock>43</stock>
+    <stock>40</stock>
   </producto>
   <producto id="4">
     <nombre>d</nombre>
@@ -36,7 +36,7 @@
     <nombre>fresas</nombre>
     <descripcion>400 gramos</descripcion>
     <precio>41.99</precio>
-    <stock>99</stock>
+    <stock>98</stock>
   </producto>
   <producto id="7">
     <nombre>fresas con crema</nombre>
