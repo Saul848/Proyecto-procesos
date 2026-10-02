@@ -23,7 +23,7 @@ function logout() {
     }    
 }
 
-const btnLogout = document.getElementById("btn-logout");
+const btnLogout = document.querySelector("#btn-logout, #btn-cerrar-sesion");
 if (btnLogout) {
 
     /**
@@ -56,6 +56,24 @@ if (btnLogout) {
         window.location.href = "login.html";
     });
 }
+
+window.cerrarSesion = function() {
+    const nombre = sessionStorage.getItem("nombreUsuario");
+    const usuario = sessionStorage.getItem("usuarioLogueado");
+    const puesto = sessionStorage.getItem("puestoLogueado");
+
+    if (usuario) {
+        fetch("/api/accesos/registrar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre, usuario, puesto, evento: "salida" })
+        }).catch(error => console.error("Error al registrar salida:", error));
+    }
+
+    sessionStorage.clear();
+    alert("Se ha cerrado la sesión correctamente.");
+    window.location.href = "login.html";
+};
 
 document.getElementById("salir_xd").addEventListener('click', ()=>{
     window.location.href = "login.html";

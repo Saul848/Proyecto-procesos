@@ -430,6 +430,87 @@ function ajustarInventarioMerma(datosAjuste) {
 }
     
 
+// Actualiza los datos y nivel de existencias de un producto en el archivo productos.xml.
+
+function actualizarProducto(id, datos) {
+    try {
+        const idNumero = Number(id);
+
+        if (isNaN(idNumero)) {
+            return { ok: false, mensaje: "El ID proporcionado no es un número válido." };
+        }
+
+        if (!fs.existsSync(archivo)) {
+            return { ok: false, mensaje: "El archivo XML de productos no existe." };
+        }
+
+        const xml = fs.readFileSync(archivo, "utf8");
+
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            attributeNamePrefix: "@_",
+            isArray: (tagName) => ['producto'].includes(tagName)
+        });
+
+        const resultado = parser.parse(xml);
+        const productos = resultado.productos?.producto || [];
+
+        // Buscar el producto por su atributo @_id
+        const producto = productos.find(prod => Number(prod["@_id"]) === idNumero);
+
+        if (!producto) {
+            return { ok: false, mensaje: `Producto con ID #${idNumero} no encontrado.` };
+        }
+
+        // Actualizar propiedades manteniendo la convención de tipos de tu DAO
+        if (datos.nombre !== undefined) {
+            producto.nombre = datos.nombre.toLowerCase().trim();
+        }
+        if (datos.descripcion !== undefined) {
+            producto.descripcion = datos.descripcion;
+        }
+        if (datos.categoria !== undefined) {
+            producto.categoria = datos.categoria.toLowerCase().trim();
+        }
+        if (datos.precio !== undefined) {
+            producto.precio = Number(datos.precio).toFixed(2);
+        }
+        if (datos.stock !== undefined) {
+            producto.stock = Number(datos.stock);
+        }
+
+        // Reconstruir el XML y sobrescribir en disco
+        const builder = new XMLBuilder({
+            format: true,
+            ignoreAttributes: false,
+            attributeNamePrefix: "@_"
+        });
+
+        const nuevoXml = builder.build(resultado);
+        fs.writeFileSync(archivo, nuevoXml, "utf8");
+
+        // Registrar el movimiento en el historial
+        const date = new Date();
+        const movimientoProd = {
+            fecha: date.toLocaleDateString(),
+            hora: date.toLocaleTimeString(),
+            id_producto: idNumero,
+            nombre_producto: producto.nombre,
+            tipo: "MODIFICACIÓN"
+        };
+
+        if (typeof movimientoProdDao.agregarMovimiento === 'function') {
+            movimientoProdDao.agregarMovimiento(movimientoProd);
+        }
+
+        return { ok: true, producto };
+
+    } catch (error) {
+        console.error("Error al actualizar producto BD:", error);
+        throw error;
+    }
+}
+
 
 module.exports = {
     agregarProducto,
@@ -438,7 +519,8 @@ module.exports = {
     obtenerProductos,
     obtenerReporteInventario,
     eliminarProducto,
-    ajustarInventarioMerma
+    ajustarInventarioMerma,
+    actualizarProducto
 };
 
 

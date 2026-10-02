@@ -23,6 +23,8 @@ const empleadoRoutes = require("./routes/empleadoRoutes");
 const ofertaRoutes = require("./routes/ofertaRoutes");
 //categorias de productos
 const categoriaRoutes = require("./routes/categoriaRoutes");
+//cajas
+const cajasRoutes = require("./routes/cajasRoutes");
 
 const accesoControlador = require("./controladores/accesoControlador");
 
@@ -69,6 +71,7 @@ app.use("/api/categorias", categoriaRoutes);
 app.use("/api/mensajes", mensajeRoutes);
 
 
+app.use("/api/cajas", cajasRoutes);
 app.post('/api/accesos/registrar', accesoControlador.registrarAcceso);
 app.get('/api/accesos', accesoControlador.obtenerAccesos);
 const corteRoutes = require("./routes/corteRoutes");

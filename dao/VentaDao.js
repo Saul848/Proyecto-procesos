@@ -9,8 +9,7 @@ const path = require('path');
 const { XMLParser, XMLBuilder } = require('fast-xml-parser');
 const Venta = require('../clases/ventaClass'); 
 const ofertaDao = require('./ofertaDao');
-const Oferta = require('../clases/ofertaClass');
-const msjController = require ("../controladores/mensajesController");
+const msjController = require("../controladores/mensajesController");
 
 const archivoVentas = path.join(__dirname, '../data/xml/ventas.xml');
 const archivoProductos = path.join(__dirname, '../data/xml/productos.xml');
@@ -111,6 +110,9 @@ function registrarVentaEmpleado(idEmpleado) {
  * @throws {Error} Si algún producto no existe o si no hay stock suficiente.
  */
 function registrarVenta(datosVenta) {
+    console.log("Datos de venta recibidos en DAO:", datosVenta);
+    console.log("ID de caja recibida:", datosVenta.idCaja);
+    
     try {
         const parser = new XMLParser(parserConfig);
         const builder = new XMLBuilder(builderConfig);
@@ -120,15 +122,24 @@ function registrarVenta(datosVenta) {
         const resProductos = parser.parse(xmlProductos);
         const listaProductos = resProductos.productos?.producto || [];
 
-        // 2. Obtener ofertas activas mediante el DAO y la clase Oferta
+        // 2. Obtener ofertas directamente desde ofertaDao
         let ofertasActivas = [];
         try {
             const rawOfertas = ofertaDao.obtenerOfertas ? ofertaDao.obtenerOfertas() : [];
-            ofertasActivas = rawOfertas
-                .map(o => new Oferta(o))
-                .filter(o => o.estado() === "disponible");
+            const hoy = new Date().toLocaleDateString('en-CA');
+
+            ofertasActivas = rawOfertas.filter(o => {
+                const fInicio = o.fechaInicio || o["@_fechaInicio"] || "";
+                const fFin = o.fechaFin || o["@_fechaFin"] || "";
+                
+                if (fFin && hoy > fFin) return false;
+                if (fInicio && hoy < fInicio) return false;
+                
+                return true;
+            });
         } catch (e) {
-            console.warn("No se pudieron cargar ofertas desde ofertaDao, procesando precio base:", e.message);
+            console.warn("Aviso al leer ofertas, procesando precio base:", e.message);
+            ofertasActivas = [];
         }
 
         const itemsParaTicket = [];
@@ -151,25 +162,35 @@ function registrarVenta(datosVenta) {
             }
 
             const precioBase = Number(producto.precio) || 0;
-            const oferta = ofertasActivas.find(o => String(o.idProducto).trim() === idBuscado);
+
+            const oferta = ofertasActivas.find(o => {
+                const idProdOferta = String(o.idProducto || o.id_producto || o["@_idProducto"] || "").trim();
+                return idProdOferta === idBuscado;
+            });
 
             let precioFinal = precioBase;
-            let porcentajeDescuento = 0;
+            let textoDescuento = "0%";
 
             if (oferta) {
-                if (oferta.tipoProm === "porcentaje") {
-                    porcentajeDescuento = Number(oferta.valorDesc);
-                    precioFinal = precioBase * (1 - (porcentajeDescuento / 100));
-                } else if (oferta.tipoProm === "precioFijo") {
-                    precioFinal = Number(oferta.valorDesc);
-                } else if (oferta.tipoProm === "cantidad") {
+                const tipo = oferta.tipoProm;
+                
+                if (tipo === "porcentaje") {
+                    const desc = Number(oferta.valorDesc) || 0;
+                    precioFinal = precioBase * (1 - (desc / 100));
+                    textoDescuento = `${desc}%`;
+                } else if (tipo === "precioFijo") {
+                    precioFinal = Number(oferta.valorDesc) || precioBase;
+                    textoDescuento = `$${oferta.valorDesc}`;
+                } else if (tipo === "cantidad") {
                     const recibe = Number(oferta.cantidadRecibe) || 1;
                     const paga = Number(oferta.cantidadPaga) || 1;
+                    
                     if (recibe > 0 && paga > 0) {
                         const paquetes = Math.floor(cantidadSolicitada / recibe);
                         const sobrantes = cantidadSolicitada % recibe;
                         const unidadesCobradas = (paquetes * paga) + sobrantes;
                         precioFinal = (unidadesCobradas * precioBase) / cantidadSolicitada;
+                        textoDescuento = `${recibe}x${paga}`;
                     }
                 }
             }
@@ -181,7 +202,7 @@ function registrarVenta(datosVenta) {
                 "@_idProducto": extraerId(producto),
                 nombre: producto.nombre,
                 precioUnitario: precioBase.toFixed(2),
-                descuento: porcentajeDescuento > 0 ? `${porcentajeDescuento}%` : "0%",
+                descuento: textoDescuento,
                 cantidad: cantidadSolicitada,
                 subtotal: subtotal.toFixed(2),
             });
@@ -193,7 +214,7 @@ function registrarVenta(datosVenta) {
             const producto = listaProductos.find((p) => extraerId(p) === idBuscado);
             producto.stock = (parseInt(producto.stock, 10) || 0) - Number(item.cantidad);
 
-            if(producto.stock <=3){
+            if (producto.stock <= 3) {
                 msjController.mensajeBajoStock(producto.nombre);
             }
         }
@@ -220,6 +241,11 @@ function registrarVenta(datosVenta) {
                 xmlVentas = contenido;
             }
         }
+        
+        // 6. Abonar el total de la venta a la caja general y de la empresa
+        const cajaDao = require('./cajaDao');
+        const cajaDestino = datosVenta.idCaja || "1";
+        cajaDao.abonarACaja(totalVenta, cajaDestino); 
 
         const resVentas = parser.parse(xmlVentas);
         if (!resVentas.ventas) resVentas.ventas = { venta: [] };
@@ -251,48 +277,65 @@ function registrarVenta(datosVenta) {
         throw error;
     }
 }
+
 /**
- * Consulta el historial de ventas filtrado por rango de fechas y/o empleado.
- * @function obtenerHistorialVentas
- * @param {Object} filtros  Criterios de filtrado.
- * @param {string} [filtros.fechaInicio] Fecha inicial (YYYY-MM-DD).
- * @param {string} [filtros.fechaFin]  Fecha final (YYYY-MM-DD).
- * @param {string|number} [filtros.idEmpleado]  ID del empleado que realizó la venta.
- * @returns {Array<Object>} Lista de ventas filtradas.
+ * Obtiene todas las ventas registradas en el XML.
+ * @returns {Array} Lista de ventas.
  */
-function obtenerHistorialVentas(filtros = {}) {
+function obtenerVentas() {
     try {
         if (!fs.existsSync(archivoVentas)) {
             return [];
         }
+        const xml = fs.readFileSync(archivoVentas, "utf8");
+        if (xml.trim() === "") return [];
 
-        const xmlData = fs.readFileSync(archivoVentas, 'utf-8');
         const parser = new XMLParser(parserConfig);
-        const resultado = parser.parse(xmlData);
-        let ventas = resultado.ventas?.venta || [];
+        const resultado = parser.parse(xml);
+        return resultado.ventas?.venta || [];
+    } catch (error) {
+        console.error("Error al obtener ventas:", error);
+        return [];
+    }
+}
 
-        // Asegurar que sea un arreglo
-        if (!Array.isArray(ventas)) {
-            ventas = [ventas];
-        }
+/**
+ * Busca una venta por su ID o Folio.
+ * @param {string} id - Folio de la venta.
+ * @returns {Object|null}
+ */
+function obtenerVentaPorId(id) {
+    try {
+        const ventas = obtenerVentas();
+        const idBuscado = String(id).trim();
+        return ventas.find(v => extraerId(v) === idBuscado || String(v.folio).trim() === idBuscado) || null;
+    } catch (error) {
+        console.error("Error al buscar venta por ID:", error);
+        return null;
+    }
+}
 
+/** 
+ * Consulta el historial de ventas filtrado por rango de fechas y/o empleado.
+ * @function obtenerHistorialVentas
+ * @param {Object} filtros - Criterios de filtrado.
+ * @returns {Array<Object>} Lista de ventas filtradas.
+ */
+function obtenerHistorialVentas(filtros = {}) {
+    try {
+        const ventas = obtenerVentas();
         const { fechaInicio, fechaFin, idEmpleado } = filtros;
 
         return ventas.filter(v => {
-            const fechaVentaStr = v.fecha ? v.fecha.substring(0, 10) : ""; // Formato YYYY-MM-DD
+            const fechaVentaStr = v.fecha ? String(v.fecha).substring(0, 10) : "";
             const empVenta = String(v.idEmpleado || "").trim();
 
-            // Filtro por Empleado
             if (idEmpleado && idEmpleado !== "" && empVenta !== String(idEmpleado).trim()) {
                 return false;
             }
-
-            // Filtro por Fecha de Inicio
             if (fechaInicio && fechaInicio !== "" && fechaVentaStr < fechaInicio) {
                 return false;
             }
-
-            // Filtro por Fecha de Fin
             if (fechaFin && fechaFin !== "" && fechaVentaStr > fechaFin) {
                 return false;
             }
@@ -300,7 +343,7 @@ function obtenerHistorialVentas(filtros = {}) {
             return true;
         });
     } catch (error) {
-        console.error("Error al obtener el historial de ventas:", error);
+        console.error("Error al filtrar historial de ventas:", error);
         return [];
     }
 }
@@ -309,6 +352,7 @@ module.exports = {
     registrarVenta,
     obtenerSiguienteIdVenta,
     registrarVentaEmpleado,
+    obtenerVentas,
+    obtenerVentaPorId,
     obtenerHistorialVentas
-
 };
