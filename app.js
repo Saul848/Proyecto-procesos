@@ -71,6 +71,8 @@ app.use("/api/mensajes", mensajeRoutes);
 
 app.post('/api/accesos/registrar', accesoControlador.registrarAcceso);
 app.get('/api/accesos', accesoControlador.obtenerAccesos);
+const corteRoutes = require("./routes/corteRoutes");
+app.use("/api/cortes", corteRoutes);
 
 /**
  * Puerto de escucha predeterminado del servidor.
