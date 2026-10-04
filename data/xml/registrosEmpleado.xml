@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registros>
+  <registro>
+    <idRegistro>1</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:27:18 p.m.</hora>
+    <tipoMovimiento>Alta</tipoMovimiento>
+    <estadoEmpleado>ID: 23 | Nombre: Jose Antonio | Puesto: empleado | Telefono: 3456789098 | Usuario: ASDW | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gertrudis | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>2</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:27:41 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 5 | Nombre: Gloria Rocha | Puesto: gerente | Telefono: undefined | Usuario: roger134 | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gertrudis | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>3</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:27:49 p.m.</hora>
+    <tipoMovimiento>Baja</tipoMovimiento>
+    <estadoEmpleado>ID: 22 | Nombre: Susana | Puesto: empleado | Telefono: undefined | Usuario: GHJ | Contraseña: godzilla</estadoEmpleado>
+    <responsable>Accion realizada por: Gertrudis | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>4</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:39:30 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 5 | Nombre: Gloria Rocha | Puesto: gerente | Telefono: undefined | Usuario: roger134 | Contraseña: 234</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>5</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:39:36 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 7 | Nombre: Misael | Puesto: gerente | Telefono: 4545454545 | Usuario: MisaGoodMvp | Contraseña: 342</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>6</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:39:41 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 19 | Nombre: Humberto Velez | Puesto: empleado | Telefono: undefined | Usuario: OIRT | Contraseña: 234</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>7</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:39:46 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 20 | Nombre: Alexander | Puesto: empleado | Telefono: undefined | Usuario: JKL | Contraseña: 544564</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>8</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:39:51 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 23 | Nombre: Jose Antonio | Puesto: empleado | Telefono: undefined | Usuario: ASDW | Contraseña: 2432432</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>9</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:39:57 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 1 | Nombre: Rogelio Lopez Gonzales | Puesto: empleado | Telefono: 3453244576 | Usuario: roger01 | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>10</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:40:03 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 4 | Nombre: Cesar | Puesto: administrador | Telefono: 4234563424 | Usuario: Cesa7r | Contraseña: 234</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>11</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:40:12 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 5 | Nombre: Gloria Rocha | Puesto: gerente | Telefono: undefined | Usuario: roger134 | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>12</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:40:17 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 7 | Nombre: Misael | Puesto: gerente | Telefono: 4545454545 | Usuario: MisaGoodMvp | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>13</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:40:22 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 19 | Nombre: Humberto Velez | Puesto: empleado | Telefono: undefined | Usuario: OIRT | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>14</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:40:39 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 7 | Nombre: Misael | Puesto: gerente | Telefono: 4545454545 | Usuario: MisaGoodMvp | Contraseña: 342</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>15</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:40:43 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 7 | Nombre: Misael | Puesto: gerente | Telefono: 4545454545 | Usuario: MisaGoodMvp | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>16</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:40:49 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 7 | Nombre: Misael | Puesto: gerente | Telefono: 4545454545 | Usuario: MisaGoodMvp | Contraseña: 324</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>17</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:40:56 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 4 | Nombre: Cesar | Puesto: administrador | Telefono: 4234563424 | Usuario: Cesa7r | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>18</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:41:00 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 4 | Nombre: Cesar | Puesto: administrador | Telefono: 4234563424 | Usuario: Cesa7r | Contraseña: 321</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>19</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:41:05 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 4 | Nombre: Cesar | Puesto: administrador | Telefono: 4234563424 | Usuario: Cesa7r | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>20</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:41:11 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 4 | Nombre: Cesar | Puesto: administrador | Telefono: 4234563424 | Usuario: Cesa7r | Contraseña: 432</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>21</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:41:29 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 20 | Nombre: Alexander | Puesto: empleado | Telefono: undefined | Usuario: JKL | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>22</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:41:34 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 20 | Nombre: Alexander | Puesto: empleado | Telefono: undefined | Usuario: JKL | Contraseña: 321</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>23</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:41:38 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 5 | Nombre: Gloria Rocha | Puesto: gerente | Telefono: undefined | Usuario: roger134 | Contraseña: 1233</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>24</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:41:43 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 5 | Nombre: Gloria Rocha | Puesto: gerente | Telefono: undefined | Usuario: roger134 | Contraseña: 321</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>25</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:41:48 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 5 | Nombre: Gloria Rocha | Puesto: gerente | Telefono: undefined | Usuario: roger134 | Contraseña: 12</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>26</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:41:52 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 4 | Nombre: Cesar | Puesto: administrador | Telefono: 4234563424 | Usuario: Cesa7r | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>27</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:46:08 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 5 | Nombre: Gloria Rocha | Puesto: gerente | Telefono: 1231231231 | Usuario: roger134 | Contraseña: 12</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>28</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:46:44 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 5 | Nombre: Marco Polo | Puesto: gerente | Telefono: 1231231231 | Usuario: roger134 | Contraseña: 12</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>29</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:47:29 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 19 | Nombre: Humberto Velez | Puesto: empleado | Telefono: 2344322341 | Usuario: OIRT | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>30</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:47:49 p.m.</hora>
+    <tipoMovimiento>Baja</tipoMovimiento>
+    <estadoEmpleado>ID: 20 | Nombre: Alexander | Puesto: empleado | Telefono: undefined | Usuario: JKL | Contraseña: 321</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>31</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:48:09 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 23 | Nombre: Jose Antonio | Puesto: empleado | Telefono: 1212121212 | Usuario: ASDW | Contraseña: 2432432</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>32</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:49:06 p.m.</hora>
+    <tipoMovimiento>Alta</tipoMovimiento>
+    <estadoEmpleado>ID: 24 | Nombre: Mauricia | Puesto: empleado | Telefono: 4322344562 | Usuario: LOK | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Gloria Rocha | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>33</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:55:52 p.m.</hora>
+    <tipoMovimiento>Alta</tipoMovimiento>
+    <estadoEmpleado>ID: 25 | Nombre: Veronica | Puesto: empleado | Telefono: 1234123443 | Usuario: FRT | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Marco Polo | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>34</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>7:59:33 p.m.</hora>
+    <tipoMovimiento>Alta</tipoMovimiento>
+    <estadoEmpleado>ID: 26 | Nombre: María Concepcion | Puesto: empleado | Telefono: 1231232132 | Usuario: XCV | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Marco Polo | Usuario: roger134</responsable>
+  </registro>
+  <registro>
+    <idRegistro>35</idRegistro>
+    <fecha>3/10/2026</fecha>
+    <hora>8:00:11 p.m.</hora>
+    <tipoMovimiento>Cambio</tipoMovimiento>
+    <estadoEmpleado>ID: 26 | Nombre: María Concepcion | Puesto: empleado | Telefono: 1231232132 | Usuario: XCV | Contraseña: 123</estadoEmpleado>
+    <responsable>Accion realizada por: Marco Polo | Usuario: roger134</responsable>
+  </registro>
+</registros>

@@ -13,7 +13,8 @@ const {XMLParser, XMLBuilder } = require ("fast-xml-parser");
 
 const path = require('path');
 
-const archivo = path.join(__dirname, "../data/xml/empleados.xml");
+const archivoEmp = path.join(__dirname, "../data/xml/empleados.xml");
+const archivoReg = path.join(__dirname, "../data/xml/registrosEmpleado.xml");
 
 const empleado = require('../clases/empleadoClass');
 
@@ -25,7 +26,13 @@ const empleado = require('../clases/empleadoClass');
  */
 function obtenerEmpleados() {
     try {
-        const xml = fs.readFileSync(archivo, "utf8");
+        //Obtenemos el contenido del xml en una linea de texto
+        const xml = fs.readFileSync(archivoEmp, "utf8");
+        // Se valida que la linea obtenida no este vacia, en ese caso regresamos un arreglo vacio
+        if (!xml || xml.trim() === "") {
+            return [];
+        }
+        // Se construye el parser
         const parser = new XMLParser({
             ignoreAttributes: false,
             isArray: (tagName) => ['empleado'].includes(tagName)
@@ -33,9 +40,33 @@ function obtenerEmpleados() {
 
         // Convertir XML a Objeto de JS
         const resultado = parser.parse(xml);
-        const empleados = resultado.empleados?.empleado || [];
-        //Devolvemos el arreglo de empleados
-        return empleados
+        
+        // Se valida que el resultado del parseo sea un objeto válido
+        if (!resultado || typeof resultado !== 'object') {
+            return [];
+        }
+
+        // Se valida que exista el objeto raíz 'empleados'
+        const raiz = resultado.empleados;
+        if (!raiz || typeof raiz !== 'object') {
+            return [];
+        }
+
+        // Se obtiene la propiedad 'empleado' y verificamos que sea un arreglo
+        const empleadosCrudos = raiz.empleado;
+        const arregloEmpleados = Array.isArray(empleadosCrudos) 
+            ? empleadosCrudos 
+            : (empleadosCrudos ? [empleadosCrudos] : []);
+        
+        // Se filtran elementos internos: eliminar nulos, indefinidos, strings vacíos u objetos vacíos
+        const empleadosValidos = arregloEmpleados.filter(emp => {
+            return emp !== null && 
+                   emp !== undefined && 
+                   typeof emp === 'object' && 
+                   Object.keys(emp).length > 0;
+        }); 
+
+        return empleadosValidos;
 
     // Resolucion en caso de error
     } catch (error) {
@@ -50,7 +81,7 @@ function obtenerEmpleados() {
  */
 function obtenerEmpleado(id){
     try {
-        const xml = fs.readFileSync(archivo, "utf8");
+        const xml = fs.readFileSync(archivoEmp, "utf8");
         const parser = new XMLParser({
             ignoreAttributes: false,
             isArray: (tagName) => ['empleado'].includes(tagName)
@@ -80,7 +111,7 @@ function obtenerEmpleado(id){
  */
 function obtenerEmpleadoPorUsuario(usuario) {
     try {
-        const xml = fs.readFileSync(archivo, "utf8");
+        const xml = fs.readFileSync(archivoEmp, "utf8");
         const parser = new XMLParser({
             ignoreAttributes: false,
             isArray: (tagName) => ['empleado'].includes(tagName)
@@ -121,7 +152,7 @@ function obtenerEmpleadoPorUsuario(usuario) {
  */
 function agregarEmpleado(empleado){
     try {
-        const xml = fs.readFileSync(archivo, "utf8");
+        const xml = fs.readFileSync(archivoEmp, "utf8");
         const parser = new XMLParser({
             ignoreAttributes: false,
             isArray: (tagName) => ['empleado'].includes(tagName)
@@ -145,7 +176,7 @@ function agregarEmpleado(empleado){
             id: empleado.id,
             nombre: empleado.nombre,
             puesto: empleado.puesto,
-            telefono: empleado.tel,
+            telefono: empleado.telefono,
             usuario: empleado.usuario,
             password: empleado.password,
             numVentas: 0,
@@ -166,9 +197,13 @@ function agregarEmpleado(empleado){
         const nuevoXml = builder.build(resultado);
 
         //Sobrescriir el archivo XML en disco
-        fs.writeFileSync(archivo, nuevoXml, "utf8");
+        fs.writeFileSync(archivoEmp, nuevoXml, "utf8");
 
-        return { ok:true };
+        //Regresamos una respuesta
+        return { 
+            ok:true,
+            agregado:true
+        };
 
     //Resolucion en caso de error
     } catch (error) {
@@ -184,7 +219,7 @@ function agregarEmpleado(empleado){
  */
 function eliminarEmpleado(id){
     try {
-        const xml = fs.readFileSync(archivo, "utf8");
+        const xml = fs.readFileSync(archivoEmp, "utf8");
         const parser = new XMLParser({
             ignoreAttributes: false,
             isArray: (tagName) => ['empleado'].includes(tagName)
@@ -204,9 +239,11 @@ function eliminarEmpleado(id){
         //Simplificamos el arreglo de empleados
         const empleados = resultado.empleados?.empleado || [];
 
+        let empleadoEliminado;
         // Buscar al empleado, recorro el arreglo empleados y busco al empleado a eliminar mediante su id, cuando se encuentra se elimina del arreglo.
         for(n=0;n<empleados.length;n++){
             if(empleados[n].id===id){
+                empleadoEliminado=empleados[n];
                 empleados.splice(n,1);
             }
         }
@@ -224,7 +261,9 @@ function eliminarEmpleado(id){
         const nuevoXml = builder.build(resultado);
 
         // Sobrescribir el archivo XML en disco
-        fs.writeFileSync(archivo, nuevoXml, "utf8");
+        fs.writeFileSync(archivoEmp, nuevoXml, "utf8");
+
+        //Regresamos una respuesta
         return {
             ok: true,
             eliminado: true
@@ -255,7 +294,7 @@ function eliminarEmpleado(id){
 function actualizarEmpleado(id , datosEmpleado) {
     try {
         //Obtenemos el xml en una cadena de texto
-        const xml = fs.readFileSync(archivo, "utf8");
+        const xml = fs.readFileSync(archivoEmp, "utf8");
         const parser = new XMLParser({
             ignoreAttributes: false,
             isArray: (tagName) => ['empleado'].includes(tagName)
@@ -320,7 +359,8 @@ function actualizarEmpleado(id , datosEmpleado) {
         const nuevoXml = builder.build(resultado);
 
         // Sobrescribir el archivo XML en disco
-        fs.writeFileSync(archivo, nuevoXml, "utf8");
+        fs.writeFileSync(archivoEmp, nuevoXml, "utf8");
+        
         //Regresar una respuesta
         return {
             ok: true,
@@ -372,10 +412,172 @@ function obtenerReporteDesempeno(){
         console.error("Error al generar reporte de desempeño:", error);
         throw error;
     }
-
 }
 
+/**
+ * Funcion para registrar una accion realizada por el gerente (Alta, baja o cambio)
+ * @param {*} tipoAccion Tipo de accion en texto (Alta, Baja y Cambio)
+ * @param {*} datosEmp Objeto javascript del empleado
+ */
+function registrarAccion(tipoAccion, datosEmp, responsable){
+    try {
+        //Obtenemos el xml en una cadena de texto
+        const xml = fs.readFileSync(archivoReg, "utf8");
+        //Creamos y configuramos el parser
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            isArray: (tagName) => ['registro'].includes(tagName)
+        })
+        // Convertir XML a Objeto de JS
+        const resultado = parser.parse(xml);
+        // Si el XML está vacío o no tiene la estructura,
+        // crear la estructura inicial
+        if (!resultado.registros) {
+            resultado.registros = {
+                registro: []
+            }
+        }
 
+        // Obtencion array de registros
+        const registros = resultado.registros?.registro || [];    
+        const fechaLocal = new Date().toLocaleDateString('es-MX');
+        const horaLocal= new Date().toLocaleTimeString('es-MX')
+        //Creamos al nuevo registro utilizando los datos del parametro
+        const nuevoReg = {
+            idRegistro: calcularId(registros),
+            fecha: fechaLocal,
+            hora: horaLocal,
+            tipoMovimiento: tipoAccion,
+            estadoEmpleado: obtenerEstado(datosEmp),
+            responsable: responsable
+        }
+
+        //Agregamos el nuevo registro al conjunto de registros
+        registros.push(nuevoReg)
+        //Actualizamos el arreglo registro dentro de resultado;
+        resultado.registros.registro = registros;
+
+        // Convertir el objeto JS de vuelta a formato XML
+        const builder = new XMLBuilder({
+            format: true,
+            ignoreAttributes: false
+        });
+
+        const nuevoXml = builder.build(resultado);
+        //Sobrescribir el archivo XML en disco
+        fs.writeFileSync(archivoReg, nuevoXml, "utf8");
+
+        //Regresamos una respuesta
+        return { 
+            ok:true,
+            registrado:true
+         };
+    } catch (error) {
+        console.error("Error al agregar un empleado a la BD:", error);
+        throw error;
+    }
+}
+
+/**
+ * Funcion que devuelve una cadena de texto con el estado de un empleado
+ * @param {*} empleado El empleado con los datos necesarios para construir el estado
+ * @returns {String} Cadena de texto
+ */
+function obtenerEstado(empleado){
+    if(empleado){
+        //Inicializamos la variable que contendra el campo y se le asigna su contenido
+        let estado= 
+        "ID: "+empleado.id+" | "+
+        "Nombre: "+empleado.nombre+" | "+
+        "Puesto: "+empleado.puesto+" | "+
+        "Telefono: "+empleado.telefono+" | "+
+        "Usuario: "+empleado.usuario+" | "+
+        "Contraseña: "+empleado.password
+        return estado;
+    }else{
+        return null
+    }
+}
+
+/**
+ * Funcion para calcular el id del registro
+ * Se utiliza para construir los datos de un empleado
+ * @function calcularId
+ * @returns {number} Obtiene el id mayor en el sistema y genera el numero siguiente
+ */
+function calcularId(registros){
+    //Si no hay empleados en el sistema entonces regresa el id 1
+    if(!registros || registros.length===0){
+        return Number(1);
+    //Si hay registros en el sistema se determina cual es el valor mas alto del id.
+    }else{
+        //
+        let valorMayor =registros[0].idRegistro;
+        let sigValor;
+        for(let n=1;n<registros.length;n++){
+            sigValor=registros[n].idRegistro;
+            if(valorMayor<sigValor){
+                valorMayor=sigValor;
+            }
+        }
+        //Se regresa el valor siguiente al mayor.
+        return (Number(valorMayor)+1);
+    }
+}
+
+/**
+ * Esta funcion permite obtener el historial de registros en el xml de registrosEmpleado
+ * @returns {Array<registro>} Arreglo de registros
+ */
+function obtenerHistorial(){
+    try {
+        const xml = fs.readFileSync(archivoReg, "utf8");
+        // Se valida que la linea obtenida no este vacia, en ese caso regresamos un arreglo vacio
+        if (!xml || xml.trim() === "") {
+            return [];
+        }
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            isArray: (tagName) => ['registro'].includes(tagName)
+        });
+
+        // Convertir XML a Objeto de JS
+        const resultado = parser.parse(xml);
+
+        // Se valida que el resultado del parseo sea un objeto válido
+        if (!resultado || typeof resultado !== 'object') {
+            return [];
+        }
+
+        // Se valida que exista el objeto raíz 'registros'
+        const raiz = resultado.registros;
+        if (!raiz || typeof raiz !== 'object') {
+            return [];
+        }
+
+        // Se obtiene la propiedad 'registro' y verificamos que sea un arreglo
+        const registrosCrudos = raiz.registro;
+        const arregloRegistros = Array.isArray(registrosCrudos) 
+            ? registrosCrudos 
+            : (registrosCrudos ? [registrosCrudos] : []);
+        
+        // Se filtran elementos internos: eliminar nulos, indefinidos, strings vacíos u objetos vacíos
+        const registrosValidos = arregloRegistros.filter(reg => {
+            return reg !== null && 
+                   reg !== undefined && 
+                   typeof reg === 'object' && 
+                   Object.keys(reg).length > 0;
+        }); 
+
+        //Devolvemos el arreglo de registros
+        return registrosValidos
+
+    // Resolucion en caso de error
+    } catch (error) {
+        console.error("Error al obtener el historial de registros de empleados:", error);
+        throw error;
+    }
+}
 
 module.exports = {
     obtenerEmpleados,
@@ -384,5 +586,7 @@ module.exports = {
     obtenerReporteDesempeno,
     obtenerEmpleadoPorUsuario,
     actualizarEmpleado,
-    eliminarEmpleado
+    eliminarEmpleado,
+    registrarAccion,
+    obtenerHistorial
 };
