@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corte de Caja y Arqueo</title>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Corte de Caja y Arqueo</h2>
+        
+        <div class="form-group">
+            <label for="gerente">Usuario o Nombre del Gerente:</label>
+            <input type="text" id="gerente" placeholder="Ej. Ruben Flores">
+        </div>
+        
+        <div class="form-group">
+            <label for="efectivoFisico">Efectivo Físico Contado ($):</label>
+            <input type="number" id="efectivoFisico" step="0.01" placeholder="0.00">
+        </div>
+        
+        <button onclick="enviarCorteCaja()">Realizar Corte</button>
+        
+        <div id="resultadoCorte"></div>
+    </div>
+
+    <script>
+        async function enviarCorteCaja() {
+            const gerenteIngresado = document.getElementById("gerente").value.trim();
+            const efectivoFisico = document.getElementById("efectivoFisico").value;
+            const divResultado = document.getElementById("resultadoCorte");
+
+            // Validación rápida en el cliente
+            if (!gerenteIngresado || efectivoFisico === "") {
+                divResultado.style.display = "block";
+                divResultado.className = "error";
+                divResultado.innerHTML = "Por favor, completa todos los campos.";
+                return;
+            }
+
+            try {
+                const respuesta = await fetch("http://localhost:3000/api/cortes/realizar-corte", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ gerenteIngresado, efectivoFisico })
+                });
+
+                const resultado = await respuesta.json();
+                
+                divResultado.style.display = "block";
+                if (resultado.ok) {
+                    divResultado.className = "success";
+                    divResultado.innerHTML = `<strong>¡Corte exitoso!</strong><br>` +
+                        `• Tipo: <strong>${resultado.resultado.tipoDiferencia}</strong><br>` +
+                        `• Ventas Esperadas: $${resultado.resultado.ventasEsperadas}<br>` +
+                        `• Efectivo Físico: $${resultado.resultado.efectivoFisico}<br>` +
+                        `• Diferencia: $${resultado.resultado.diferencia}`;
+                } else {
+                    divResultado.className = "error";
+                    divResultado.innerHTML = `<strong>Error:</strong> ${resultado.mensaje}`;
+                }
+            } catch (error) {
+                console.error("Error de red:", error);
+                divResultado.style.display = "block";
+                divResultado.className = "error";
+                divResultado.innerHTML = "Error de conexión con el servidor.";
+            }
+        }
+    </script>
+</body>
+</html>
