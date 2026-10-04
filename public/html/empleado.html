@@ -13,23 +13,15 @@
     <link rel="stylesheet" href="../css/barra_sesion.css">
 </head>
 <body>
-
-<<<<<<< HEAD
-    <header class="barra-sesion-empleado">
-        <div>
-=======
-    
     <!-- ====================================================================
     1. BARRA SUPERIOR DE SESIÓN
     Muestra la identidad de la tienda, saludo al empleado activo,
     acceso a la mensajería interna y botón para cerrar sesión.
     ==================================================================== -->
-    <header class="barra-sesion">
-        <div class="sesion-info">
->>>>>>> 739361443831361d661b7a3d849565ae3e9b1221
+    <header class="barra-sesion-empleado">
+        <div>
             <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Empleado</span></span>
         </div>
-
     <div>
         <div>
             <button id="btnMensajes"> Mensajes </button>
@@ -38,6 +30,20 @@
     </div>
     </header>
 
+    <!-- ====================================================================
+    Carrusel de ofertas
+    ==================================================================== -->
+    <section id="carrusel-ofertas" class="carrusel-ofertas">
+        <div class="carrusel-encabezado">
+            <span class="carrusel-titulo"><i class="fa-solid fa-tags"></i> Promociones del día</span>
+            <span id="carrusel-vacio" class="carrusel-vacio" style="display:none;">No hay promociones vigentes</span>
+        </div>
+        <div class="carrusel-viewport">
+            <button type="button" class="carrusel-flecha" id="btnCarruselIzq" aria-label="Anterior">&#10094;</button>
+            <div id="carrusel-pista" class="carrusel-pista"></div>
+            <button type="button" class="carrusel-flecha" id="btnCarruselDer" aria-label="Siguiente">&#10095;</button>
+        </div>
+    </section>
     
         <!--2. CONTENEDOR PRINCIPAL DEL PUNTO DE VENTA (POS)-->
     

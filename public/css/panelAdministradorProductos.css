@@ -298,3 +298,16 @@ body {
   }
 }
 
+
+.register-box .admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.register-box .admin-nav .btn-primary {
+    width: 100%;
+}

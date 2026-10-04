@@ -31,6 +31,9 @@
                         <option value="Defectuoso de fábrica">Defectuoso de fábrica</option>
                         <option value="Merma por manejo">Merma por manejo</option>
                     </select>
+
+                    <label for="gerente">Nombre del Gerente:</label>
+                    <input type="text" id="gerente" value="gerente" required>
                 </div>
                 <div>
                     <button type="submit" style="padding: 10px 20px; background: #d9534f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Aplicar Ajuste de Merma</button>
@@ -50,7 +53,8 @@
             const datos = {
                 idProducto: document.getElementById("idProducto").value,
                 cantidadAjustar: document.getElementById("cantidadAjustar").value,
-                causa: document.getElementById("causa").value
+                causa: document.getElementById("causa").value,
+                gerente: document.getElementById("gerente").value
             };
 
             try {
