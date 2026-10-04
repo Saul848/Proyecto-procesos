@@ -143,4 +143,44 @@
     <puesto>empleado</puesto>
     <evento>salida</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:11:18</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:11:39</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:11:45</hora>
+    <nombre>Marcelo Lopez</nombre>
+    <usuario>Cypher34</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:17:29</hora>
+    <nombre>Misael</nombre>
+    <usuario>MisaGoodMvp</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>13:18:35</hora>
+    <nombre>Misael</nombre>
+    <usuario>MisaGoodMvp</usuario>
+    <puesto>gerente</puesto>
+    <evento>salida</evento>
+  </acceso>
 </accesos>
