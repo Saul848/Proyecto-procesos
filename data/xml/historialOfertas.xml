@@ -1,0 +1,49 @@
+<historial>
+  <registro>
+    <id>H-1791013635978</id>
+    <accion>crear</accion>
+    <idOferta>OF-05</idOferta>
+    <idProducto>11</idProducto>
+    <tipoProm>porcentaje</tipoProm>
+    <valorDesc>10</valorDesc>
+    <fechaHora>3/10/2026, 1:47:15 a.m.</fechaHora>
+  </registro>
+  <registro>
+    <id>H-1791015112004</id>
+    <accion>eliminar</accion>
+    <idOferta>OF-01</idOferta>
+    <idProducto>7</idProducto>
+    <tipoProm>porcentaje</tipoProm>
+    <valorDesc>15</valorDesc>
+    <fechaHora>3/10/2026, 2:11:52 a.m.</fechaHora>
+  </registro>
+  <registro>
+    <id>H-1791075546762</id>
+    <accion>eliminar</accion>
+    <idOferta>OF-02</idOferta>
+    <idProducto>2</idProducto>
+    <tipoProm>precioFijo</tipoProm>
+    <valorDesc>20</valorDesc>
+    <fechaHora>3/10/2026, 6:59:06 p.m.</fechaHora>
+  </registro>
+  <registro>
+    <id>H-1791081130909</id>
+    <accion>crear</accion>
+    <idOferta>OF-06</idOferta>
+    <idProducto>12</idProducto>
+    <tipoProm>cantidad</tipoProm>
+    <valorDesc>1</valorDesc>
+    <fechaHora>3/10/2026, 8:32:10 p.m.</fechaHora>
+  </registro>
+  <registro>
+    <id>H-1791082359485</id>
+    <accion>eliminar</accion>
+    <idOferta>OF-06</idOferta>
+    <idProducto>12</idProducto>
+    <tipoProm>cantidad</tipoProm>
+    <valorDesc>1</valorDesc>
+    <cantidadRecibe>2</cantidadRecibe>
+    <cantidadPaga>1</cantidadPaga>
+    <fechaHora>3/10/2026, 8:52:39 p.m.</fechaHora>
+  </registro>
+</historial>

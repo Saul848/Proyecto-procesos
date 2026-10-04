@@ -202,6 +202,9 @@ async function cargarDatos() {
             const listado = Array.isArray(dataOfertas) ? dataOfertas : (dataOfertas.ofertas || []);
             // Filtra únicamente las ofertas vigentes
             ofertasActivas = listado.filter(o => o.estado === "disponible");
+
+            //renderiza el carrusel con las ofertas 
+            renderizarCarruselOfertas();
         } else {
             ofertasActivas = [];
         }
@@ -671,3 +674,74 @@ function ejecutarReimpresionTicket() {
     ventana.print();
     ventana.close();
 }
+
+function renderizarCarruselOfertas(){
+    const pista = document.getElementById("carrusel-pista");
+    const vacio = document.getElementById("carrusel-vacio");
+    if(!pista) return;
+
+    pista.innerHTML = "";
+
+    //si no hay ofertas, mostramos el aviso
+    if(!ofertasActivas || ofertasActivas.length === 0){
+        vacio.style.display = "block";
+        return;
+    }
+    vacio.style.display = "none";
+
+    ofertasActivas.forEach((oferta) => {
+        const idProd = String(oferta.idProducto);
+        const producto = todosLosProductos.find((p) => {
+            const idVal = String(p.id !== undefined ? p.id : p["@_id"]);
+            return idVal === idProd;
+        });
+
+        //tipo de promoción
+        let textoOferta;
+        if (oferta.tipoProm === "porcentaje") {
+            textoOferta = `-${oferta.valorDesc}%`;
+        } else if (oferta.tipoProm === "cantidad") {
+            textoOferta = `${oferta.cantidadRecibe}x${oferta.cantidadPaga}`;
+        } else if (oferta.tipoProm === "precioFijo") {
+            textoOferta = `$${oferta.valorDesc}`;
+        } else {
+            textoOferta = "Oferta";
+        }
+
+        const nombre = producto ? producto.nombre : `Producto ${idProd}`;
+        const precio = producto ? (Number(producto.precio) || 0).toFixed(0) : "-";
+
+        const card = document.createElement("div");
+        card.className = "carrusel-tarjeta";
+        card.innerHTML = `
+            <div class="oferta-nombre">${nombre}</div>
+            <div class="oferta-tipo">${textoOferta}</div>
+            <div class="oferta-precio">Precio Original: $${precio}</div>
+        `;
+        pista.appendChild(card);
+    });
+}
+
+document.getElementById("btnCarruselIzq").addEventListener("click", () => {
+    const pista = document.getElementById("carrusel-pista");
+    const tarjeta = pista.querySelector(".carrusel-tarjeta");
+    const paso = tarjeta ? tarjeta.offsetWidth + 12 : 200;
+
+    if (pista.scrollLeft <= 0) {
+        pista.scrollTo({ left: pista.scrollWidth, behavior: "smooth" });
+    } else {
+        pista.scrollBy({ left: -paso * 2, behavior: "smooth" });
+    }
+});
+
+document.getElementById("btnCarruselDer").addEventListener("click", () => {
+    const pista = document.getElementById("carrusel-pista");
+    const tarjeta = pista.querySelector(".carrusel-tarjeta");
+    const paso = tarjeta ? tarjeta.offsetWidth + 12 : 200;
+
+    if (pista.scrollLeft + pista.clientWidth >= pista.scrollWidth -1) {
+        pista.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+        pista.scrollBy({ left: paso * 2, behavior: "smooth" });
+    }
+});

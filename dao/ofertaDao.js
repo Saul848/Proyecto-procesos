@@ -5,6 +5,7 @@ const {XMLParser, XMLBuilder } = require ("fast-xml-parser");
 const path = require('path');
 
 const archivo = path.join(__dirname, "../data/xml/ofertas.xml");
+const archivoHistorial = path.join(__dirname, "../data/xml/historialOfertas.xml");
 
 /**
  * Obtiene todas las ofertas del archivo XML.
@@ -118,9 +119,57 @@ function eliminarOferta(id) {
     }
 }
 
+
+
+//historial de ofertas
+function obtenerHistorial(){
+    try{
+        const xml = fs.readFileSync(archivoHistorial, "utf8");
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            isArray: (tagName) => ['registro'].includes(tagName)
+        });
+        const resultado = parser.parse(xml);
+        return resultado.historial?.registro || [];
+    }catch (error){
+        console.error("Error al leer historial: ", error);
+        throw error;
+    }
+}
+
+function agregarRegistroHistorial(registro){
+    try{
+        if (!fs.existsSync(archivoHistorial) || fs.readFileSync(archivoHistorial, "utf8").trim() === "") {
+            fs.writeFileSync(archivoHistorial, '<?xml version="1.0" encoding="UTF-8"?>\n<historial>\n</historial>', "utf8");
+        }
+
+        const xml = fs.readFileSync(archivoHistorial, "utf8");
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            isArray: (tagName) => ['registro'].includes(tagName)
+        });
+        const resultado = parser.parse(xml);
+        if(!resultado.historial){
+            resultado.historial = { registro: []};
+        }
+        const registros = resultado.historial?.registro || [];
+        registros.push(registro);
+        resultado.historial.registro = registros;
+
+        const builder = new XMLBuilder({ format: true, ignoreAttributes: false });
+        fs.writeFileSync(archivoHistorial, builder.build(resultado), "utf8");
+        return { ok: true };
+    } catch (error){
+        console.error("Error al guardar registro: ", error);
+        throw error;
+    }
+}
+
 module.exports = {
     obtenerOfertas,
     agregarOferta,
     obtenerOferta,
-    eliminarOferta
+    eliminarOferta,
+    obtenerHistorial,
+    agregarRegistroHistorial
 };
