@@ -714,7 +714,7 @@ document.addEventListener("click", function(event){
 /**
  * Listener para el botón que habilita el modal para enviar un mensaje
  */
-document.getElementById("btnMensaje").addEventListener('click', ()=> {
+document.getElementById("btnMensajes").addEventListener('click', ()=> {
     document.getElementById('formMensaje').style.display = 'flex';
 });
 
