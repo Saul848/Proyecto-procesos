@@ -280,8 +280,6 @@ html, body {
     object-fit: contain;
 }
 
-
-
 .box h2 {
   font-size: 18px;
   color: #333;
@@ -299,6 +297,7 @@ html, body {
   padding: 16px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
 }
 
 .cont-mod {
@@ -359,10 +358,16 @@ html, body {
   font-size: 14px;
 }
 
-/* Botón de guardar modificación */
-#btn-guardar-modificacion {
-  margin-top: 8px;
-  width: 100%;
+.cont-mod-botones{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+/* Botones dentro de contenedor de botones */
+.cont-mod-botones button {
+  margin: 8px 8px 8px 8px;
+  width: 40%;
 }
 
 #register-box {

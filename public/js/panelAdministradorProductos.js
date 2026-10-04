@@ -3,6 +3,31 @@ import { inicializarModalCategoria, abrirModalCategoria } from './modal_agregar_
 import { inicializarModalMensajes, abrirModalMensajes } from './modal_mensajes_administrador.js';
 import { logout } from "./cerrar_sesion.js";
 
+document.addEventListener("DOMContentLoaded", () => {
+
+    const nombreEmpleado = sessionStorage.getItem("nombreUsuario");
+    const puestoLogueado = sessionStorage.getItem("puestoLogueado");
+    const token = sessionStorage.getItem("token");
+
+    // Verificamos que exista un token de sesión
+    if (!token) {
+        alert("No has iniciado sesión o la sesión ha expirado.");
+        window.location.replace("login.html");
+        return;
+    }
+
+    if (puestoLogueado !== "administrador") {
+        alert("No tienes permiso para acceder a este panel.");
+        window.location.replace("login.html");
+        return;
+    }
+
+    const spanNombre = document.getElementById("saludo-nombre");
+
+    if (spanNombre) {
+        spanNombre.textContent = nombreEmpleado;
+    }
+});
 
 const contenedorModal = document.getElementById("contenedor-modal");
 const token = sessionStorage.getItem("token");
@@ -80,6 +105,13 @@ const btnModificarProducto = document.getElementById("btn-guardar-modificacion")
 if (btnModificarProducto) {
     btnModificarProducto.addEventListener("click", () => {
         guardarModificacionProducto();
+    });
+}
+
+const btnLimpiarCamposMod = document.getElementById("btn-limpiar-campos-modificacion");
+if (btnLimpiarCamposMod) {
+    btnLimpiarCamposMod.addEventListener("click", () => {
+        limpiarCamposModProducto();
     });
 }
 
@@ -608,8 +640,17 @@ async function guardarModificacionProducto() {
     }
 }
 
+function limpiarCamposModProducto() {
+    document.getElementById("label-mod-id-producto").textContent = "--";
+    document.getElementById("input-mod-id-producto").value = "";
+    document.getElementById("input-mod-nombre-producto").value = "";
+    document.getElementById("input-mod-descripcion-producto").value = "";
+    document.getElementById("select-mod-categoria-producto").value = "";
+    document.getElementById("input-mod-precio-producto").value = "";
+    document.getElementById("input-mod-stock-producto").value = "";
+}
+
 async function eliminarProducto(id) {
-    console.log("en cliente eliminar");
     // Enviar solicitud eliminacion a Express
     const respuesta = await fetch(`/api/productos/${id}`, {
         method: "DELETE",

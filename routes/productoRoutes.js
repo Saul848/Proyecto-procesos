@@ -18,7 +18,7 @@ router.post("/", autenticar, autorizar("administrador"), productoControlador.agr
  * @name GET /
  * @description Consulta el catálogo de productos con opciones de búsqueda y filtro.
  */
-router.get("/", autenticar, autorizar("administrador"), productoControlador.consultarCatalogo);
+router.get("/", autenticar, autorizar("administrador", "gerente", "empleado"), productoControlador.consultarCatalogo);
 
 /**
  * @name DELETE /

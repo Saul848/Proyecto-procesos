@@ -303,4 +303,204 @@
     <puesto>administrador</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>23:50:59</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>23:51:05</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>23:51:59</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>11:37:30</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>11:37:56</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>11:38:04</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>11:50:39</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>11:51:35</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>11:56:00</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>11:58:46</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:03:34</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:05:16</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:06:26</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:08:02</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:08:25</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:11:31</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:14:20</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:14:44</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:14:46</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:16:49</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:17:06</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:28:58</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:29:58</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:30:50</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:31:02</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
