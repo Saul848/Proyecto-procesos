@@ -16,7 +16,7 @@
 
 /* Contenido del modal */
 .modal-contenido {
-    background-color: white;
+    background-color: color-mix(in srgb, #494030 90%, white);
     width: 450px;
     padding: 25px;
     border-radius: 10px;
@@ -54,7 +54,7 @@
 .campo input {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     font-size: 14px;
     box-sizing: border-box;
 }
@@ -82,23 +82,18 @@
     font-size: 14px;
 }
 
-/* Botón agregar */
-#boton-agregar-categoria {
-    background-color: #00a86b;
-    color: white;
+.btn-primary-categ {
+  background-color: #e95d93;
+  color: whitesmoke;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+  transition: background-color 0.2s;
 }
 
-/* Botón salir */
-#boton-salir-agregar-categoria {
-    background-color: #d1d5db;
-    color: #333;
-}
-
-/* Efecto al pasar el mouse */
-#boton-agregar-categoria:hover {
-    background-color: #008f5b;
-}
-
-#boton-salir-agregar-categoria:hover {
-    background-color: #b8bdc5;
+.btn-primary-categ:hover {
+  background-color: #d94b7f;
 }

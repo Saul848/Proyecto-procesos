@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const puestoLogueado = sessionStorage.getItem("puestoLogueado");
     const token = sessionStorage.getItem("token");
 
+    //saludo
+    document.getElementById("titulo-menu").textContent =`Menu Administrador -- Bienvenid@ ${nombreEmpleado}`;
+
     // Verificamos que exista un token de sesión
     if (!token) {
         alert("No has iniciado sesión o la sesión ha expirado.");

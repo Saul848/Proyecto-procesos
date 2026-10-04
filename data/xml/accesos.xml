@@ -503,4 +503,116 @@
     <puesto>empleado</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:33:44</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:43:53</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>12:44:26</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>14:04:59</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>14:06:34</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>14:21:58</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>14:22:00</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>14:24:31</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>14:35:18</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-05</fecha>
+    <hora>20:00:15</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-05</fecha>
+    <hora>20:03:35</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-05</fecha>
+    <hora>20:03:43</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-05</fecha>
+    <hora>16:34:21</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-05</fecha>
+    <hora>16:47:51</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>salida</evento>
+  </acceso>
 </accesos>
