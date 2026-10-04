@@ -23,7 +23,11 @@ function listarOfertas(req, res){
             };
         });
 
-        res.json(ofertasConProducto);
+        const ofertasVisibles = ofertasConProducto.filter(o =>
+            o.estado === 'disponible' || o.estado === 'proxima'
+        );
+
+        res.json(ofertasVisibles);
     } catch(error){
         res.status(500).json({ ok: false, mensaje: "Error al listar ofertas.", error: error.message });
     }
@@ -38,6 +42,11 @@ function crearOferta(req, res){
         const productoExiste = productos.some(p => String(p.id) === idProductoStr);
         if (!productoExiste){
             return res.status(400).json({ ok: false, mensaje: "El producto seleccionado no existe." });
+        }
+
+        const producto = producto.find(p => String(p.id) === idProductoStr);
+        if(producto && Number(producto.stock) <= 0){
+            return res.status(400).json({ ok: false, mensaje: "No se puede craer una oferta para un producto sin stock."});
         }
 
         if (tipoProm === 'porcentaje' && (Number(valorDesc) <= 0 || Number(valorDesc) > 100)){
@@ -74,6 +83,20 @@ function crearOferta(req, res){
         //guardamos en el xml
         ofertaDao.agregarOferta(oferta.toJSON());
 
+
+
+        ofertaDao.agregarRegistroHistorial({
+            id: `H-${Date.now()}`,
+            accion: 'crear',
+            idOferta: id,
+            idProducto: idProductoStr,
+            tipoProm,
+            valorDesc: oferta.valorDesc,
+            cantidadRecibe: oferta.cantidadRecibe,
+            cantidadPaga: oferta.cantidadPaga,
+            fechaHora: new Date().toLocaleString('es-MX')
+        });
+
         res.status(201).json({ ok: true, mensaje: "Oferta creada exitosamente.", oferta: oferta.toJSON() });
     } catch(error){
         res.status(400).json({ ok: false, mensaje: "Error al crear la oferta.", error: error.message });
@@ -84,11 +107,26 @@ function eliminarOferta(req, res){
     try{
         const {id} = req.params;
 
+        const ofertas = ofertaDao.obtenerOfertas();
+        const ofertaEncontrada = ofertas.find(o => String(o.id) === String(id));
+
         const resultado = ofertaDao.eliminarOferta(id);
 
         if(!resultado.encontrado){
             return res.status(404).json({ ok: false, mensaje: "Oferta no encontrada." });            
         }
+
+        ofertaDao.agregarRegistroHistorial({
+            id: `H-${Date.now()}`,
+            accion: 'eliminar',
+            idOferta: id,
+            idProducto: ofertaEncontrada ? ofertaEncontrada.idProducto : '',
+            tipoProm: ofertaEncontrada ? ofertaEncontrada.tipoProm : '',
+            valorDesc: ofertaEncontrada ? ofertaEncontrada.valorDesc : 0,
+            cantidadRecibe: ofertaEncontrada ? ofertaEncontrada.cantidadRecibe : 1,
+            cantidadPaga: ofertaEncontrada ? ofertaEncontrada.cantidadPaga : 1,
+            fechaHora: new Date().toLocaleString('es-MX')
+        });
 
         res.json({ ok: true, mensaje: `Oferta ${id} eliminada.` });
     } catch(error){
@@ -96,8 +134,28 @@ function eliminarOferta(req, res){
     }
 }
 
+function obtenerHistorial(req, res){
+    try{
+        const registros = ofertaDao.obtenerHistorial();
+        const productos = productoDao.obtenerProductos();
+
+        const registrosConProducto = registros.map(r => {
+            const producto = productos.find(p => String(p.id) === String(r.idProducto));
+            return{
+                ...r,
+                nombreProducto: producto ? producto.nombre : 'Producto no encontrado'
+            };
+        });
+
+        res.json(registrosConProducto);
+    } catch(error){
+        res.status(500).json({ ok: false, mensaje: "Error al leer historial.", error: error.message});
+    }
+}
+
 module.exports = {
     listarOfertas,
     crearOferta,
-    eliminarOferta
+    eliminarOferta,
+    obtenerHistorial
 };

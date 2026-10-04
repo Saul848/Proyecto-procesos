@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="../css/ofertas.css">    
 </head>
 <body>
+    <header class="encabezado-ofertas">
+        <h1>Gestión de ofertas</h1>
+        <a href="./panelAdministradorProductos.html" class="btn-salir">Salir</a>
+    </header>
+
     <div class="contenedor">
         <div class="formulario">
             <h2>Descripción de la Oferta</h2>
@@ -54,8 +59,7 @@
 
             <div class="botones">
                 <button class="btn-guardar" onclick="guardarOferta()">Guardar oferta</button>
-                <button class="btn-cancelar" onclick="cancelar()">Cancelar</button>
-                <a href="./panelAdministradorProductos.html" class="btn-salir">Volver al panel</a>
+                <button class="btn-cancelar" onclick="cancelar()">Limpiar</button>
             </div>
 
             <div id="mensaje" class="mensaje"></div>
@@ -76,12 +80,38 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="tablaOfertas">
-
-                </tbody>
+                <tbody id="tablaOfertas"></tbody>
             </table>
+
+            <div class="botones-historial">
+                <button class="btn-historial" onclick="verHistorial()">Ver historial</button>
+            </div>
         </div>
     </div>
+
+    <div id="modalHistorial" class="modal" style="display: none;">
+        <div class="modal-contenido">
+            <div class="modal-encabezado">
+                <h3>Historial de acciones</h3>
+                <button class="btn-cerrar" onclick="cerrarHistorial()">X</button>
+            </div>
+            <div class="modal-cuerpo">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Acción</th>
+                            <th>Producto</th>
+                            <th>Tipo</th>
+                            <th>Valor</th>
+                            <th>Fecha y hora</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaHistorial"></tbody>
+                </table>
+            </div>
+        </div>
+    </div> 
+        
 
     <script src="../js/ofertas.js"></script>
 </body>
