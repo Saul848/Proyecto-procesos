@@ -282,9 +282,14 @@ exports.eliminarEmpleado = async (req, res) => {
     }
 };
 
+/**
+ * Funcion que envia el reporte de desempeño de los empleados al cliente
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getReporteDesempeno = async (req, res) =>{
     try{
-        const resultado = empleadoDao.obtenerReporteDesempeno();
+        const resultado = await empleadoDao.obtenerReporteDesempeno();
         res.json(resultado);
 
     }catch(error){

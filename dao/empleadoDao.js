@@ -382,31 +382,54 @@ function obtenerReporteDesempeno(){
     try{
         const empleados = obtenerEmpleados();
 
-        //aqui vamos a mapear y evaluar métricas para cada empleado
-        const reporteEmpleados = empleados.map(emp =>{
+        // Mapeamos y evaluamos métricas para cada empleado
+        let reporteEmpleados = empleados.filter(emp => emp.puesto === "empleado")
+        .map(emp =>{
             const numVentas = parseInt(emp.numVentas) || 0;
             const numTransacciones = parseInt(emp.numTransacciones) || 0;
-
-            //la regla para poder promocionarlo
-            const esCandidatoPromocion= numVentas >=5;
+            
+            // Regla para poder promocionarlo
+            let candidato = (numVentas >= 10 && numTransacciones >= 10);
 
             return {
                 id: emp.id,
-                nombre: emp.puesto,
+                nombre: emp.nombre,
                 puesto: emp.puesto,
-                usuario: emp.usuario,
                 numVentas: numVentas,
                 numTransacciones: numTransacciones,
-                esCandidatoPromocion: esCandidatoPromocion
-
+                esCandidatoPromocion: candidato
             };
-
-
         });
+
+        // Se valida si no hay empleados para evitar errores fatales
+        if (reporteEmpleados.length === 0) {
+            return {
+                ok: true,
+                empleados: [],
+                mvp: null
+            };
+        }
+
+        // Se inicializa correctamente con el primer empleado del reporte
+        let empleadoDelMes = reporteEmpleados[0].id;        
+        let valorMayor = reporteEmpleados[0].numVentas + reporteEmpleados[0].numTransacciones;
+
+        // Se recorre a partir del segundo elemento
+        for(let n = 1; n < reporteEmpleados.length; n++){
+            let sigValor = reporteEmpleados[n].numVentas + reporteEmpleados[n].numTransacciones;
+            
+            // Usamos '<=' si quieres que en caso de empate se quede con el último, 
+            // o '<' si prefieres que se quede con el primero que alcanzó el récord.
+            if(valorMayor < sigValor){
+                valorMayor = sigValor;
+                empleadoDelMes = reporteEmpleados[n].id;
+            }
+        }
 
         return {
             ok: true,
-            empleados: reporteEmpleados
+            empleados: reporteEmpleados,
+            mvp: empleadoDelMes
         };
     }catch(error){
         console.error("Error al generar reporte de desempeño:", error);

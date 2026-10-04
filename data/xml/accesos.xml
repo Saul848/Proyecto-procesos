@@ -407,4 +407,76 @@
     <puesto>gerente</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>21:06:55</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>21:08:52</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>21:11:28</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>21:16:04</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>21:16:08</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>21:37:11</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>21:38:20</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>22:15:32</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>22:22:33</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
