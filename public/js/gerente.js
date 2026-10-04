@@ -128,6 +128,25 @@ async function obtenerEmpleados(){
 }  
 
 /**
+ * Funcion para construir la cadena del responsable
+ * @returns {String}
+ */
+function obtenerResponsable(){
+    //Se define la variable que contendra la cadena
+    let cadenaResponsable
+    //Se recuperan los datos de la sesion del usuario
+    const nombre = sessionStorage.getItem("nombreUsuario");
+    const usuario = sessionStorage.getItem("usuarioLogueado");
+    //Si los datos existen se regresa una cadena con el nombre y el usuario
+    if(nombre && usuario){
+        return cadenaResponsable = "Accion realizada por: "+nombre+" | Usuario: "+usuario
+    
+    //Si los datos no existen entonces regresamos una cadena con datos desconocidos
+    }
+    return cadenaResponsable = "Accion realizada por: Desconocido | Usuario: Desconocido"
+}
+
+/**
  * Funcion para verificar los campos de la seccion agregar empleado
  * Si los inputs estan mal señala los errores
  * @function verificarCampos
@@ -481,7 +500,8 @@ async function guardarEmpleado() {
             puesto: puesto,
             telefono: tel,
             usuario: usuario,
-            password: password
+            password: password,
+            responsableAccion: obtenerResponsable()
         })
     });
 
@@ -514,7 +534,8 @@ async function eliminarEmpleado(id){
             "Content-Type": "application/json"
         },
         body: JSON .stringify({
-            id: id
+            id: id,
+            responsableAccion: obtenerResponsable()
         })
     });
 
@@ -525,6 +546,8 @@ async function eliminarEmpleado(id){
         alert(resultado.mensaje)
         //Disparamos el listener del DOMContentLoaded para actualizar la lista
         document.dispatchEvent(new Event("DOMContentLoaded"));
+        //Se muestran las opcciones principales
+        setEnModificacion(null);
     }else{
         alert(resultado.mensaje);
     }
@@ -555,7 +578,8 @@ async function modificarEmpleado(id) {
             puesto: puestoP,
             telefono: tel,
             usuario: usuarioP,
-            password: passwordP
+            password: passwordP,
+            responsableAccion: obtenerResponsable()
         })
     });
     //Obtencion de la repuesta
@@ -568,6 +592,7 @@ async function modificarEmpleado(id) {
         document.dispatchEvent(new Event("DOMContentLoaded"));
         //Se limpian los campos
         limpiarCamposMod();
+        btnModificarEmpDom
         //Se muestran las opcciones principales
         setEnModificacion(null);
     }else{
@@ -588,6 +613,7 @@ window.addEventListener('modificandoDatos', (evento)=>{
     //Si la bandera "enModificacion" es null entonces no se muestra ninguna seccion        
     }else if(estadoActual===null){
         seccionOpcciones.classList.remove('escondido')
+        btnModificarEmpDom.classList.add('escondido');
         seccionAgregar.classList.add('escondido')
         seccionMod.classList.add('escondido')
     }else{
@@ -671,7 +697,10 @@ document.addEventListener("click", function(event){
         //Si no se esta en proceso de modificacion entonces se realizan las siguientes opcciones
         if(enModificacion!==true){
             //Se limpia el ultimo panel de empleado seleccionado
-            document.getElementById(ultimoPanelEmpSeleccionado).style.backgroundColor="";
+            let ultimoPanel=document.getElementById(ultimoPanelEmpSeleccionado)
+            if(ultimoPanel!==null){
+                ultimoPanel.style.backgroundColor="";
+            }
             //Se oculta el boton
             btnModificarEmpDom.classList.add('escondido')
         }
@@ -726,7 +755,10 @@ function iluminarEmpleado(id){
     if(enModificacion!==true){
         //Si hay un panel de empleado seleccionado anteriormente se devuelve a la normalidad
         if(ultimoPanelEmpSeleccionado!==null){
-            document.getElementById(ultimoPanelEmpSeleccionado).style.backgroundColor="";    
+            let ultimoPanel= document.getElementById(ultimoPanelEmpSeleccionado)
+            if(ultimoPanel){
+                ultimoPanel.style.backgroundColor="";
+            }    
         }
         //Construimos el id del ultimo panel seleccionado y lo guardamos en una variable
         ultimoPanelEmpSeleccionado=("panelEmpleado"+id);

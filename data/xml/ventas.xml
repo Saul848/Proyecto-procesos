@@ -100,14 +100,14 @@
   <venta id="10">
     <fecha>2026-09-28T04:23:22.602Z</fecha>
     <idEmpleado>1</idEmpleado>
-    <total>1250.00</total>
+    <total>1250</total>
     <items>
       <item idProducto="1">
         <nombre>Laptop Gamer Avanzada</nombre>
-        <precioUnitario>1250.00</precioUnitario>
+        <precioUnitario>1250</precioUnitario>
         <descuento>2x1</descuento>
         <cantidad>2</cantidad>
-        <subtotal>1250.00</subtotal>
+        <subtotal>1250</subtotal>
       </item>
     </items>
   </venta>
@@ -254,21 +254,105 @@
   <venta id="19">
     <fecha>2026-09-27T06:46:14.918Z</fecha>
     <idEmpleado>1</idEmpleado>
-    <total>35.00</total>
+    <total>35</total>
     <items>
       <item idProducto="8">
         <nombre>papas</nombre>
-        <precioUnitario>20.00</precioUnitario>
+        <precioUnitario>20</precioUnitario>
         <descuento>0</descuento>
         <cantidad>1</cantidad>
-        <subtotal>20.00</subtotal>
+        <subtotal>20</subtotal>
       </item>
       <item idProducto="12">
         <nombre>emmanens</nombre>
-        <precioUnitario>15.00</precioUnitario>
+        <precioUnitario>15</precioUnitario>
         <descuento>0</descuento>
         <cantidad>1</cantidad>
-        <subtotal>15.00</subtotal>
+        <subtotal>15</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="20">
+    <fecha>2026-10-04T03:15:30.839Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>35.04</total>
+    <items>
+      <item idProducto="7">
+        <nombre>fresas con crema</nombre>
+        <precioUnitario>41.22</precioUnitario>
+        <descuento>15%</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>35.04</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="21">
+    <fecha>2026-10-04T03:15:33.236Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>35.04</total>
+    <items>
+      <item idProducto="7">
+        <nombre>fresas con crema</nombre>
+        <precioUnitario>41.22</precioUnitario>
+        <descuento>15%</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>35.04</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="22">
+    <fecha>2026-10-04T03:15:36.570Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>35.04</total>
+    <items>
+      <item idProducto="7">
+        <nombre>fresas con crema</nombre>
+        <precioUnitario>41.22</precioUnitario>
+        <descuento>15%</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>35.04</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="23">
+    <fecha>2026-10-04T03:15:57.011Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>52.99</total>
+    <items>
+      <item idProducto="6">
+        <nombre>fresas</nombre>
+        <precioUnitario>41.99</precioUnitario>
+        <descuento>0%</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>41.99</subtotal>
+      </item>
+      <item idProducto="4">
+        <nombre>d</nombre>
+        <precioUnitario>11</precioUnitario>
+        <descuento>0%</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>11</subtotal>
+      </item>
+    </items>
+  </venta>
+  <venta id="24">
+    <fecha>2026-10-04T03:16:00.635Z</fecha>
+    <idEmpleado>1</idEmpleado>
+    <total>52.99</total>
+    <items>
+      <item idProducto="6">
+        <nombre>fresas</nombre>
+        <precioUnitario>41.99</precioUnitario>
+        <descuento>0%</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>41.99</subtotal>
+      </item>
+      <item idProducto="4">
+        <nombre>d</nombre>
+        <precioUnitario>11.00</precioUnitario>
+        <descuento>0%</descuento>
+        <cantidad>1</cantidad>
+        <subtotal>11.00</subtotal>
       </item>
     </items>
   </venta>

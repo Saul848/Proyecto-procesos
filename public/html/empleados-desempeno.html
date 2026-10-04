@@ -34,7 +34,6 @@
             <a href="gerente.html" class="btn-regresar">Regresar al Inicio</a>
         </div>
     </div>
-
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             cargarReporteDesempeno();
@@ -42,7 +41,6 @@
 
         async function cargarReporteDesempeno() {
             try {
-                // Hacemos el fetch a la ruta que acabamos de crear en el backend
                 const respuesta = await fetch("/api/empleados/reporte-desempeno");
                 const datos = await respuesta.json();
 
@@ -54,9 +52,20 @@
                     datos.empleados.forEach(emp => {
                         const fila = document.createElement("tr");
 
-                        // Si es candidato a promoción, le ponemos un colorcito distintivo (ej. verde claro o amarillo)
-                        if (emp.esCandidatoPromocion) {
+                        // Guardamos las dos condiciones en constantes para mayor claridad
+                        const esCandidato = emp.esCandidatoPromocion;
+                        const esMvp = String(datos.mvp) === String(emp.id);
+
+                        // Evaluamos los casos de color de fondo para la fila
+                        if (esCandidato && esMvp) {
+                            // CASO: Se cumplen LAS DOS condiciones al mismo tiempo -> Amarillo
+                            fila.style.backgroundColor = "#fff9c4"; // Amarillo suave (puedes usar "yellow" si prefieres un tono fuerte)
+                        } else if (esCandidato) {
+                            // CASO: Solo es candidato a promoción -> Verde claro
                             fila.style.backgroundColor = "#e8f8f5"; 
+                        } else if (esMvp) {
+                            // CASO: Solo es empleado del mes -> (Opcional, puedes dejarlo sin color o poner otro)
+                            fila.style.backgroundColor = "#fff3e0"; 
                         }
 
                         fila.innerHTML = `
@@ -66,9 +75,13 @@
                             <td>${emp.numVentas}</td>
                             <td>${emp.numTransacciones}</td>
                             <td>
-                                ${emp.esCandidatoPromocion 
+                                ${esCandidato 
                                     ? '<span style="color: green; font-weight: bold;">⭐ Candidato a Promoción</span>' 
                                     : '<span style="color: gray;">En seguimiento</span>'}
+
+                                ${esMvp 
+                                    ? '<br><span style="color: #b7950b; font-weight: bold;">🏆 Empleado del mes</span>' 
+                                    : ''}
                             </td>
                         `;
 
