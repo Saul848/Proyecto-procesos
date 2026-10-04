@@ -1,5 +1,6 @@
 import { inicializarModalProducto, abrirModalProducto, abrirModalEditarProducto } from './modal_agregar_producto.js';
 import { inicializarModalCategoria, abrirModalCategoria } from './modal_agregar_categoria.js';
+import { inicializarModalMensajes, abrirModalMensajes } from './modal_mensajes_administrador.js';
 
 const contenedorModal = document.getElementById("contenedor-modal");
 
@@ -24,6 +25,14 @@ fetch("../html/modal_agregar_categoria.html")
     })
     .catch(error => console.error("Error al cargar modal categoría:", error));
 
+// 3. CARGAR EL MODAL DE MENSAJES
+fetch("../html/modal_mensajes_administrador.html")
+    .then(respuesta => respuesta.text())
+    .then(html => {
+        contenedorModal.insertAdjacentHTML('beforeend', html);
+        inicializarModalMensajes();
+    })
+    .catch(error => console.error("Error al cargar modal mensajes:", error));
 
 // --- EVENT LISTENERS PARA ABRIR LOS MODALES ---
 
@@ -38,6 +47,13 @@ const btnRegistrarCategoria = document.getElementById("btn-registrar-categoria")
 if (btnRegistrarCategoria) {
     btnRegistrarCategoria.addEventListener("click", () => {
         abrirModalCategoria();
+    });
+}
+
+const btnVerMensajes = document.getElementById("btn-mensajes");
+if (btnVerMensajes) {
+    btnVerMensajes.addEventListener("click", () => {
+        abrirModalMensajes();
     });
 }
 
@@ -56,6 +72,83 @@ if (btnBuscarProducto) {
         buscarProducto();
     });
 }
+
+const btnModificarProducto = document.getElementById("btn-guardar-modificacion");
+if (btnModificarProducto) {
+    btnModificarProducto.addEventListener("click", () => {
+        guardarModificacionProducto();
+    });
+}
+
+const inputModPrecio = document.getElementById("input-mod-precio-producto");
+const inputModStock = document.getElementById("input-mod-stock-producto");
+
+
+// ------------------ PRECIO ------------------
+
+if (inputModPrecio) {
+    inputModPrecio.addEventListener("keydown", (e) => {
+        if (["e", "E", "+", "-"].includes(e.key)) {
+            e.preventDefault();
+        }
+    });
+
+    inputModPrecio.addEventListener("input", (e) => {
+        const val = e.target.value;
+
+        if (val !== "") {
+            const num = Number(val);
+
+            if (num < 0) {
+                e.target.value = 0;
+            }
+
+            if (num > 9999) {
+                e.target.value = 9999;
+            }
+        }
+    });
+
+    inputModPrecio.addEventListener("blur", (e) => {
+        if (e.target.value === "") {
+            e.target.value = 0;
+        }
+    });
+}
+
+
+// ------------------ STOCK ------------------
+
+if (inputModStock) {
+    inputModStock.addEventListener("keydown", (e) => {
+        if (["e", "E", "+", "-", "."].includes(e.key)) {
+            e.preventDefault();
+        }
+    });
+    inputModStock.addEventListener("input", (e) => {
+        const val = e.target.value;
+
+        if (val !== "") {
+            const num = Number(val);
+
+            if (num < 0) {
+                e.target.value = 0;
+            }
+
+            if (num > 9999) {
+                e.target.value = 9999;
+            }
+        }
+    });
+
+    inputModStock.addEventListener("blur", (e) => {
+        if (e.target.value === "") {
+            e.target.value = 0;
+        }
+    });
+}
+
+
 // Manejador de eventos delegado para la lista interactiva de productos.
 
 document.querySelector(".product-list").addEventListener("click", (event) => {
@@ -70,24 +163,25 @@ document.querySelector(".product-list").addEventListener("click", (event) => {
         return;
     }
 
-    // 2. Editar
-    const botonEditar = event.target.closest(".btn-editar");
-    if (botonEditar) {
-        const idBuscado = String(botonEditar.dataset.id).trim();
+    // 2. Editar / Seleccionar Producto (al dar clic en la tarjeta completa)
+    const tarjetaProducto = event.target.closest(".product-item");
+    if (tarjetaProducto) {
+        // Obtenemos el ID del dataset o buscando el id dentro del span
+        const idBuscado = tarjetaProducto.querySelector(".product-id")?.textContent.replace('#', '').trim();
 
-        const productoSeleccionado = listaProductos.find(p => {
-            const idActual = String(p.id !== undefined ? p.id : p['@_id']).trim();
-            return idActual === idBuscado;
+        const productoSeleccionado = listaProductos.find(productoAux => {
+            const idActual = Number(productoAux.id !== undefined ? productoAux.id : productoAux['@_id']);
+            return idActual === Number(idBuscado);
         });
 
         if (productoSeleccionado) {
-            abrirModalEditarProducto(productoSeleccionado);
+            // Cargar datos en el formulario lateral
+            cargarDatosFormularioModificacion(productoSeleccionado);
         } else {
             alert(`No se encontró el producto con ID: ${idBuscado}`);
         }
     }
 });
-
 
 
 /**
@@ -174,9 +268,6 @@ async function mostrarProductos(listaCategoria = null) {
                     <div class="product-actions">
                         <button class="icon-btn btn-eliminar" title="Eliminar" data-id="${prod.id}">
                             <img src="/img/icon-eliminar.svg" alt="Eliminar">
-                        </button>
-                        <button class="icon-btn btn-editar" title="Editar" data-id="${prod.id}">
-                            <img src="/img/icon-editar.svg" alt="Editar">
                         </button>
                     </div>
                 </div>
@@ -325,6 +416,188 @@ async function buscarProducto() {
     }
 
     mostrarProductos(resultado);
+}
+
+/**
+ * Llenar el formulario de modificación a la derecha con los datos del producto
+ * y poblar el select de categorías.
+ */
+async function cargarDatosFormularioModificacion(producto) {
+    // 1. Asignar ID
+    const labelId = document.getElementById("label-mod-id-producto");
+    const inputId = document.getElementById("input-mod-id-producto");
+    if (labelId) labelId.textContent = producto.id;
+    if (inputId) inputId.value = producto.id;
+
+    // 2. Asignar los campos de texto/número
+    const inputNombre = document.getElementById("input-mod-nombre-producto");
+    const inputDesc = document.getElementById("input-mod-descripcion-producto");
+    const inputPrecio = document.getElementById("input-mod-precio-producto");
+    const inputStock = document.getElementById("input-mod-stock-producto");
+
+    if (inputNombre) inputNombre.value = producto.nombre || "";
+    if (inputDesc) inputDesc.value = producto.descripcion || "";
+    if (inputPrecio) inputPrecio.value = producto.precio || 0;
+    if (inputStock) inputStock.value = producto.stock || 0;
+
+    // 3. Cargar las categorías en el select de modificación
+    const selectModCategoria = document.getElementById("select-mod-categoria-producto");
+    if (selectModCategoria) {
+        const categorias = await cargarCategorias();
+        let html = `<option value="">Seleccione una categoría</option>`;
+        categorias.forEach(cat => {
+            const selected = (cat.nombre === producto.categoria) ? "selected" : "";
+            html += `<option value="${cat.nombre}" ${selected}>${cat.nombre}</option>`;
+        });
+        selectModCategoria.innerHTML = html;
+    }
+}
+
+/**
+ * Valida los inputs del formulario de modificación.
+ * @returns {boolean} `true` si todos los campos son válidos, `false` en caso contrario.
+ */
+function verificarModificacion() {
+    const id = document.getElementById("input-mod-id-producto")?.value.trim();
+    if (!id) {
+        alert("Por favor selecciona un producto de la lista primero.");
+        return false;
+    }
+
+    const nombre = document.getElementById("input-mod-nombre-producto")?.value.trim();
+    const descripcion = document.getElementById("input-mod-descripcion-producto")?.value.trim();
+    const categoria = document.getElementById("select-mod-categoria-producto")?.value.trim();
+    const precioInput = document.getElementById("input-mod-precio-producto")?.value.trim();
+    const stockInput = document.getElementById("input-mod-stock-producto")?.value.trim();
+
+    // 1. Validar campos vacíos
+    if (!nombre) {
+        alert("El nombre del producto no puede estar vacío.");
+        return false;
+    }
+
+    if (!descripcion) {
+        alert("La descripción del producto no puede estar vacía.");
+        return false;
+    }
+
+    if (!categoria) {
+        alert("Por favor selecciona una categoría.");
+        return false;
+    }
+
+    // 2. Validar precio (número positivo)
+    const precio = Number(precioInput);
+    if (precioInput === "" || isNaN(precio) || precio < 0) {
+        alert("Ingresa un precio válido (mayor o igual a 0).");
+        return false;
+    }
+
+    // 3. Validar stock (entero positivo)
+    const stock = Number(stockInput);
+    if (stockInput === "" || isNaN(stock) || stock < 0 || !Number.isInteger(stock)) {
+        alert("Ingresa un número entero válido para el stock (mayor o igual a 0).");
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Comprueba si al menos un campo del formulario cambió respecto al producto original en `listaProductos`.
+ * @returns {boolean} `true` si hay modificaciones, `false` si todo está idéntico o no se encontró el producto.
+ */
+function verificarHayModificacion() {
+    const idInput = document.getElementById("input-mod-id-producto")?.value.trim();
+    if (!idInput) {
+        alert("Por favor selecciona un producto de la lista primero.");
+        return false;
+    }
+
+    // Buscamos el producto original comparando ambos IDs convertidos a String
+    const productoOriginal = listaProductos.find(p => {
+        const pId = String(p.id !== undefined ? p.id : p['@_id']).trim();
+        return pId === idInput;
+    });
+
+    if (!productoOriginal) {
+        console.warn("No se encontró el producto original en listaProductos con ID:", idInput);
+        return false;
+    }
+
+    // Leemos los valores actuales del formulario
+    const nombreActual = document.getElementById("input-mod-nombre-producto")?.value.trim() || "";
+    const descActual = document.getElementById("input-mod-descripcion-producto")?.value.trim() || "";
+    const catActual = document.getElementById("select-mod-categoria-producto")?.value.trim() || "";
+    const precioActual = Number(document.getElementById("input-mod-precio-producto")?.value) || 0;
+    const stockActual = Number(document.getElementById("input-mod-stock-producto")?.value) || 0;
+
+    // Normalizamos valores del producto original (previniendo undefined / nulos / atributos de XML)
+    const nombreOrig = (productoOriginal.nombre || "").trim();
+    const descOrig = (productoOriginal.descripcion || "").trim();
+    const catOrig = (productoOriginal.categoria || "").trim();
+    const precioOrig = Number(productoOriginal.precio) || 0;
+    const stockOrig = Number(productoOriginal.stock) || 0;
+
+    // Comparamos campo por campo
+    const hayCambios = (
+        nombreActual !== nombreOrig ||
+        descActual !== descOrig ||
+        catActual !== catOrig ||
+        precioActual !== precioOrig ||
+        stockActual !== stockOrig
+    );
+
+    return hayCambios;
+}
+
+/**
+ * Procesa la actualización del producto si la verificación es exitosa.
+ */
+async function guardarModificacionProducto() {
+    // 1. Validar sintaxis y formato numérico de los inputs
+    if (!verificarModificacion()) {
+        return;
+    }
+
+    // 2. Verificar si realmente cambió algún dato respecto a listaProductos
+    if (!verificarHayModificacion()) {
+        alert("No se ha realizado ninguna modificación en los campos.");
+        return;
+    }
+
+    const id = document.getElementById("input-mod-id-producto").value.trim();
+    const nombre = document.getElementById("input-mod-nombre-producto").value.trim();
+    const descripcion = document.getElementById("input-mod-descripcion-producto").value.trim();
+    const categoria = document.getElementById("select-mod-categoria-producto").value.trim();
+    const precio = Number(document.getElementById("input-mod-precio-producto").value);
+    const stock = Number(document.getElementById("input-mod-stock-producto").value);
+
+    try {
+        const respuesta = await fetch(`/api/productos/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nombre,
+                descripcion,
+                categoria,
+                precio,
+                stock
+            })
+        });
+
+        const resultado = await respuesta.json();
+
+        if (respuesta.ok) {
+            alert(resultado.mensaje || "Producto actualizado con éxito");
+            await mostrarProductos(); // Recargar la lista
+        } else {
+            alert(resultado.mensaje || "Error al actualizar el producto");
+        }
+    } catch (error) {
+        console.error("Error al guardar modificaciones:", error);
+        alert("Error de conexión al guardar cambios.");
+    }
 }
 
 async function eliminarProducto(id) {

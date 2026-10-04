@@ -1,0 +1,38 @@
+/* Título del modal de mensajes */
+.modal-contenido h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Contenedor de los mensajes */
+#contenedorDetalles {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Contenedor del botón cerrar */
+#contenedorBoton {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px !important;
+}
+
+/* Botón cerrar mensajes */
+#btnCerrarModalMensajes {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d1d5db;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Efecto al pasar el mouse */
+#btnCerrarModalMensajes:hover {
+    background-color: #b8bdc5;
+}

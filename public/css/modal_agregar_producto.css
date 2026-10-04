@@ -84,6 +84,22 @@
     border-color: #003a70;
 }
 
+.campo textarea {
+  padding: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  resize: vertical; /* Permite redimensionar solo verticalmente */
+  max-height: 150px;
+  font-family: inherit; /* Asegura que mantenga la misma fuente que los inputs */
+}
+
+.campo textarea:focus {
+  border-color: #6366f1;
+}
+
 /* Contenedor de botones */
 .contenedor-botones {
     display: flex;

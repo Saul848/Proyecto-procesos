@@ -5,19 +5,25 @@
   font-family: Arial, sans-serif;
 }
 
-body {
+/* Resetear html y body para ocupar todo el alto/ancho del viewport */
+html, body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
   background-color: #f0f2f5;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
+  overflow-x: hidden; /* Evita scroll horizontal */
 }
 
+/* El contenedor principal ocupa toda la pantalla */
 .main-container {
   width: 100%;
-  max-width: 1000px;
+  min-height: 100vh;
   background-color: #ffffff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 0; /* Sin esquinas redondeadas externas */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Encabezado Principal */
@@ -78,11 +84,14 @@ body {
 
 
 
-/* Sección Izquierda: Lista de productos */
-.left-section {
+/* 4. Mapear las secciones para que se expandan completamente */
+.left-section,
+.right-section {
   background-color: #fdf6d8;
   padding: 20px;
   border-radius: 6px;
+  display: flex;
+  flex-direction: column;
 }
 
 .search-bar {
@@ -163,12 +172,18 @@ body {
   justify-content: center;
 }
 
-/* Lista de ítems */
+
+/*  Scroll interno para la lista de productos */
 .product-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1;
+  overflow-y: auto; /* Mantiene la lista scrolleable si hay muchos productos */
+  max-height: calc(100vh - 180px); /* Ajusta según el header */
+  padding-right: 6px;
 }
+
 
 .product-list p {
   color: red;
@@ -251,11 +266,11 @@ body {
   background: #e9ecef;
 }
 
-.btn-eliminar img {
-    filter: invert(20%) sepia(90%) saturate(5000%) hue-rotate(350deg);
+.btn-eliminar {
+    background: #C74A30;
 }
 
-.btn-eliminar:hover {
+.btn-eliminar:hover, .btn-editar:hover {
     background: #fecaca;
 }
 
@@ -265,25 +280,92 @@ body {
     object-fit: contain;
 }
 
-/* Ajusta los estilos de right-section */
-.right-section {
-  background-color: #fdf6d8;
-  padding: 20px;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* <--- Usa gap en lugar de space-between */
-  /* Quita min-height: 400px; si no deseas una altura fija mínima */
-}
 
-.info-box h2, .register-box h2 {
+
+.box h2 {
   font-size: 18px;
   color: #333;
   font-weight: normal;
   text-align: center;
 }
 
-.register-box {
+/* --- Estilos para la sección de modificación (info-box) --- */
+
+#info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.cont-mod {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cont-mod label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #495057;
+}
+
+.cont-mod input,
+.cont-mod select {
+  padding: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+  width: 100%;
+}
+
+.cont-mod input:focus,
+.cont-mod select:focus {
+  border-color: #6366f1;
+}
+
+.cont-mod textarea {
+  padding: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+  width: 100%;
+  resize: vertical; /* Permite redimensionar solo verticalmente */
+  max-height: 150px;
+  font-family: inherit; /* Asegura que mantenga la misma fuente que los inputs */
+}
+
+.cont-mod textarea:focus {
+  border-color: #6366f1;
+}
+
+/* Estilo para mostrar el ID estático */
+#mod-id {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.label-id-producto {
+  font-weight: bold;
+  color: #6366f1;
+  font-size: 14px;
+}
+
+/* Botón de guardar modificación */
+#btn-guardar-modificacion {
+  margin-top: 8px;
+  width: 100%;
+}
+
+#register-box {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -297,4 +379,3 @@ body {
     grid-template-columns: 1fr;
   }
 }
-

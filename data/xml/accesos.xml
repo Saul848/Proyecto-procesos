@@ -143,4 +143,36 @@
     <puesto>empleado</puesto>
     <evento>salida</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>14:26:50</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>18:43:37</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>18:46:03</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger123</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-04</fecha>
+    <hora>18:59:24</hora>
+    <nombre>Martha Garcia Morales</nombre>
+    <usuario>martha01</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
