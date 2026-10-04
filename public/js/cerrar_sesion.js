@@ -75,9 +75,9 @@ window.cerrarSesion = function() {
     window.location.href = "login.html";
 };
 
-document.getElementById("salir_xd").addEventListener('click', ()=>{
+document.getElementById("salir_xd")?.addEventListener('click', ()=>{
     window.location.href = "login.html";
-})
+});
 
 /**
  * Gestión de cierre de sesión automático por inactividad (10 minutos).
@@ -136,6 +136,6 @@ reiniciarTemporizador();
 /**
  * Listener para ocultar el modal
  */
-document.getElementById('btnCerrarModal').addEventListener('click', () => {
+document.getElementById('btnCerrarModal')?.addEventListener('click', () => {
     document.getElementById('checkMensajes').style.display = 'none';
 });

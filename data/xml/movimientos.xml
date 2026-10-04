@@ -301,4 +301,18 @@
     <nombre_producto>cloro</nombre_producto>
     <tipo>MODIFICACIÓN</tipo>
   </movimiento>
+  <movimiento id="44">
+    <fecha>3/10/2026</fecha>
+    <hora>10:56:54 p.m.</hora>
+    <id_producto>13</id_producto>
+    <nombre_producto>botella de agua</nombre_producto>
+    <tipo>ALTA</tipo>
+  </movimiento>
+  <movimiento id="45">
+    <fecha>3/10/2026</fecha>
+    <hora>10:57:24 p.m.</hora>
+    <id_producto>13</id_producto>
+    <nombre_producto>botella de agua</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
 </movimientos>

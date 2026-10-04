@@ -1,8 +1,11 @@
-import { inicializarModalProducto, abrirModalProducto, abrirModalEditarProducto } from './modal_agregar_producto.js';
+import { inicializarModalProducto, abrirModalProducto } from './modal_agregar_producto.js';
 import { inicializarModalCategoria, abrirModalCategoria } from './modal_agregar_categoria.js';
 import { inicializarModalMensajes, abrirModalMensajes } from './modal_mensajes_administrador.js';
+import { logout } from "./cerrar_sesion.js";
+
 
 const contenedorModal = document.getElementById("contenedor-modal");
+const token = sessionStorage.getItem("token");
 
 // Lista global de productos, para organización por categorías
 let listaProductos = [];
@@ -197,7 +200,8 @@ async function cargarProductos() {
         const respuesta = await fetch("/api/productos", {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             }
         });
 
@@ -290,7 +294,8 @@ async function cargarCategorias() {
         const respuesta = await fetch("/api/categorias", {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             }
         });
 
@@ -576,7 +581,10 @@ async function guardarModificacionProducto() {
     try {
         const respuesta = await fetch(`/api/productos/${id}`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` 
+            },
             body: JSON.stringify({
                 nombre,
                 descripcion,
@@ -607,7 +615,8 @@ async function eliminarProducto(id) {
         method: "DELETE",
 
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         }
     });
 
@@ -637,6 +646,7 @@ async function eliminarProducto(id) {
 async function inicializarPagina() {
     await mostrarProductos(); // Carga API y llena `listaProductos`
     await mostrarCategorias(); // Carga las opciones del select
+    logout(); // Funcion para el cierre de sesion y registro de este
 }
 
 inicializarPagina();

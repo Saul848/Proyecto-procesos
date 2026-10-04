@@ -6,6 +6,7 @@
  * 
  */
 
+require("dotenv").config(); // Libreria para acceder a la clave del .env y obtener la clave_secreta para cifrar los tokens
 
 const express = require("express");
 
