@@ -4,36 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte de Desempeño de Empleados</title>
-    <link rel="stylesheet" href="../css/catalogo.css"> 
+    <link rel="stylesheet" href="../css/desempenoEstilo.css"> 
 </head>
 <body>
-    <div class="container">
-        <h1>Reporte de Desempeño y Promociones</h1>
-        
-        <div class="card-resumen" style="margin: 20px 0; padding: 15px; background: #f4f4f4; border-radius: 8px;">
-            <h3>Empleados Evaluados: <span id="totalEmpleados">0</span></h3>
+
+    <div class="card-gerente-wide">
+        <!-- Título superior en la pestaña blanca -->
+        <div class="card-header-title">
+            Reporte de Desempeño y Promociones
         </div>
+        
+        <div class="card-body">
+            <!-- Caja de resumen ordenada -->
+            <div class="card-resumen-box">
+                <h3>Empleados Evaluados: <span id="totalEmpleados">0</span></h3>
+            </div>
 
-        <table class="tabla-productos" border="1" width="100%" style="border-collapse: collapse; margin-top: 20px;">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Puesto</th>
-                    <th>Ventas</th>
-                    <th>Transacciones</th>
-                    <th>Estatus / Promoción</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpoTablaDesempeno">
-                
-            </tbody>
-        </table>
-
-        <div style="margin-top: 20px;">
-            <a href="gerente.html" class="btn-regresar">Regresar al Inicio</a>
+            <!-- Tabla de datos -->
+            <div class="tabla-desempeno-wrapper">
+                <table class="tabla-desempeno">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Puesto</th>
+                            <th>Ventas</th>
+                            <th>Transacciones</th>
+                            <th>Estatus / Promoción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaDesempeno">
+                        <!-- Los datos se cargan dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <div class="btn-regresar-container">
+        <a href="/gerente.html" class="btn-regresar">← Regresar al Inicio</a>
+    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             cargarReporteDesempeno();
@@ -52,32 +63,27 @@
                     datos.empleados.forEach(emp => {
                         const fila = document.createElement("tr");
 
-                        // Guardamos las dos condiciones en constantes para mayor claridad
                         const esCandidato = emp.esCandidatoPromocion;
                         const esMvp = String(datos.mvp) === String(emp.id);
 
-                        // Evaluamos los casos de color de fondo para la fila
                         if (esCandidato && esMvp) {
-                            // CASO: Se cumplen LAS DOS condiciones al mismo tiempo -> Amarillo
-                            fila.style.backgroundColor = "#fff9c4"; // Amarillo suave (puedes usar "yellow" si prefieres un tono fuerte)
+                            fila.style.backgroundColor = "#fff9c4"; // Amarillo suave
                         } else if (esCandidato) {
-                            // CASO: Solo es candidato a promoción -> Verde claro
-                            fila.style.backgroundColor = "#e8f8f5"; 
+                            fila.style.backgroundColor = "#e8f8f5"; // Verde claro
                         } else if (esMvp) {
-                            // CASO: Solo es empleado del mes -> (Opcional, puedes dejarlo sin color o poner otro)
-                            fila.style.backgroundColor = "#fff3e0"; 
+                            fila.style.backgroundColor = "#fff3e0"; // Naranja suave
                         }
 
                         fila.innerHTML = `
                             <td>${emp.id}</td>
-                            <td>${emp.nombre}</td>
+                            <td><strong>${emp.nombre}</strong></td>
                             <td>${emp.puesto}</td>
                             <td>${emp.numVentas}</td>
                             <td>${emp.numTransacciones}</td>
                             <td>
                                 ${esCandidato 
-                                    ? '<span style="color: green; font-weight: bold;">⭐ Candidato a Promoción</span>' 
-                                    : '<span style="color: gray;">En seguimiento</span>'}
+                                    ? '<span style="color: #27ae60; font-weight: bold;">⭐ Candidato a Promoción</span>' 
+                                    : '<span style="color: #7f8c8d;">En seguimiento</span>'}
 
                                 ${esMvp 
                                     ? '<br><span style="color: #b7950b; font-weight: bold;">🏆 Empleado del mes</span>' 

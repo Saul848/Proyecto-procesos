@@ -4,34 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte de Inventario</title>
-    <link rel="stylesheet" href="../css/catalogo.css"> 
+    <link rel="stylesheet" href="../css/reporteEstilo.css"> 
 </head>
 <body>
-    <div class="container">
-        <h1>Reporte de Inventario y Existencias</h1>
+
+    <div class="card-gerente-wide">
+        <!-- Título superior en la pestaña blanca -->
+        <div class="card-header-title">
+            Reporte de Inventario y Existencias
+        </div>
         
-        <div class="card-resumen" style="margin: 20px 0; padding: 15px; background: #f4f4f4; border-radius: 8px;">
-            <h3>Total de Existencias en Almacén: <span id="totalExistencias">0</span> unidades</h3>
-        </div>
+        <div class="card-body">
+            <!-- Caja de resumen para el total -->
+            <div class="card-resumen-box">
+                <h3>Total de Existencias en Almacén: <span id="totalExistencias">0</span> unidades</h3>
+            </div>
 
-        <table class="tabla-productos" border="1" width="100%" style="border-collapse: collapse; margin-top: 20px;">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Stock</th>
-                    <th>Estado / Alerta</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpoTablaReporte">
-            </tbody>
-        </table>
-
-        <div style="margin-top: 20px;">
-            <a href="../index.html" class="btn-regresar">Regresar al Inicio</a>
+            <!-- Tabla de inventario -->
+            <div class="tabla-desempeno-wrapper">
+                <table class="tabla-desempeno">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Estado / Alerta</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaReporte">
+                        <!-- Los datos se cargan dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </div>
+
+    <div class="btn-regresar-container">
+        <a href="/gerente.html" class="btn-regresar">← Regresar al Inicio</a>
     </div>
 
     <!-- meti aqui el script porque me estaba marcando el error 404 de que no encontraba el archivo js y ya me habia desesperado-->
@@ -50,25 +61,28 @@
                     const cuerpoTabla = document.getElementById("cuerpoTablaReporte");
                     cuerpoTabla.innerHTML = "";
 
-                    datos.productos.forEach(prod => {
+                   datos.productos.forEach(prod => {
                         const fila = document.createElement("tr");
 
+                        // Si hay desabasto, le asignamos la clase de alerta
                         if (prod.esDesabasto) {
-                            fila.style.backgroundColor = "#ffdddd";
+                            fila.classList.add("fila-desabasto");
                         }
 
                         fila.innerHTML = `
                             <td>${prod.id}</td>
-                            <td>${prod.nombre}</td>
+                            <td><strong>${prod.nombre}</strong></td>
                             <td>${prod.descripcion}</td>
                             <td>$${prod.precio}</td>
                             <td>${prod.stock}</td>
                             <td>
-                                ${prod.esDesabasto ? '<span style="color: red; font-weight: bold;">⚠️ Desabasto / Stock Bajo</span>' : '<span style="color: green;">Normal</span>'}
+                                ${prod.esDesabasto 
+                                    ? '<span style="color: #ff9999; font-weight: bold;">⚠️ Desabasto / Stock Bajo</span>' 
+                                    : '<span style="color: #2ecc71; font-weight: bold;">Normal</span>'}
                             </td>
                         `;
 
-                        cuerpoTabla.appendChild(fila);
+                        cuerpoTablaReporte.appendChild(fila);
                     });
                 } else {
                     alert("No se pudo cargar el reporte de inventario.");

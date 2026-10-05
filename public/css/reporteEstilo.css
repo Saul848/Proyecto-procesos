@@ -1,0 +1,142 @@
+/* --- Estilos Globales inspirados en la plantilla de Gerencia --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #9b6bc0; /* Color morado de fondo */
+    margin: 0;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* --- Contenedor estándar (para formularios) --- */
+.card-gerente {
+    background-color: #2b233c;
+    border: 2px solid #4a3d60;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+}
+
+/* --- Contenedor ancho para tablas y reportes --- */
+.card-gerente-wide {
+    background-color: #2b233c;
+    border: 2px solid #4a3d60;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 950px;
+    overflow: hidden;
+}
+
+/* --- Título superior estilo pestaña blanca --- */
+.card-header-title {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    text-align: center;
+    padding: 18px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 2px solid #4a3d60;
+}
+
+/* --- Cuerpo interno de la tarjeta --- */
+.card-body {
+    padding: 30px;
+}
+
+/* --- Caja de resumen superior dentro de la tarjeta --- */
+.card-resumen-box {
+    background-color: #362c4a;
+    color: #e0d9ec;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #4a3d60;
+    font-size: 16px;
+}
+
+.card-resumen-box h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+/* --- Estilo profesional para la tabla con filas oscuras alternadas --- */
+.tabla-desempeno-wrapper {
+    overflow-x: auto;
+}
+
+.tabla-desempeno {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #f3f0ff; /* Texto general claro y nítido */
+    background-color: #2b233c;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tabla-desempeno th {
+    background-color: #362c4a;
+    color: #ffffff;
+    padding: 14px 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #4a3d60;
+}
+
+.tabla-desempeno td {
+    padding: 14px 15px;
+    border-bottom: 1px solid #362c4a;
+}
+
+/* Franjas alternadas oscuras (igual que el reporte de accesos) */
+.tabla-desempeno tbody tr:nth-child(even) {
+    background-color: #322844;
+}
+
+.tabla-desempeno tbody tr:nth-child(odd) {
+    background-color: #2b233c;
+}
+
+/* Efecto hover al pasar el cursor */
+.tabla-desempeno tbody tr:hover {
+    background-color: #3c3053;
+}
+
+/* --- Clase específica para filas en desabasto / stock bajo --- */
+/* Forzamos un fondo rojo vino oscuro y texto completamente blanco para legibilidad total */
+.tabla-desempeno tr.fila-desabasto {
+    background-color: #4a0000 !important; 
+    color: #ffffff !important;
+}
+
+.tabla-desempeno tr.fila-desabasto td {
+    color: #ffffff !important;
+    border-bottom-color: #4a0000 !important;
+}
+
+/* --- Botón de regresar --- */
+.btn-regresar-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-regresar {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: opacity 0.2s;
+}
+
+.btn-regresar:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
