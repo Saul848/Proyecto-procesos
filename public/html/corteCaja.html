@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corte de Caja y Arqueo</title>
+    <!-- Vinculamos nuestro archivo de estilos externo -->
+    <link rel="stylesheet" href="../css/corteEstilo.css">
 </head>
 <body>
 
-    <div class="card">
+    <div class="card-gerente">
         <h2>Corte de Caja y Arqueo</h2>
         
         <div class="form-group">
@@ -20,7 +22,7 @@
             <input type="number" id="efectivoFisico" step="0.01" placeholder="0.00">
         </div>
         
-        <button onclick="enviarCorteCaja()">Realizar Corte</button>
+        <button class="btn-principal" onclick="enviarCorteCaja()">Realizar Corte</button>
         
         <div id="resultadoCorte"></div>
     </div>
@@ -31,7 +33,6 @@
             const efectivoFisico = document.getElementById("efectivoFisico").value;
             const divResultado = document.getElementById("resultadoCorte");
 
-            // Validación rápida en el cliente
             if (!gerenteIngresado || efectivoFisico === "") {
                 divResultado.style.display = "block";
                 divResultado.className = "error";
@@ -42,9 +43,7 @@
             try {
                 const respuesta = await fetch("http://localhost:3000/api/cortes/realizar-corte", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ gerenteIngresado, efectivoFisico })
                 });
 
