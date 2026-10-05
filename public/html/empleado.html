@@ -183,13 +183,20 @@
 
     <!-- Modal 2: Notificaciones y Mensajes Internos -->
     <div id="checkMensajes" class="modal-overlay" style="display: none;">
-        <div class="modal-caja">
+        <div class="modal-caja modal-mensajes">
             <h3><i class="fa-solid fa-bell"></i> Mensajes pendientes:</h3>
-            <div id="contenedorDetalles">
-                <!-- Se inyectan dinámicamente los avisos o campos de mensaje -->
+
+            <div class="panel-mensajes" id="panelMensajes">
+                <div class="lista-mensajes" id="listaMensajes">
+                    <!-- Se inyectan dinámicamente los <div class="item-mensaje"> -->
+                </div>
+
+                <div class="contenido-mensaje" id="contenidoMensaje">
+                    Haz click en un mensaje para verlo!
+                </div>
             </div>
+
             <div id="contenedorBoton" style="margin-top: 15px; text-align: right;">
-                <!-- ID diferenciado para evitar colisión con el modal del ticket -->
                 <button type="button" id="btnCerrarModalMensajes" class="btn-toggle-caja">Cerrar</button>
             </div>
         </div>
@@ -232,67 +239,62 @@
             </form>
         </div>
     </div>
-
-    <script src="../js/empleado.js"></script>
-    <script src="../js/venta.js"></script>
-    <script src="../js/movimientoCaja.js"></script>
-    <script src="../js/cerrar_sesion.js"></script>
     <!-- Modal 3: Historial de Ventas -->
-<div id="modalHistorialVentas" class="modal-overlay">
-    <div class="modal-historial-card">
-        <div class="modal-historial-header">
-            <h3><i class="fa-solid fa-receipt"></i> Historial de Ventas</h3>
-            <button type="button" class="btn-cerrar-icono" onclick="cerrarModalHistorial()">&times;</button>
-        </div>
-
-        <div class="filtro-historial-contenedor">
-            <input type="text" id="filtroHistorial" placeholder="Buscar por Folio / ID de venta..." oninput="filtrarHistorialVentas()">
-        </div>
-
-        <div class="tabla-historial-scroll">
-            <table class="tabla-historial">
-                <thead>
-                    <tr>
-                        <th>Folio / ID</th>
-                        <th>Fecha y Hora</th>
-                        <th>Total</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaHistorialCuerpo"></tbody>
-            </table>
-        </div>
-        
-        <div class="modal-historial-footer">
-            <button type="button" onclick="cerrarModalHistorial()" class="btn-cerrar-secundario">Cerrar</button>
-        </div>
-    </div>
-</div>
-
-<!-- Modal 4: Corroboración de Ticket -->
-<div id="modalCorroborarTicket" class="modal-overlay">
-    <div class="modal-ticket-card">
-        <div id="areaTicketReimpresion" class="ticket-impresion-cuerpo">
-            <div class="ticket-impresion-encabezado">
-                <strong>CADENA COMERCIAL OXXO</strong>
-                <span>*** REIMPRESIÓN DE TICKET ***</span>
+    <div id="modalHistorialVentas" class="modal-overlay">
+        <div class="modal-historial-card">
+            <div class="modal-historial-header">
+                <h3><i class="fa-solid fa-receipt"></i> Historial de Ventas</h3>
+                <button type="button" class="btn-cerrar-icono" onclick="cerrarModalHistorial()">&times;</button>
             </div>
-            <div id="detalleTicketReimpresion"></div>
-            <div class="ticket-impresion-pie">
-                <p>Copia para comprobación del cliente</p>
+
+            <div class="filtro-historial-contenedor">
+                <input type="text" id="filtroHistorial" placeholder="Buscar por Folio / ID de venta..." oninput="filtrarHistorialVentas()">
+            </div>
+
+            <div class="tabla-historial-scroll">
+                <table class="tabla-historial">
+                    <thead>
+                        <tr>
+                            <th>Folio / ID</th>
+                            <th>Fecha y Hora</th>
+                            <th>Total</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaHistorialCuerpo"></tbody>
+                </table>
+            </div>
+            
+            <div class="modal-historial-footer">
+                <button type="button" onclick="cerrarModalHistorial()" class="btn-cerrar-secundario">Cerrar</button>
             </div>
         </div>
+    </div>
 
-        <div class="ticket-acciones-botones">
-            <button type="button" id="btnImprimirTicketCompra" class="btn-imprimir-ticket" onclick="ejecutarReimpresionTicket()">
-                <i class="fa-solid fa-print"></i> Imprimir ticket de compra
-            </button>
-            <button type="button" class="btn-volver-ticket" onclick="cerrarModalCorroborar()">
-                Volver
-            </button>
+    <!-- Modal 4: Corroboración de Ticket -->
+    <div id="modalCorroborarTicket" class="modal-overlay">
+        <div class="modal-ticket-card">
+            <div id="areaTicketReimpresion" class="ticket-impresion-cuerpo">
+                <div class="ticket-impresion-encabezado">
+                    <strong>CADENA COMERCIAL OXXO</strong>
+                    <span>*** REIMPRESIÓN DE TICKET ***</span>
+                </div>
+                <div id="detalleTicketReimpresion"></div>
+                <div class="ticket-impresion-pie">
+                    <p>Copia para comprobación del cliente</p>
+                </div>
+            </div>
+
+            <div class="ticket-acciones-botones">
+                <button type="button" id="btnImprimirTicketCompra" class="btn-imprimir-ticket" onclick="ejecutarReimpresionTicket()">
+                    <i class="fa-solid fa-print"></i> Imprimir ticket de compra
+                </button>
+                <button type="button" class="btn-volver-ticket" onclick="cerrarModalCorroborar()">
+                    Volver
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
 
     <!--4. CARGA DE SCRIPTS
@@ -301,5 +303,7 @@
     <script src="../js/empleado.js"></script>
     <script src="../js/venta.js"></script>
     <script type="module" src="../js/cerrar_sesion.js"></script>
+    <script src="../js/movimientoCaja.js"></script>
+    <script src="../js/cerrar_sesion.js"></script>
 </body>
 </html>

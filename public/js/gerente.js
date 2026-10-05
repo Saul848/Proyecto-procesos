@@ -730,20 +730,45 @@ document.getElementById('btnCerrarModal').addEventListener('click', () => {
  * Lógica detrás del envio de mensajes
  */
 document.getElementById('btnEnviarMensaje').addEventListener('click', () => {
-    const destino = document.getElementById("inputDestinatario").value;
-    const contenido = document.getElementById("inputContenido").value;
+    const destino = document.getElementById("inputDestinatario").value.trim();
+    const contenido = document.getElementById("inputContenido").value.trim();
+    const estado = document.getElementById('estadoMsjs');
+
+    if (!destino || !contenido) {
+        estado.textContent = 'Por favor completa todos los campos.';
+        estado.style.color = 'red';
+        return; // detiene aquí, no manda el fetch
+    }
 
     fetch('/api/mensajes', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ destino, contenido })
     })
-    .then(res => res.json())
-    .then(data => {
-        console.log('Mensaje enviado:', data);
-        document.getElementById('formMensaje').style.display = 'none';
+    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+    .then(({ status, body }) => {
+        if (body.ok) {
+        estado.textContent = body.mensaje; // "Mensaje enviado correctamente"
+        estado.style.color = 'green';
+
+        // Limpia el formulario y cierra el modal tras un momento
+        document.getElementById('inputDestinatario').value = '';
+        document.getElementById('inputContenido').value = '';
+
+        setTimeout(() => {
+            document.getElementById('formMensaje').style.display = 'none';
+            estado.textContent = ''; // limpia el mensaje para la próxima vez
+        }, 2000);
+        } else {
+        estado.textContent = body.mensaje; // "No se encontró al empleado...", etc.
+        estado.style.color = 'red';
+        }
     })
-    .catch(err => console.error('Error:', err));
+    .catch(err => {
+        estado.textContent = 'Error de conexión con el servidor.';
+        estado.style.color = 'red';
+        console.error('Error:', err);
+    });
 });
 
 /*
@@ -854,8 +879,42 @@ document.getElementById('confirmarDevolucion').addEventListener('click', () => {
     const motivo = document.getElementById("inpMotivoDevo").value;
     const id = document.getElementById("inpIdProducto").value;
     const cantidad = document.getElementById("inpCantidadProducto").value;
+    const estado = document.getElementById('estadoDevo');
 
-    console.log("Motivo: "+ motivo);
-    console.log("Cantidad: "+cantidad);
-    console.log("id: "+id);
+    if(!motivo || !id || !cantidad){
+        estado.textContent = 'Por favor completa todos los campos.';
+        estado.style.color = 'red';
+        return; // detiene aquí, no manda el fetch
+    }
+
+    fetch('/api/ventas', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ motivo, id, cantidad })
+    })
+    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+    .then(({ status, body }) => {
+        if (body.ok) {
+        estado.textContent = body.mensaje; // "Mensaje enviado correctamente"
+        estado.style.color = 'green';
+
+        // Limpia el formulario y cierra el modal tras un momento
+        document.getElementById('inpMotivoDevo').value = '';
+        document.getElementById('inpIdProducto').value = '';
+        document.getElementById('inpCantidadProducto').value = '';
+
+        setTimeout(() => {
+            document.getElementById('formDevolucion').style.display = 'none';
+            estado.textContent = ''; // limpia el mensaje para la próxima vez
+        }, 2000);
+        } else {
+        estado.textContent = body.mensaje; // "No se encontró al empleado...", etc.
+        estado.style.color = 'red';
+        }
+    })
+    .catch(err => {
+        estado.textContent = 'Error de conexión con el servidor.';
+        estado.style.color = 'red';
+        console.error('Error:', err);
+    });
 });
