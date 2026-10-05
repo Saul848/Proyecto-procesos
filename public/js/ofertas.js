@@ -7,17 +7,23 @@ const labelValor = document.getElementById('labelValor');
 let todosProductos = [];
 
 //carga productos-desplegable
-fetch('/api/productos')
+fetch("/api/productos", {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+    }
+})
     .then(r => r.json())
     .then(data => {
         todosProductos = data.productos;
         llenarSelect(todosProductos);
     });
 
-function llenarSelect(productos){
+function llenarSelect(productos) {
     const select = document.getElementById('producto');
     select.innerHTML = '';
-    if(productos.length === 0){
+    if (productos.length === 0) {
         select.innerHTML = '<option value="">Sin resultados</option>';
         return;
     }
@@ -33,10 +39,10 @@ function llenarSelect(productos){
         select.appendChild(opcion);
     });
 }
-    
-function filtrarProductos(){
+
+function filtrarProductos() {
     const texto = document.getElementById('buscarProducto').value.toLowerCase();
-    if (!texto){
+    if (!texto) {
         llenarSelect(todosProductos);
         return;
     }
@@ -47,21 +53,21 @@ function filtrarProductos(){
     llenarSelect(filtrados);
 }
 
-function actualizarFormulario(){
+function actualizarFormulario() {
     const tipo = tipoSelect.value;
 
     campoValor.style.display = 'none';
     campoRecibe.style.display = 'none';
     campoPaga.style.display = 'none';
 
-    if(tipo === 'porcentaje'){
+    if (tipo === 'porcentaje') {
         labelValor.textContent = 'Valor (introduce el % del descuento, ej. 15):';
         document.getElementById('valor').placeholder = 'Ej. 15';
         campoValor.style.display = 'block';
-    } else if (tipo === 'cantidad'){
+    } else if (tipo === 'cantidad') {
         campoRecibe.style.display = 'block';
         campoPaga.style.display = 'block';
-    } else if (tipo === 'precioFijo'){
+    } else if (tipo === 'precioFijo') {
         labelValor.textContent = 'Precio final (en pesos, ej. 99.99):';
         document.getElementById('valor').placeholder = 'Ej. 99.99';
         campoValor.style.display = 'block';
@@ -146,11 +152,11 @@ function cargarOfertas() {
                 }[o.tipoProm] || o.tipoProm;
 
                 let descuentoTexto;
-                if (o.tipoProm === 'porcentaje'){
+                if (o.tipoProm === 'porcentaje') {
                     descuentoTexto = o.valorDesc + '%';
-                } else if (o.tipoProm === 'cantidad'){
+                } else if (o.tipoProm === 'cantidad') {
                     descuentoTexto = o.cantidadRecibe + 'x' + o.cantidadPaga + ' (llevas ' + o.cantidadRecibe + ' pagas ' + o.cantidadPaga + ')';
-                } else if (o.tipoProm === 'precioFijo'){
+                } else if (o.tipoProm === 'precioFijo') {
                     descuentoTexto = 'Precio final: $' + o.valorDesc;
                 } else {
                     descuentoTexto = o.valorDesc;
@@ -173,7 +179,7 @@ function cargarOfertas() {
         });
 }
 
-function formatearFecha(fecha){
+function formatearFecha(fecha) {
     if (!fecha) return '-';
     const [anio, mes, dia] = fecha.split('-');
     return dia + '/' + mes + '/' + anio;
@@ -184,19 +190,19 @@ function guardarOferta() {
     const tipo = tipoSelect.value;
     let body;
 
-    if(tipo === 'cantidad'){
-        body={
+    if (tipo === 'cantidad') {
+        body = {
             idProducto: document.getElementById('producto').value,
-            tipoProm:tipo,
+            tipoProm: tipo,
             cantidadRecibe: document.getElementById('recibe').value,
             cantidadPaga: document.getElementById('paga').value,
             fechaInicio: document.getElementById('inicio').value,
             fechaFin: document.getElementById('fin').value
         };
     } else {
-        body={
+        body = {
             idProducto: document.getElementById('producto').value,
-            tipoProm:tipo,
+            tipoProm: tipo,
             valorDesc: document.getElementById('valor').value,
             fechaInicio: document.getElementById('inicio').value,
             fechaFin: document.getElementById('fin').value
@@ -208,17 +214,17 @@ function guardarOferta() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     })
-    .then(r => r.json())
-    .then(respuesta => {
-        if (respuesta.ok) {
-            mostrarMensaje('Oferta creada exitosamente.', true);
-            cancelar();
-            cargarOfertas();
-        } else {
-            mostrarMensaje(respuesta.mensaje || 'Error al crear la oferta.', false);
-        }
-    })
-    .catch(() => mostrarMensaje('Error de conexión con el servidor.', false));
+        .then(r => r.json())
+        .then(respuesta => {
+            if (respuesta.ok) {
+                mostrarMensaje('Oferta creada exitosamente.', true);
+                cancelar();
+                cargarOfertas();
+            } else {
+                mostrarMensaje(respuesta.mensaje || 'Error al crear la oferta.', false);
+            }
+        })
+        .catch(() => mostrarMensaje('Error de conexión con el servidor.', false));
 }
 
 //elimina una oferta

@@ -6,15 +6,16 @@
  */
 
 //Patrones para verificar informacion enviada en forma de solicitud
-    // Se establecen los patrones para validar la informacion mandada
-    const patronId = /^[1-9][0-9]*$/;
-    const patronNombre = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ\x20]+$/;
-    const patronTel = /^[0-9]{10}$/;
-    const patronPassword = /^[a-zA-Z0-9ÁÉÍÓÚáéíóúñÑ\x20]+$/;
-    const roles = ["empleado", "administrador", "gerente"];
+// Se establecen los patrones para validar la informacion mandada
+const patronId = /^[1-9][0-9]*$/;
+const patronNombre = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ\x20]+$/;
+const patronTel = /^[0-9]{10}$/;
+const patronPassword = /^[a-zA-Z0-9ÁÉÍÓÚáéíóúñÑ\x20]+$/;
+const roles = ["empleado", "administrador", "gerente"];
 
 const empleadoDao = require("../dao/empleadoDao");
 const accesoDao = require("../dao/accesoDao");
+const jwt = require("jsonwebtoken"); // Libreria usada para fabricar el token de sesion
 
 /**
  * Funcion que verifica si se obtuvieron los datos de los empleados del lado del servidor
@@ -128,7 +129,7 @@ exports.agregarEmpleado = async (req, res) => {
                 ok: false,
                 mensaje: "Error el empleado ya existe dentro del sistema"
             });
-        //Si el empleado no existe, se agrega a la base de datos
+            //Si el empleado no existe, se agrega a la base de datos
         } else {
             //Agregamos al empleado y verificamos su respuesta
             const empleadoCreado = await empleadoDao.agregarEmpleado(req.body);
@@ -182,12 +183,12 @@ exports.loginEmpleado = async (req, res) => {
         // Obtenemos los empleados desde el DAO (el servidor lee el XML de forma segura)
         const empleados = await empleadoDao.obtenerEmpleados();
         if (!Array.isArray(empleados)) empleados = [empleados];
-        
+
         // Buscamos si coincide el usuario y la contraseña
         const empleadoEncontrado = empleados.find(
             e => String(e.usuario) === usuario && String(e.password) === password
         );
-        
+
 
         if (!empleadoEncontrado) {
             return res.status(401).json({
@@ -198,6 +199,18 @@ exports.loginEmpleado = async (req, res) => {
 
         await accesoDao.registrarAcceso(empleadoEncontrado.nombre, empleadoEncontrado.usuario, empleadoEncontrado.puesto, 'entrada');
 
+        // Fabricacion del token
+        const token = jwt.sign(
+            {
+                usuario: empleadoEncontrado.usuario,
+                puesto: empleadoEncontrado.puesto
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "2h"
+            }
+        );
+
         // Si coincide, regresamos los datos necesarios para la sesión
         return res.status(200).json({
             ok: true,
@@ -205,11 +218,13 @@ exports.loginEmpleado = async (req, res) => {
             data: {
                 nombre: empleadoEncontrado.nombre,
                 puesto: empleadoEncontrado.puesto.toLowerCase(),
-                usuario: empleadoEncontrado.usuario
+                usuario: empleadoEncontrado.usuario,
+                token: token
             }
         });
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             ok: false,
             mensaje: "Error al intentar iniciar sesión"
@@ -217,7 +232,7 @@ exports.loginEmpleado = async (req, res) => {
     }
 }
 
-/*
+/**
  * 
  * Funcion que responde al cliente, valida el id enviado en el req
  * y regresa una respuesta cuando se elimina a un empleado
@@ -292,8 +307,8 @@ exports.getReporteDesempeno = async (req, res) =>{
         const resultado = await empleadoDao.obtenerReporteDesempeno();
         res.json(resultado);
 
-    }catch(error){
-        res.status(500).json({ok: false, mensaje: "error al obtener el reporte de desempeño"});
+    } catch (error) {
+        res.status(500).json({ ok: false, mensaje: "error al obtener el reporte de desempeño" });
 
     }
 };
@@ -312,14 +327,14 @@ exports.modificarEmpleado = async (req, res) => {
         // Se obtienen los datos de la solicitud
         const { id, nombre, puesto, telefono, usuario, password, responsableAccion } = req.body;
         //Se verifica que el cliente haya enviado un id
-        if(id===""){
+        if (id === "") {
             return res.status(404).json({
                 ok: false,
                 mensaje: "El id enviado esta vacio o es indefindo"
             })
         }
         //Se verifica que el empleado exista en la bd
-        if(!(await empleadoDao.obtenerEmpleado(id))){
+        if (!(await empleadoDao.obtenerEmpleado(id))) {
             return res.status(404).json({
                 ok: false,
                 mensaje: "El empleado no existe en la bd"
@@ -337,47 +352,47 @@ exports.modificarEmpleado = async (req, res) => {
         if (password !== "") datosNuevos.push({ campo: 'password', valor: password });
 
         //Se verifica la informacion del empleado, esto recorriendo el arreglo datosNuevos he identificando los valores, 
-        for(let m=0;m<datosNuevos.length;m++){
+        for (let m = 0; m < datosNuevos.length; m++) {
             //Identificamos los campos de los objetos js y verificamos su valor
-            if(datosNuevos[m].campo==='nombre'){
+            if (datosNuevos[m].campo === 'nombre') {
                 //Si el nuevo nombre no es valido entonces se envia un mensaje de error
-                if(!patronNombre.test(datosNuevos[m].valor)){
+                if (!patronNombre.test(datosNuevos[m].valor)) {
                     return res.status(404).json({
                         ok: false,
                         mensaje: "El nuevo nombre no es valido"
                     })
                 }
             }
-            if(datosNuevos[m].campo==='puesto'){
+            if (datosNuevos[m].campo === 'puesto') {
                 //Si el nuevo puesto no es alguno de los existentes entonces se envia un mensaje de error
-                if(!roles.includes(datosNuevos[m].valor)){
+                if (!roles.includes(datosNuevos[m].valor)) {
                     return res.status(404).json({
                         ok: false,
                         mensaje: "El nuevo puesto no es valido"
                     })
                 }
             }
-            if(datosNuevos[m].campo==='telefono'){
+            if (datosNuevos[m].campo === 'telefono') {
                 //Si el nuevo telefono no es valido entonces se envia un mensaje de error 
-                if(!patronTel.test(datosNuevos[m].valor)){
+                if (!patronTel.test(datosNuevos[m].valor)) {
                     return res.status(404).json({
                         ok: false,
                         mensaje: "El nuevo telefono no es valido"
                     })
                 }
             }
-            if(datosNuevos[m].campo==='usuario'){
+            if (datosNuevos[m].campo === 'usuario') {
                 //Si la nueva contraseña no es valida entonces se envia un mensaje de error 
-                if(!patronPassword.test(datosNuevos[m].valor)){
+                if (!patronPassword.test(datosNuevos[m].valor)) {
                     return res.status(404).json({
                         ok: false,
                         mensaje: "El nuevo usuario no es valido"
                     })
                 }
             }
-            if(datosNuevos[m].campo==='password'){
+            if (datosNuevos[m].campo === 'password') {
                 //Si la nueva no es valido entonces se envia un mensaje de error 
-                if(!patronPassword.test(datosNuevos[m].valor)){
+                if (!patronPassword.test(datosNuevos[m].valor)) {
                     return res.status(404).json({
                         ok: false,
                         mensaje: "La nueva contraseña no es valida"

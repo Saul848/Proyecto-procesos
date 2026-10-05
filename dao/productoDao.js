@@ -135,7 +135,7 @@ function existeProducto(nombre) {
 }
 
 /**
- * Verifica si ya existe un producto registrado con el mismo nombre.
+ * Verifica si ya existe un producto registrado con el mismo id.
  * @param {Number} idProducto - Id del producto a verificar.
  * @returns {boolean} true si el producto existe, false si no.
  */
@@ -163,6 +163,41 @@ function existeProductoId(idProducto) {
 
     } catch (error) {
         console.error("Error al verificar la existencia del producto:", error);
+        throw error;
+    }
+}
+
+/**
+ * Obtiene un determinado producto con el mismo nombre.
+ * @param {string} nombre - Nombre del producto a buscar.
+ * @returns {Object} producto encontrado o undefined
+ */
+function obtenerProducto(nombreProducto) {
+    try {
+        const xml = fs.readFileSync(archivo, "utf8");
+
+        const parser = new XMLParser({
+            ignoreAttributes: false,
+            attributeNamePrefix: "@_",
+            isArray: (tagName) => ['producto'].includes(tagName)
+        });
+
+        const resultado = parser.parse(xml);
+        const productos = resultado.productos?.producto || [];
+
+        // Normalizar nombre a buscar para comparación limpia
+        const nombreBusqueda = nombreProducto.trim().toLowerCase();
+
+        // Retorna el objeto producto tan pronto encuentra la primera coincidencia
+        const productoEncontrado = productos.find((prod) => {
+            const nombreProd = prod.nombre ? String(prod.nombre).trim().toLowerCase() : "";
+            return nombreProd === nombreBusqueda;
+        });
+
+        return productoEncontrado || null;
+
+    } catch (error) {
+        console.error("Error al obtener el producto:", error);
         throw error;
     }
 }
@@ -516,6 +551,7 @@ module.exports = {
     agregarProducto,
     existeProducto,
     existeProductoId,
+    obtenerProducto,
     obtenerProductos,
     obtenerReporteInventario,
     eliminarProducto,

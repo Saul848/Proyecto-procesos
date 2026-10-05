@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <productos>
   <producto id="1">
-    <nombre>Laptop Gamer Avanzada</nombre>
+    <nombre>laptop gamer avanzada</nombre>
     <descripcion>Procesador de última generación, 16GB RAM, 512GB SSD.</descripcion>
     <precio>1250</precio>
-    <stock>4</stock>
+    <stock>1</stock>
     <descuento></descuento>
   </producto>
   <producto id="2">
@@ -66,7 +66,7 @@
   </producto>
   <producto id="11">
     <nombre>cloro</nombre>
-    <descripcion>marca cloralex 1l</descripcion>
+    <descripcion>marca cloralex 1L</descripcion>
     <categoria>limpieza</categoria>
     <precio>24</precio>
     <stock>50</stock>
@@ -77,5 +77,12 @@
     <categoria>dulceria</categoria>
     <precio>15</precio>
     <stock>25</stock>
+  </producto>
+  <producto id="13">
+    <nombre>botella de agua</nombre>
+    <descripcion>botella de 1L</descripcion>
+    <categoria>bebidas</categoria>
+    <precio>15.00</precio>
+    <stock>50</stock>
   </producto>
 </productos>

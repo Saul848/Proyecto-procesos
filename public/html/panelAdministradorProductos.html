@@ -11,12 +11,12 @@
   <link rel="stylesheet" href="../css/panelAdministradorProductos.css">
   <link rel="stylesheet" href="../css/modal_agregar_producto.css">
   <link rel="stylesheet" href="../css/modal_agregar_categoria.css">
-
-  <div id="contenedor-modal"></div>
+  <link rel="stylesheet" href="../css/modal_mensajes_administrador.css">
 
   <script type="module" src="../js/panelAdministradorProductos.js"></script>
   <script type="module" src="../js/modal_agregar_producto.js"></script>
   <script type="module" src="../js/modal_agregar_categoria.js"></script>
+  <script type="module" src="../js/modal_mensajes_administrador.js"></script>
   <script type="module" src="../js/cerrar_sesion.js"></script>
 </head>
 
@@ -26,16 +26,24 @@
     <!-- Encabezado -->
     <header class="header">
       <div id="title">
-      <h1>Menu Administrador/Productos</h1>
-    
+        <h1 id="titulo-menu">Bienvenid@</h1>
+        <nav class="admin-nav">
+          <button class="btn-primary" onclick="window.location.href='./ofertas.html'">
+            Gestión de ofertas
+          </button>
+          <button class="btn-primary" onclick="window.location.href='./reporteAccesos.html'">
+            Reporte de accesos
+          </button>
+        </nav>
       </div>
       <div id="seccion-botones">
-        <button class="icon-btn" id="btn-mensajes">
+        <button class="icon-btn" id="btn-mensajes" title="Mensajes">
           <img src="/img/icon-mensaje.svg" alt="Imagen de mensaje">
         </button>
-      <button class="icon-btn" id="btn-cerrar-sesion">
-        <img src="/img/icon-salida.svg" alt="Imagen de cerrar sesion">
-      </button>
+        <button class="icon-btn" id="btn-cerrar-sesion" title="Cerrar sesión">
+          <img src="/img/icon-salida.svg" alt="Imagen de cerrar sesion">
+        </button>
+        <img src="../img/icon-logo.svg" alt="Pirámide" id="icon-logo">
       </div>
     </header>
 
@@ -47,13 +55,13 @@
 
         <div class="search-bar">
           <h2>Buscar producto</h2>
-          <input type="text" id="info_busqueda" placeholder="Ingresar nombre o id">
-          <button class="btn-primary" id="btn-buscar-producto">Buscar</button>
+          <input type="text" id="info_busqueda" placeholder="Ingresar nombre o id" title="Id">
+          <button class="btn-primary" id="btn-buscar-producto" title="Buscar producto">Buscar</button>
           <div class="campo" id="campo-categoria">
-            <select id="selec-categoria-producto" name="categoriaProducto">
+            <select id="selec-categoria-producto" name="categoriaProducto" title="Categoria de producto">
             </select>
           </div>
-          <button class="btn-primary" id="btn-registrar-categoria">+</button>
+          <button class="btn-primary" id="btn-registrar-categoria" title="Agregar categoria">+</button>
         </div>
 
         <!-- Aqui se muestran los productos -->
@@ -61,13 +69,51 @@
         </div>
       </section>
 
-      <!-- Columna Derecha: Información y Registro -->
+      <!-- Columna Derecha: Información y Modificación / Registro -->
       <section class="right-section">
-        <div class="info-box">
-          <h2>Informacion producto</h2>
+        <div class="box" id="info-box">
+          <h2>Información Producto</h2>
+
+          <div class="cont-mod" id="mod-id">
+            <label>ID Producto:</label>
+            <span class="label-id-producto" id="label-mod-id-producto">--</span>
+            <input type="hidden" id="input-mod-id-producto" name="modIdProducto">
+          </div>
+          <div class="cont-mod" id="mod-nombre">
+            <label for="input-mod-nombre-producto">Nombre:</label>
+            <input type="text" id="input-mod-nombre-producto" name="modNombreProducto" placeholder="Ej. Sardina Calmex">
+          </div>
+          <div class="cont-mod" id="mod-descripcion">
+            <label for="input-mod-descripcion-producto">Descripción:</label>
+            <textarea id="input-mod-descripcion-producto" name="modDescripcionProducto" rows="3"
+              placeholder="Ej. Cont net. 430g. Conservar en un lugar fresco y seco."></textarea>
+          </div>
+          <div class="cont-mod" id="mod-categoria">
+            <label for="select-mod-categoria-producto">Categoría:</label>
+            <select id="select-mod-categoria-producto" name="modCategoriaProducto">
+            </select>
+          </div>
+          <div class="cont-mod" id="mod-precio">
+            <label for="input-mod-precio-producto">Precio:</label>
+            <input type="number" id="input-mod-precio-producto" name="modPrecioProducto">
+          </div>
+          <div class="cont-mod" id="mod-stock">
+            <label for="input-mod-stock-producto">Stock:</label>
+            <input type="number" id="input-mod-stock-producto" name="modStockProducto">
+          </div>
+          <div class="cont-mod-botones"><!-- Botón para limpiar los campos de info de modificacion de productos -->
+            <button class="btn-primary" id="btn-limpiar-campos-modificacion" title="Limpiar campos de cambios del producto">
+              Limpiar
+            </button>
+            <!-- Botón para procesar la modificación -->
+            <button class="btn-primary" id="btn-guardar-modificacion" title="Guardar cambios del producto">
+              Guardar cambios
+            </button>
+          </div>
+
         </div>
 
-        <div class="register-box">
+        <div class="box" id="register-box">
           <h2>Registrar un nuevo producto</h2>
           <button class="btn-primary" id="boton-registrar-producto">Registrar nuevo</button>
         
@@ -83,7 +129,7 @@
   </div>
 
   <div id="contenedor-modal"></div>
-  
+
 </body>
 
 </html>
