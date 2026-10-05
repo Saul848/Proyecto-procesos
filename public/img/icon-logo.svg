@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 866.025" width="100%" height="100%">
+  <!-- Triángulo superior (Rosa) -->
+  <polygon points="500,0 250,433.013 750,433.013" fill="#e95d93" />
+  
+  <!-- Triángulo inferior izquierdo (Blanco) -->
+  <polygon points="250,433.013 0,866.025 500,866.025" fill="#ffffff" />
+  
+  <!-- Triángulo central invertido (Amarillo) -->
+  <polygon points="250,433.013 750,433.013 500,866.025" fill="#f2c94c" />
+  
+  <!-- Triángulo inferior derecho (Morado) -->
+  <polygon points="750,433.013 500,866.025 1000,866.025" fill="#b998ce" />
+</svg>

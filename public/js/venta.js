@@ -74,7 +74,7 @@ function configurarEventos() {
 
         // 1. Obtenemos la caja seleccionada del menú desplegable
         const idCajaSeleccionada = document.getElementById('selectCaja').value;
-        
+
         // 2. Armamos el objeto con todos los datos incluyendo el método de pago
         const datosVenta = {
             idEmpleado: "1",               // O tu variable dinámica de empleado
@@ -83,7 +83,7 @@ function configurarEventos() {
             items: itemsCuenta.map((i) => ({
                 idProducto: i.id,
                 cantidad: i.cantidad
-        }))
+            }))
         };
 
         // 3. Enviamos los datos al servidor
@@ -92,27 +92,27 @@ function configurarEventos() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosVenta)
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.ok) {
-                console.log(`Venta registrada con éxito con tarjeta/efectivo en la Caja ${idCajaSeleccionada}`);
-                // Aquí muestras tu ticket o modal de éxito
-            } else {
-                alert(data.mensaje);
-            }
-        })
-        .catch(err => console.error("Error:", err));
+            .then(res => res.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log(`Venta registrada con éxito con tarjeta/efectivo en la Caja ${idCajaSeleccionada}`);
+                    // Aquí muestras tu ticket o modal de éxito
+                } else {
+                    alert(data.mensaje);
+                }
+            })
+            .catch(err => console.error("Error:", err));
     });
-        btnCerrarModal.addEventListener("click", () => {
-            modalTicket.style.display = "none";
-            itemsCuenta = [];
-            inputMontoRecibido.value = "";
-            inputCambio.value = "$0.00";
-            actualizarTicket();
-            cargarFolioActual();
-            cargarProductos();
-        });
-    }
+    btnCerrarModal.addEventListener("click", () => {
+        modalTicket.style.display = "none";
+        itemsCuenta = [];
+        inputMontoRecibido.value = "";
+        inputCambio.value = "$0.00";
+        actualizarTicket();
+        cargarFolioActual();
+        cargarProductos();
+    });
+}
 
 /**
  * Obtiene del servidor el siguiente número de folio para mostrarlo en pantalla.
@@ -189,7 +189,14 @@ function actualizarVistaCaja() {
 async function cargarDatos() {
     try {
         const [resProd, resOf] = await Promise.all([
-            fetch("/api/productos"),
+            //fetch de productos completo para validar autenticacion y autorizacion
+            fetch("/api/productos", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+                }
+            }),
             fetch("/api/ofertas")
         ]);
 
@@ -298,7 +305,7 @@ function renderizarTabla() {
  * @param {string} idProducto - ID del producto seleccionado.
  * @param {boolean} checked - Indica si el checkbox fue marcado o desmarcado.
  */
-window.toggleSeleccion = function(idProducto, checked) {
+window.toggleSeleccion = function (idProducto, checked) {
     const prod = todosLosProductos.find((p) => {
         const idVal = String(p.id !== undefined ? p.id : p["@_id"]);
         return idVal === String(idProducto);
@@ -327,7 +334,7 @@ window.toggleSeleccion = function(idProducto, checked) {
  * @param {string} idProducto - ID del producto a modificar.
  * @param {number} delta - Variación en la cantidad (+1 o -1).
  */
-window.cambiarCantidadTicket = function(idProducto, delta) {
+window.cambiarCantidadTicket = function (idProducto, delta) {
     const item = itemsCuenta.find(i => String(i.id) === String(idProducto));
     if (!item) return;
 
@@ -495,11 +502,11 @@ async function procesarVenta() {
         return;
     }
 
-    const idEmpleadoActivo = sessionStorage.getItem("idEmpleado") 
-                          || sessionStorage.getItem("idUsuario") 
-                          || "1";
+    const idEmpleadoActivo = sessionStorage.getItem("idEmpleado")
+        || sessionStorage.getItem("idUsuario")
+        || "1";
 
-                          
+
     // capturamos la caja del menú y el método de pago activo
     const idCajaSeleccionada = document.getElementById("selectCaja") ? document.getElementById("selectCaja").value : "1";
     const metodoPagoActual = typeof metodoPago !== 'undefined' ? metodoPago : "Efectivo";

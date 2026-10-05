@@ -5,19 +5,25 @@
   font-family: Arial, sans-serif;
 }
 
-body {
+/* Resetear html y body para ocupar todo el alto/ancho del viewport */
+html, body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
   background-color: #f0f2f5;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
+  overflow-x: hidden; /* Evita scroll horizontal */
 }
 
+/* El contenedor principal ocupa toda la pantalla */
 .main-container {
   width: 100%;
-  max-width: 1000px;
+  min-height: 100vh;
   background-color: #ffffff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 0; /* Sin esquinas redondeadas externas */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Encabezado Principal */
@@ -25,7 +31,7 @@ body {
   display: flex;
   justify-content: space-between; /* Separa el título a la izquierda y los botones a la derecha */
   align-items: center; /* Alinea todo verticalmente al centro */
-  background-color: #fdf6d8;
+  background-color: #f2c94c;
   padding: 16px 24px;
   border-radius: 6px;
   margin-bottom: 20px;
@@ -40,7 +46,7 @@ body {
 /* Agrupador de botones */
 #seccion-botones {
   display: flex;
-  gap: 12px; /* Espacio entre el botón de mensajes y cerrar sesión */
+  gap: 50px; /* Espacio entre el botón de mensajes y cerrar sesión */
 }
 
 /* Estilos de los botones del Header */
@@ -68,6 +74,13 @@ body {
   background: #fecaca;
 }
 
+#icon-logo {
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
 /* grid para que la columna derecha se alinee arriba */
 .content-grid {
   display: grid;
@@ -78,23 +91,34 @@ body {
 
 
 
-/* Sección Izquierda: Lista de productos */
-.left-section {
-  background-color: #fdf6d8;
+/* 4. Mapear las secciones para que se expandan completamente */
+.left-section,
+.right-section {
   padding: 20px;
   border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.left-section{
+  background-color: #211c15;
+}
+
+.right-section{
+  background-color: #332402;
 }
 
 .search-bar {
   display: flex;
   align-items: center;
+  justify-content:space-around;
   gap: 10px;
   margin-bottom: 20px;
 }
 
 .search-bar h2 {
   font-size: 18px;
-  color: #333;
+  color: #ffffff;
   font-weight: normal;
 }
 
@@ -108,8 +132,8 @@ body {
 }
 
 .btn-primary {
-  background-color: #6366f1;
-  color: white;
+  background-color: #f2c94c;
+  color: black;
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
@@ -120,7 +144,7 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: #4f46e5;
+  background-color: #c49d28;
 }
 
 /* Estilos para el contenedor y el control select */
@@ -163,20 +187,28 @@ body {
   justify-content: center;
 }
 
-/* Lista de ítems */
+
+/*  Scroll interno para la lista de productos */
 .product-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1;
+  overflow-y: auto; /* Mantiene la lista scrolleable si hay muchos productos */
+  max-height: calc(100vh - 180px); /* Ajusta según el header */
+  padding-right: 6px;
 }
 
+
 .product-list p {
-  color: red;
+  background-color: rgba(239, 68, 68, 0.15); /* Rojo transparente */
+  color: #fca5a5;                             /* Rojo claro para buen contraste */
+  border: 1px solid rgba(239, 68, 68, 0.3);  /* Borde tenue */
 }
 
 /* CSS */
 .product-item {
-  background-color: #ffffff;
+  background-color: #dee1e6;
   padding: 12px 18px;
   border-radius: 8px;
   display: flex;
@@ -189,7 +221,7 @@ body {
 
 /* Alerta de bajo stock */
 .product-item.alert-product {
-  background-color: #fff8f8;
+  background-color: #dee1e6;
   border-left-color: #dc3545; /* Rojo para alerta */
 }
 
@@ -251,11 +283,11 @@ body {
   background: #e9ecef;
 }
 
-.btn-eliminar img {
-    filter: invert(20%) sepia(90%) saturate(5000%) hue-rotate(350deg);
+.btn-eliminar {
+    background: #C74A30;
 }
 
-.btn-eliminar:hover {
+.btn-eliminar:hover, .btn-editar:hover {
     background: #fecaca;
 }
 
@@ -265,25 +297,103 @@ body {
     object-fit: contain;
 }
 
-/* Ajusta los estilos de right-section */
-.right-section {
-  background-color: #fdf6d8;
-  padding: 20px;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* <--- Usa gap en lugar de space-between */
-  /* Quita min-height: 400px; si no deseas una altura fija mínima */
-}
-
-.info-box h2, .register-box h2 {
+.box h2 {
   font-size: 18px;
-  color: #333;
+  color: white;
   font-weight: normal;
   text-align: center;
 }
 
-.register-box {
+/* --- Estilos para la sección de modificación (info-box) --- */
+
+#info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: color-mix(in srgb, #494030 90%, white);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+}
+
+.cont-mod {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cont-mod label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffffff; /* Texto en blanco para alto contraste */
+}
+
+.cont-mod input,
+.cont-mod select {
+  padding: 8px 14px;
+  border: 1px solid #ced4da;
+  border-radius: 20px; /* Bordes redondeados estilo píldora como en la interfaz */
+  font-size: 13px;
+  outline: none;
+  width: 100%;
+  color: #333;
+  background-color: #ffffff;
+}
+
+.cont-mod input:focus,
+.cont-mod select:focus {
+  border-color: #f2c94c; /* Tono dorado/amarillo en lugar de morado */
+}
+
+.cont-mod textarea {
+  padding: 10px 14px;
+  border: 1px solid #ced4da;
+  border-radius: 12px;
+  font-size: 13px;
+  outline: none;
+  width: 100%;
+  resize: vertical;
+  max-height: 150px;
+  font-family: inherit;
+  color: #333;
+  background-color: #ffffff;
+}
+
+.cont-mod textarea:focus {
+  border-color: #f2c94c; /* Tono dorado/amarillo en lugar de morado */
+}
+
+/* Estilo para mostrar el ID estático */
+#mod-id {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.label-id-producto {
+  font-weight: bold;
+  color: #f2c94c; /* Amarillo/dorado representativo del sistema */
+  font-size: 14px;
+}
+
+.cont-mod-botones{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+/* Botones dentro de contenedor de botones */
+.cont-mod-botones button {
+  background-color: #f2c94c;
+  margin: 8px 8px 8px 8px;
+  width: 40%;
+  color: #000;
+}
+
+#register-box {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -291,14 +401,219 @@ body {
   margin-bottom: 20px;
 }
 
+/* ============================= */
 /* Adaptación a dispositivos móviles */
+/* ============================= */
+
 @media (max-width: 768px) {
+
+  /* Contenedor principal */
+  .main-container {
+    padding: 10px;
+  }
+
+  /* Encabezado */
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: 18px;
+  }
+
+  #icon-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Botones del encabezado */
+  #seccion-botones {
+    width: 100%;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .header .icon-btn {
+    padding: 8px 12px;
+  }
+
+  /* Grid principal */
   .content-grid {
     grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* Secciones */
+  .left-section,
+  .right-section {
+    padding: 15px;
+  }
+
+  /* Barra de búsqueda */
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .search-bar h2 {
+    text-align: center;
+    font-size: 17px;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+
+  .search-bar .campo {
+    width: 100%;
+  }
+
+  .search-bar select {
+    width: 100%;
+  }
+
+  #selec-categoria-producto {
+    width: 100%;
+  }
+
+  /* Botón registrar categoría */
+  #btn-registrar-categoria {
+    width: 45px;
+    align-self: center;
+  }
+
+  /* Lista de productos */
+  .product-list {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  /* Producto */
+  .product-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .product-info {
+    flex-wrap: wrap;
+  }
+
+  .product-meta {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Acciones del producto */
+  .product-actions {
+    justify-content: flex-end;
+  }
+
+  /* Panel de información */
+  #info-box {
+    padding: 15px;
+  }
+
+  /* ID del producto */
+  #mod-id {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  /* Botones del formulario */
+  .cont-mod-botones {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cont-mod-botones button {
+    width: 80%;
+    margin: 5px;
+  }
+
+  /* Registro */
+  #register-box {
+    width: 100%;
   }
 }
 
 
+/* ============================= */
+/* Pantallas muy pequeñas */
+/* ============================= */
+
+@media (max-width: 480px) {
+
+  .main-container {
+    padding: 5px;
+  }
+
+  .header {
+    padding: 12px;
+  }
+
+  .header h1 {
+    font-size: 16px;
+  }
+
+  #seccion-botones {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .header .icon-btn {
+    width: 100%;
+  }
+
+  .left-section,
+  .right-section {
+    padding: 10px;
+  }
+
+  .search-bar h2 {
+    font-size: 16px;
+  }
+
+  .product-item {
+    padding: 10px;
+  }
+
+  .product-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .product-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-actions {
+    justify-content: center;
+  }
+
+  .product-actions .icon-btn {
+    padding: 7px;
+  }
+
+  .icon-btn img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .cont-mod-botones button {
+    width: 100%;
+  }
+}
 .register-box .admin-nav {
     display: flex;
     flex-direction: column;

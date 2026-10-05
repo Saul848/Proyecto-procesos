@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OXXO - Administrador</title>
+    <link rel="stylesheet" href="../css/barra_sesion.css">
+</head>
+<body>
+    
+    <header class="barra-sesion-administrador">
+        <div>
+            <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Administrador</span></span>
+        </div>
+
+    <div>
+        <div>
+            <button id="btnMensajes"> Mensajes </button>
+            <button id="btn-logout"> Cerrar sesión </button>
+        </div>
+    </div>
+    </header>
+
+    <header>
+        <h2>Panel de Administrador</h2>
+        <h1>Bienvenido al panel de administrador</h1>
+
+        <button onclick="window.location.href='./ofertas.html'"
+                style="padding:10px 20px; background:#28a745; color:white; border:none; border-radius:4px; cursor:pointer; gap:5px;">
+            Gestión de ofertas
+        </button>
+        <br> <br>
+        <button onclick="window.location.href='./panelAdministradorProductos.html'"
+                style="padding:10px 20px; background:#28a745; color:white; border:none; border-radius:4px; cursor:pointer; gap:5px;">
+            Gestión de productos
+        </button>
+
+        <button onclick="window.location.href='./reporteAccesos.html'""
+                style="padding:10px 20px; background:#007bff; color:white; border:none; border-radius:4px; cursor:pointer;">
+            Reporte de accesos
+        </button>
+
+    </header>
+
+    <script src="../js/cerrar_sesion.js"></script>
+    <script src="../js/empleado.js"></script>
+</body>
+</html>
