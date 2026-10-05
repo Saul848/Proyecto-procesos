@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const puesto = sessionStorage.getItem("puestoLogueado");
 
-    // Verificamos que sea administrador, de lo contrario se redirige
-    if (puesto !== "administrador") {
+    // Verificamos que sea gerente, de lo contrario se redirige
+    if (puesto !== "gerente") {
         alert("No tienes permisos para ver esta sección.");
         window.location.href = "login.html";
         return;

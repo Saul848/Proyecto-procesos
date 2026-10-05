@@ -31,6 +31,11 @@ function llenarSelect(productos) {
         const opcion = document.createElement('option');
         opcion.value = p.id;
         opcion.textContent = p.id + ' - ' + p.nombre + ' ($' + Number(p.precio).toFixed(2) + ')';
+        
+        if(p.sinStock || Number(p.stock) <= 0){
+            opcion.disabled = true;
+            opcion.textContent += '(sin stock)';
+        }
         select.appendChild(opcion);
     });
 }
@@ -71,6 +76,63 @@ function actualizarFormulario() {
 
 tipoSelect.addEventListener('change', actualizarFormulario);
 actualizarFormulario();
+
+
+
+function verHistorial(){
+    cargarHistorial();
+    document.getElementById('modalHistorial').style.display = 'flex';
+}
+
+function cerrarHistorial(){
+    document.getElementById('modalHistorial').style.display = 'none';
+}
+
+function cargarHistorial(){
+    fetch('/api/ofertas/historial')
+        .then(r => r.json())
+        .then(registros => {
+            const tbody = document.getElementById('tablaHistorial');
+            tbody.innerHTML = '';
+
+            registros.forEach(r => {
+                const tipoTexto = {
+                    'porcentaje': 'Porcentaje',
+                    'cantidad': 'Volumen (2 x 1)',
+                    'precioFijo': 'Precio Especial'
+                }[r.tipoProm] || r.tipoProm || '-';
+
+                const fila = document.createElement('tr');
+
+                let beneficioTexto;
+                if (r.tipoProm === 'porcentaje'){
+                    beneficioTexto = r.valorDesc + '%';
+                } else if (r.tipoProm === 'cantidad'){
+                    beneficioTexto = r.cantidadRecibe + ' x ' + r.cantidadPaga;
+                } else if (r.tipoProm === 'precioFijo'){
+                    beneficioTexto = '$' + r.valorDesc;
+                } else {
+                    beneficioTexto = r.valorDesc || '-';
+                }
+
+                fila.innerHTML = `
+                    <td>${r.accion === 'crear' ? 'Creación' : 'Eliminación'}</td>
+                    <td>${r.nombreProducto || r.idProducto || '-'}</td>
+                    <td>${tipoTexto}</td>
+                    <td>${beneficioTexto}</td>
+                    <td>${r.fechaHora || '-'}</td>
+                `;
+                tbody.appendChild(fila);
+            });
+
+            if (registros.length === 0){
+                tbody.innerHTML = '<tr><td colspan="5">No hay registros</td></tr>';
+            }
+        })
+        .catch(() => {
+            document.getElementById('tablaHistorial').innerHTML = '<tr><td colspan="5">Error al cargar historial</td></tr>';
+        });
+}
 
 //muestra ofertas
 function cargarOfertas() {
