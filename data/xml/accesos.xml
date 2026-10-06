@@ -695,4 +695,36 @@
     <puesto>gerente</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>20:03:25</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>20:29:02</hora>
+    <nombre>Humberto Velez</nombre>
+    <usuario>OIRT</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>20:29:05</hora>
+    <nombre>Humberto Velez</nombre>
+    <usuario>OIRT</usuario>
+    <puesto>empleado</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>20:29:15</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
