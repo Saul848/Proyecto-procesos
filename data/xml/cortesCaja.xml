@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cortes>
+  <corte id="1">
+    <fecha>4/10/2026</fecha>
+    <hora>10:36:41 a.m.</hora>
+    <gerente>Ruben Flores Martinez</gerente>
+    <ventasEsperadas>11766.78</ventasEsperadas>
+    <efectivoFisico>23.00</efectivoFisico>
+    <diferencia>11743.78</diferencia>
+    <tipoDiferencia>Faltante</tipoDiferencia>
+  </corte>
+</cortes>

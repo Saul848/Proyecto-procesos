@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Accesos del Sistema</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/reporteAccesos.css">
+</head>
+<body>
+    <div class="contenedor">
+
+        <!-- Encabezado morado -->
+        <header class="encabezado">
+            <h1>Reporte de accesos al sistema</h1>
+            <div class="encabezado-derecha">
+                <a href="./gerente.html" class="volver" title="Salir">
+                    <img src="../img/icon-salida.svg" alt="Salir" class="icono-salir">
+                </a>
+                <img src="../img/logo.png" alt="Logotipo del equipo" class="logo-equipo">
+            </div>
+        </header>
+
+        <!-- Sección de filtros -->
+        <div class="filtros">
+            <input type="text" id="filtroUsuario" placeholder="Filtrar por usuario...">
+            <select id="filtroPuesto">
+                <option value="">Todos los puestos</option>
+                <option value="administrador">Administrador</option>
+                <option value="gerente">Gerente</option>
+                <option value="empleado">Empleado</option>
+            </select>
+            <select id="filtroEvento">
+                <option value="">Todos los eventos</option>
+                <option value="entrada">Entradas</option>
+                <option value="salida">Salidas</option>
+            </select>
+            <button class="btn-buscar" onclick="cargarAccesos()">Buscar</button>
+        </div>
+
+        <!-- Tabla de accesos -->
+        <div class="tabla-wrapper">
+            <table id="tablaAccesos">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Usuario</th>
+                        <th>Puesto</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Evento</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla">
+                    <tr>
+                        <td>Cargando accesos...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <script src="../js/reporteAccesos.js"></script>
+</body>
+</html>

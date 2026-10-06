@@ -1,41 +1,57 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Productos</title>
-    <link rel="stylesheet" href="../css/catalogo.css"> 
+    <link rel="stylesheet" href="/css/catalogo.css"> 
 </head>
 <body>
-    <section class="pestaña">
-        <label id="msgPestaña">Catálogo de Productos</label>
-        <button id="btnVolver">Regresar</button>
-    </section>
 
-    <section class="contenido">
-       
-        <section class="formulario">
-            <div id="divMsgBusqueda">
-                <label id="msgBusqueda">Buscar Productos</label>
-            </div>
-            <div id="inputsBusqueda">
-                <label for="inpBuscar">Nombre o ID: 
-                    <input type="text" id="inpBuscar" placeholder="Escribe para buscar..." />
-                </label>
-            </div>
-            <div id="divBtnBuscar">
-                <button id="btnBuscar">Buscar</button>
-            </div>
-        </section>
-
-       
-        <section class="contLista">
-            <aside class="listaAct">
-                <div id="seccionProductos">
-                   
+    <div class="card-gerente-wide">
+        <!-- Título superior estilo pestaña blanca -->
+        <div class="card-header-title">
+            Catálogo de Productos
+        </div>
+        
+        <div class="card-body">
+            <!-- Sección de búsqueda / filtros -->
+            <section class="formulario-busqueda">
+                <div id="divMsgBusqueda">
+                    <h3 id="msgBusqueda">Buscar Productos</h3>
                 </div>
-            </aside>
-        </section>
-    </section>
+                <div id="inputsBusqueda" class="inputs-row">
+                    <label for="inpBuscar">Nombre o ID: 
+                        <input type="text" id="inpBuscar" placeholder="Escribe para buscar..." />
+                    </label>
+                    <button id="btnBuscar" class="btn-accion">Buscar</button>
+                </div>
+            </section>
+
+            <!-- Tabla de productos con diseño de franjas oscuras -->
+            <div class="tabla-desempeno-wrapper">
+                <table class="tabla-desempeno">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Estado / Alerta</th>
+                        </tr>
+                    </thead>
+                    <tbody id="seccionProductos">
+                        <!-- Los productos se cargan dinámicamente aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-regresar-container">
+        <a href="gerente.html" class="btn-regresar">← Regresar al Inicio</a>
+    </div>
 
     <script src="/js/catalogo.js" defer></script>
 </body>

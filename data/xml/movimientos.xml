@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movimientos>
+  <movimiento id="1">
+    <fecha>28/9/2026</fecha>
+    <hora>8:11:48 p.m.</hora>
+    <id_producto>12</id_producto>
+    <nombre_producto>emmanens</nombre_producto>
+    <tipo>BAJA</tipo>
+  </movimiento>
+  <movimiento id="2">
+    <fecha>29/9/2026</fecha>
+    <hora>3:21:13 p.m.</hora>
+    <id_producto>4</id_producto>
+    <nombre_producto>d</nombre_producto>
+    <tipo>MERMA: CADUCADO (2 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="3">
+    <fecha>29/9/2026</fecha>
+    <hora>3:21:44 p.m.</hora>
+    <id_producto>3</id_producto>
+    <nombre_producto>teclado mecánico rgb</nombre_producto>
+    <tipo>MERMA: CADUCADO (1 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="4">
+    <fecha>1/10/2026</fecha>
+    <hora>3:35:51 p.m.</hora>
+    <id_producto>2</id_producto>
+    <nombre_producto>mouse óptico inalámbrico</nombre_producto>
+    <tipo>MERMA: CADUCADO (2 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="5">
+    <fecha>1/10/2026</fecha>
+    <hora>3:47:43 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MERMA: DAÑADO / ROTO (2 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="6">
+    <fecha>1/10/2026</fecha>
+    <hora>3:48:28 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MERMA: DEFECTUOSO DE FÁBRICA (2 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="7">
+    <fecha>1/10/2026</fecha>
+    <hora>3:54:13 p.m.</hora>
+    <id_producto>6</id_producto>
+    <nombre_producto>fresas</nombre_producto>
+    <tipo>MERMA: DEFECTUOSO DE FÁBRICA (1 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="8">
+    <fecha>1/10/2026</fecha>
+    <hora>4:00:30 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MERMA: CADUCADO (2 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="9">
+    <fecha>1/10/2026</fecha>
+    <hora>4:02:27 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MERMA: CADUCADO (1 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="10">
+    <fecha>1/10/2026</fecha>
+    <hora>4:04:50 p.m.</hora>
+    <id_producto>3</id_producto>
+    <nombre_producto>teclado mecánico rgb</nombre_producto>
+    <tipo>MERMA: CADUCADO (3 UNIDADES)</tipo>
+  </movimiento>
+  <movimiento id="11">
+    <fecha>3/10/2026</fecha>
+    <hora>3:33:53 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="12">
+    <fecha>3/10/2026</fecha>
+    <hora>3:33:57 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="13">
+    <fecha>3/10/2026</fecha>
+    <hora>3:42:38 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada 3</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="14">
+    <fecha>3/10/2026</fecha>
+    <hora>3:42:44 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="15">
+    <fecha>3/10/2026</fecha>
+    <hora>3:42:55 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="16">
+    <fecha>3/10/2026</fecha>
+    <hora>3:43:03 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="17">
+    <fecha>3/10/2026</fecha>
+    <hora>3:43:09 p.m.</hora>
+    <id_producto>1</id_producto>
+    <nombre_producto>laptop gamer avanzada</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="18">
+    <fecha>3/10/2026</fecha>
+    <hora>5:55:58 p.m.</hora>
+    <id_producto>12</id_producto>
+    <nombre_producto>emmanens 3</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="19">
+    <fecha>3/10/2026</fecha>
+    <hora>5:56:04 p.m.</hora>
+    <id_producto>12</id_producto>
+    <nombre_producto>emmanens</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="20">
+    <fecha>3/10/2026</fecha>
+    <hora>6:07:59 p.m.</hora>
+    <id_producto>8</id_producto>
+    <nombre_producto>papas3</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="21">
+    <fecha>3/10/2026</fecha>
+    <hora>6:08:06 p.m.</hora>
+    <id_producto>8</id_producto>
+    <nombre_producto>papas</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="22">
+    <fecha>3/10/2026</fecha>
+    <hora>6:15:27 p.m.</hora>
+    <id_producto>8</id_producto>
+    <nombre_producto>papas3</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="23">
+    <fecha>3/10/2026</fecha>
+    <hora>6:15:33 p.m.</hora>
+    <id_producto>8</id_producto>
+    <nombre_producto>papas</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="24">
+    <fecha>3/10/2026</fecha>
+    <hora>6:15:37 p.m.</hora>
+    <id_producto>8</id_producto>
+    <nombre_producto>papas</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="25">
+    <fecha>3/10/2026</fecha>
+    <hora>6:15:44 p.m.</hora>
+    <id_producto>8</id_producto>
+    <nombre_producto>papas</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="26">
+    <fecha>3/10/2026</fecha>
+    <hora>6:16:24 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="27">
+    <fecha>3/10/2026</fecha>
+    <hora>6:16:28 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="28">
+    <fecha>3/10/2026</fecha>
+    <hora>6:16:33 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="29">
+    <fecha>3/10/2026</fecha>
+    <hora>6:16:46 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="30">
+    <fecha>3/10/2026</fecha>
+    <hora>6:17:03 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>clorox</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="31">
+    <fecha>3/10/2026</fecha>
+    <hora>6:17:09 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="32">
+    <fecha>3/10/2026</fecha>
+    <hora>6:17:15 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="33">
+    <fecha>3/10/2026</fecha>
+    <hora>6:22:03 p.m.</hora>
+    <id_producto>9</id_producto>
+    <nombre_producto>sardina</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="34">
+    <fecha>3/10/2026</fecha>
+    <hora>6:23:22 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="35">
+    <fecha>3/10/2026</fecha>
+    <hora>6:23:42 p.m.</hora>
+    <id_producto>9</id_producto>
+    <nombre_producto>sardina</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="36">
+    <fecha>3/10/2026</fecha>
+    <hora>6:26:06 p.m.</hora>
+    <id_producto>10</id_producto>
+    <nombre_producto>atun</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="37">
+    <fecha>3/10/2026</fecha>
+    <hora>6:28:29 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="38">
+    <fecha>3/10/2026</fecha>
+    <hora>6:28:34 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="39">
+    <fecha>3/10/2026</fecha>
+    <hora>6:28:44 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="40">
+    <fecha>3/10/2026</fecha>
+    <hora>6:28:52 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>clorox</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="41">
+    <fecha>3/10/2026</fecha>
+    <hora>6:29:00 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="42">
+    <fecha>3/10/2026</fecha>
+    <hora>6:29:10 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="43">
+    <fecha>3/10/2026</fecha>
+    <hora>6:29:14 p.m.</hora>
+    <id_producto>11</id_producto>
+    <nombre_producto>cloro</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+  <movimiento id="44">
+    <fecha>3/10/2026</fecha>
+    <hora>10:56:54 p.m.</hora>
+    <id_producto>13</id_producto>
+    <nombre_producto>botella de agua</nombre_producto>
+    <tipo>ALTA</tipo>
+  </movimiento>
+  <movimiento id="45">
+    <fecha>3/10/2026</fecha>
+    <hora>10:57:24 p.m.</hora>
+    <id_producto>13</id_producto>
+    <nombre_producto>botella de agua</nombre_producto>
+    <tipo>MODIFICACIÓN</tipo>
+  </movimiento>
+</movimientos>

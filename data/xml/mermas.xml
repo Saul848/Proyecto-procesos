@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mermas>
+  <merma id="1">
+    <id_producto>2</id_producto>
+    <nombre_producto>Mouse Óptico Inalámbrico</nombre_producto>
+    <cantidad>2</cantidad>
+    <precio_unitario>25.5</precio_unitario>
+    <perdida_total>51</perdida_total>
+    <causa>Caducado</causa>
+    <fecha>1/10/2026</fecha>
+    <hora>3:35:51 p.m.</hora>
+  </merma>
+  <merma id="2">
+    <id_producto>1</id_producto>
+    <nombre_producto>Laptop Gamer Avanzada</nombre_producto>
+    <cantidad>2</cantidad>
+    <precio_unitario>1250</precio_unitario>
+    <perdida_total>2500</perdida_total>
+    <causa>Dañado / Roto</causa>
+    <fecha>1/10/2026</fecha>
+    <hora>3:47:43 p.m.</hora>
+  </merma>
+  <merma id="3">
+    <id_producto>1</id_producto>
+    <nombre_producto>Laptop Gamer Avanzada</nombre_producto>
+    <cantidad>2</cantidad>
+    <precio_unitario>1250</precio_unitario>
+    <perdida_total>2500</perdida_total>
+    <causa>Defectuoso de fábrica</causa>
+    <fecha>1/10/2026</fecha>
+    <hora>3:48:28 p.m.</hora>
+  </merma>
+  <merma id="4">
+    <id_producto>6</id_producto>
+    <nombre_producto>fresas</nombre_producto>
+    <cantidad>1</cantidad>
+    <precio_unitario>41.99</precio_unitario>
+    <perdida_total>41.99</perdida_total>
+    <causa>Defectuoso de fábrica</causa>
+    <fecha>1/10/2026</fecha>
+    <hora>3:54:13 p.m.</hora>
+  </merma>
+  <merma id="5">
+    <id_producto>1</id_producto>
+    <nombre_producto>Laptop Gamer Avanzada</nombre_producto>
+    <cantidad>2</cantidad>
+    <precio_unitario>1250</precio_unitario>
+    <perdida_total>2500</perdida_total>
+    <causa>Caducado</causa>
+    <fecha>1/10/2026</fecha>
+    <hora>4:00:30 p.m.</hora>
+  </merma>
+  <merma id="6">
+    <id_producto>1</id_producto>
+    <nombre_producto>Laptop Gamer Avanzada</nombre_producto>
+    <cantidad>1</cantidad>
+    <precio_unitario>1250</precio_unitario>
+    <perdida_total>1250</perdida_total>
+    <causa>Caducado</causa>
+    <fecha>1/10/2026</fecha>
+    <hora>4:02:27 p.m.</hora>
+  </merma>
+  <merma id="7">
+    <id_producto>3</id_producto>
+    <nombre_producto>Teclado Mecánico RGB</nombre_producto>
+    <cantidad>3</cantidad>
+    <precio_unitario>79.99</precio_unitario>
+    <perdida_total>239.97</perdida_total>
+    <causa>Caducado</causa>
+    <gerente>ale</gerente>
+    <fecha>1/10/2026</fecha>
+    <hora>4:04:50 p.m.</hora>
+  </merma>
+</mermas>

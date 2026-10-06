@@ -1,22 +1,364 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
+    <!-- Configuración básica de metadatos y codificación de caracteres -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OXXO - Empleado</title>
+    <title>OXXO - Punto de Venta (Empleado)</title>
+
+    <!-- Hojas de estilos externas e internas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/empleado.css">
+    <link rel="stylesheet" href="../css/venta.css">
+    <link rel="stylesheet" href="../css/barra_sesion.css">
 </head>
 <body>
-    <header>
-        <h2>Panel de Empleado</h2>
+    <!-- ====================================================================
+    1. BARRA SUPERIOR DE SESIÓN
+    Muestra la identidad de la tienda, saludo al empleado activo,
+    acceso a la mensajería interna y botón para cerrar sesión.
+    ==================================================================== -->
+    <header class="barra-sesion-empleado">
         <div>
-            <span>Hola, <span id="saludo-nombre">Empleado</span></span>
-            <button id="btn-logout">Cerrar sesión</button>
+            <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Empleado</span></span>
         </div>
-
-        <h1>Bienvenido al panel de empleado</h1>
-
+    <div>
+        <div>
+            <button id="btnMensajes"> Mensajes </button>
+            <button id="btn-logout"> Cerrar sesión </button>
+        </div>
+    </div>
     </header>
 
-    <script src="../js/cerrarSesion.js"></script>
+    <!-- ====================================================================
+    Carrusel de ofertas
+    ==================================================================== -->
+    <section id="carrusel-ofertas" class="carrusel-ofertas">
+        <div class="carrusel-encabezado">
+            <span class="carrusel-titulo"><i class="fa-solid fa-tags"></i> Promociones del día</span>
+            <span id="carrusel-vacio" class="carrusel-vacio" style="display:none;">No hay promociones vigentes</span>
+        </div>
+        <div class="carrusel-viewport">
+            <button type="button" class="carrusel-flecha" id="btnCarruselIzq" aria-label="Anterior">&#10094;</button>
+            <div id="carrusel-pista" class="carrusel-pista"></div>
+            <button type="button" class="carrusel-flecha" id="btnCarruselDer" aria-label="Siguiente">&#10095;</button>
+        </div>
+    </section>
+    
+        <!--2. CONTENEDOR PRINCIPAL DEL PUNTO DE VENTA (POS)-->
+    
+    <div class="main-container" style="margin-top: 15px;">
+
+        <!-- Cabecera del módulo con indicador de estado de caja -->
+        <header class="header">
+            <h1><i class="fa-solid fa-cash-register"></i> Punto de Venta</h1>
+            <div class="caja-status" style="display: flex; align-items: center; gap: 10px;">
+                <span id="cajaDot" class="status-dot"></span>
+                <span id="cajaTexto">Caja Abierta</span>
+
+                <!-- Menú desplegable para elegir la caja -->
+                <select id="selectCaja" style="margin-left: 10px; padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold;">
+                <option value="1">Caja 1</option>
+                <option value="2">Caja 2</option>
+                </select>
+                
+                <!-- Botón para retiros y aportaciones -->
+                <button id="btnMovimientoCaja" class="btn-movimiento" style="margin-left: 8px; padding: 4px 10px; border-radius: 4px; border: none; background-color: #ff806a; font-weight: bold; cursor: pointer;">
+                <i class="fa-solid fa-right-left"></i> Retiro / Aportación
+                </button> 
+
+                <button type="button" id="btnToggleCaja" class="btn-toggle-caja">Cerrar Caja</button>
+                <button type="button" id="btnHistorialVentas" class="btn-toggle-caja" onclick="abrirHistorialVentas()">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Historial / Reimprimir
+                </button>
+            </div>
+        </header>
+
+        <!-- Cuadrícula de trabajo (Catálogo a la izquierda, Ticket a la derecha) -->
+        <main class="content-grid">
+
+            
+            <!--PANEL IZQUIERDO: Catálogo de Productos y Búsqueda-->
+            
+            <section class="products-panel">
+                <!-- Barra de búsqueda por texto o ID -->
+                <div class="search-header-bar">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="inputBuscar" placeholder="Buscar producto por nombre o ID...">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <span class="label-id-filter">ID producto</span>
+                </div>
+
+                <!-- Tabla responsiva del catálogo de productos -->
+                <div class="table-wrapper">
+                    <table class="table-pos">
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Oferta</th>   <!-- Sincronizado con módulo de ofertas -->
+                                <th>Cantidad</th> <!-- Stock disponible en inventario -->
+                                <th>ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaProductosCuerpo">
+                            <!-- Filas generadas dinámicamente desde venta.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- PANEL DERECHO: Resumen de Venta, Totales y Métodos de Cobro -->
+            <section class="ticket-panel">
+                <!-- Folio autoincrementable de la transacción actual -->
+                <div class="ticket-header" id="lblFolioVenta">
+                    Venta numero 1
+                </div>
+
+                <!-- Lista de artículos agregados a la cuenta actual con controles +/- -->
+                <div id="listaItemsTicket" class="ticket-items-list">
+                    <p style="text-align: center; color: #888; font-size: 13px; margin-top: 30px;">
+                        No hay productos en la cuenta
+                    </p>
+                </div>
+
+                <!-- Desglose de totales financieros -->
+                <div class="ticket-totals">
+                    <div class="row">
+                        <span>subtotal</span>
+                        <span id="lblSubtotal">$0.00</span>
+                    </div>
+                    <div class="row">
+                        <span>IVA</span>
+                        <span id="lblIva">$0.00</span>
+                    </div>
+                    <div class="row row-total">
+                        <span>Total</span>
+                        <span id="lblTotal">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Zona de liquidación, selección de método y cálculo de cambio -->
+                <div class="payment-area">
+                    <div class="methods-row">
+                        <button type="button" id="btnEfectivo" class="btn-method active">Efectivo</button>
+                        <button type="button" id="btnTarjeta" class="btn-method">Tarjeta</button>
+                    </div>
+
+                    <div class="inputs-group">
+                        <div class="input-row">
+                            <label for="inputMontoRecibido">Monto recibido</label>
+                            <input type="number" id="inputMontoRecibido" placeholder="0.00" min="0" step="any">
+                        </div>
+                        <div class="input-row">
+                            <label for="inputCambio">Cambio</label>
+                            <input type="text" id="inputCambio" value="$0.00" readonly>
+                        </div>
+                    </div>
+
+                    <div class="actions-row">
+                        <button type="button" id="btnRegistrarPago" class="btn-registrar" disabled>Registrar pago</button>
+                        <button type="button" class="btn-factura" onclick="abrirModalFactura()">Factura</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- 3. VENTANAS MODALES EMERGENTES-->
+
+    <!-- Modal 1: Comprobante / Recibo de venta confirmada -->
+    <div id="modalTicket" class="modal">
+        <div class="modal-content">
+            <h3 style="color: #27ae60;"><i class="fa-solid fa-circle-check"></i> Comprobante</h3>
+            <div id="reciboDetalle" class="receipt-body"></div>
+            <button type="button" id="btnCerrarModal" class="btn-registrar" style="width: 100%; margin-top: 10px;">
+                Aceptar y Nueva Venta
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Modal Factura: Datos fiscales del cliente -->
+    <div id="modalFactura" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: auto;">
+        <div class="modal-content" style="background-color: #c5dcf9; margin: 3% auto; padding: 24px; border-radius: 8px; width: 520px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-family: Arial, sans-serif;">
+
+            <!-- Encabezado: "Datos de facturación" sobre cuadro blanco -->
+            <div style="background-color: #FFFFFF; border-radius: 6px; padding: 14px 16px; margin-bottom: 16px;">
+                <h3 style="margin: 0; color: #333; font-size: 18px;">Datos de facturación</h3>
+            </div>
+
+            <!-- Cuadro de datos con borde y fondo oscuro -->
+            <div style="background-color: #2d2635; border: 1px solid #565656; border-radius: 6px; padding: 18px 16px;">
+
+                <!-- Nombre o Razón Social -->
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Nombre o Razón Social:</label>
+                <input type="text" id="facturaNombre" placeholder="Nombre completo" style="width: 100%; padding: 9px; margin-bottom: 14px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
+
+                <!-- RFC -->
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">RFC:</label>
+                <input type="text" id="facturaRfc" placeholder="RFC" style="width: 100%; padding: 9px; margin-bottom: 14px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333; text-transform: uppercase;">
+
+                <!-- Fila: Código Postal + Correo -->
+                <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+                    <div style="flex: 1;">
+                        <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Código Postal:</label>
+                        <input type="text" id="facturaCp" placeholder="CP" style="width: 100%; padding: 9px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Correo Electrónico:</label>
+                        <input type="email" id="facturaCorreo" placeholder="correo@ejemplo.com" style="width: 100%; padding: 9px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
+                    </div>
+                </div>
+
+                <!-- Régimen Fiscal -->
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Régimen Fiscal:</label>
+                <input type="text" id="facturaRegimen" placeholder="Régimen fiscal" style="width: 100%; padding: 9px; margin-bottom: 14px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
+
+                <!-- Uso de CFDI -->
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Uso de CFDI:</label>
+                <input type="text" id="facturaUsoCfdi" placeholder="Uso de CFDI" style="width: 100%; padding: 9px; margin-bottom: 6px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
+
+                <!-- Botones dentro del mismo cuadro -->
+                <div style="text-align: center; margin-top: 16px; padding-top: 14px; border-top: 1px solid #565656;">
+                    <button type="button" onclick="cerrarModalFactura()" style="padding: 9px 18px; margin-right: 10px; border: none; border-radius: 4px; background-color: #de3b40; color: white; font-weight: bold; cursor: pointer; font-size: 14px;">Cancelar</button>
+                    <button type="button" onclick="generarFactura()" style="padding: 9px 18px; border: none; border-radius: 4px; background-color: #1565c0; color: white; font-weight: bold; cursor: pointer; font-size: 14px;">Facturar y registrar pago</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Contenedor donde se muestra la factura generada -->
+    <div id="contenedorFactura"></div>
+
+
+    <!-- Modal 2: Notificaciones y Mensajes Internos -->
+    <div id="checkMensajes" class="modal-overlay" style="display: none;">
+        <div class="modal-caja modal-mensajes">
+            <h3><i class="fa-solid fa-bell"></i> Mensajes pendientes:</h3>
+
+            <div class="panel-mensajes" id="panelMensajes">
+                <div class="lista-mensajes" id="listaMensajes">
+                    <!-- Se inyectan dinámicamente los <div class="item-mensaje"> -->
+                </div>
+
+                <div class="contenido-mensaje" id="contenidoMensaje">
+                    Haz click en un mensaje para verlo!
+                </div>
+            </div>
+
+            <div id="contenedorBoton" style="margin-top: 15px; text-align: right;">
+                <button type="button" id="btnCerrarModalMensajes" class="btn-toggle-caja">Cerrar</button>
+            </div>
+        </div>
+    </div>
+            
+    <!-- Modal de Retiro / Aportación de Caja -->
+    <div id="modalMovimientoCaja" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: auto;">
+        <div class="modal-content" style="background-color: #fff; margin: 3% auto; padding: 20px; border-radius: 8px; width: 420px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto;">
+            <h3 style="margin-top: 0; color: #333; text-align: center;">Movimiento de Efectivo en Caja</h3>
+            
+            <form id="formMovimientoCaja">
+                <div style="margin-bottom: 15px; background: #f9f9f9; padding: 10px; border-radius: 6px; border: 1px solid #ddd;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #d9534f;">Autorización de Gerente / Admin:</label>            <input type="text" id="userAutoriza" placeholder="Usuario Gerente/Admin" required style="width: 100%; padding: 7px; margin-bottom: 8px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box;">
+                    <input type="password" id="passAutoriza" placeholder="Contraseña" required style="width: 100%; padding: 7px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="tipoMovimiento" style="display: block; font-weight: bold; margin-bottom: 5px;">Tipo de Movimiento:</label>
+                    <select id="tipoMovimiento" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                        <option value="RETIRO">Retiro (Hacia Caja General)</option>
+                        <option value="APORTACION">Aportación (Desde Caja General/Fondo)</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <select id="selectCajaDestino" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                        <option value="1">Caja 1</option>
+                        <option value="2">Caja 2</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <input type="number" id="montoMovimiento" step="0.01" min="0.01" placeholder="Ej. 500.00" required style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label for="motivoMovimiento" style="display: block; font-weight: bold; margin-bottom: 5px;">Motivo / Observación:</label>
+                    <textarea id="motivoMovimiento" rows="3" placeholder="Ej. Corte parcial por exceso de efectivo" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box;"></textarea>
+                </div>
+                <div style="text-align: right; margin-top: 20px; position: sticky; bottom: 0; background: #fff; padding-top: 10px; border-top: 1px solid #eee;">
+                    <button type="button" id="btnCerrarModalMov" style="padding: 8px 15px; margin-right: 10px; border: none; border-radius: 4px; background-color: #ccc; cursor: pointer;">Cancelar</button>
+                    <button type="submit" style="padding: 8px 15px; border: none; border-radius: 4px; background-color: #28a745; color: white; font-weight: bold; cursor: pointer;">Guardar Movimiento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal 3: Historial de Ventas -->
+    <div id="modalHistorialVentas" class="modal-overlay">
+        <div class="modal-historial-card">
+            <div class="modal-historial-header">
+                <h3><i class="fa-solid fa-receipt"></i> Historial de Ventas</h3>
+                <button type="button" class="btn-cerrar-icono" onclick="cerrarModalHistorial()">&times;</button>
+            </div>
+
+            <div class="filtro-historial-contenedor">
+                <input type="text" id="filtroHistorial" placeholder="Buscar por Folio / ID de venta..." oninput="filtrarHistorialVentas()">
+            </div>
+
+            <div class="tabla-historial-scroll">
+                <table class="tabla-historial">
+                    <thead>
+                        <tr>
+                            <th>Folio / ID</th>
+                            <th>Fecha y Hora</th>
+                            <th>Total</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaHistorialCuerpo"></tbody>
+                </table>
+            </div>
+            
+            <div class="modal-historial-footer">
+                <button type="button" onclick="cerrarModalHistorial()" class="btn-cerrar-secundario">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Corroboración de Ticket -->
+    <div id="modalCorroborarTicket" class="modal-overlay">
+        <div class="modal-ticket-card">
+            <div id="areaTicketReimpresion" class="ticket-impresion-cuerpo">
+                <div class="ticket-impresion-encabezado">
+                    <strong>CADENA COMERCIAL OXXO</strong>
+                    <span>*** REIMPRESIÓN DE TICKET ***</span>
+                </div>
+                <div id="detalleTicketReimpresion"></div>
+                <div class="ticket-impresion-pie">
+                    <p>Copia para comprobación del cliente</p>
+                </div>
+            </div>
+
+            <div class="ticket-acciones-botones">
+                <button type="button" id="btnImprimirTicketCompra" class="btn-imprimir-ticket" onclick="ejecutarReimpresionTicket()">
+                    <i class="fa-solid fa-print"></i> Imprimir ticket de compra
+                </button>
+                <button type="button" class="btn-volver-ticket" onclick="cerrarModalCorroborar()">
+                    Volver
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!--4. CARGA DE SCRIPTS
+    Se cargan en orden: lógica general del empleado, gestión de sesión,
+    y lógica operativa del punto de venta con ofertas integradas.-->
+    <script src="../js/empleado.js"></script>
+    <script src="../js/venta.js"></script>
+    <script type="module" src="../js/cerrar_sesion.js"></script>
+    <script src="../js/movimientoCaja.js"></script>
+    <script src="../js/cerrar_sesion.js"></script>
 </body>
 </html>

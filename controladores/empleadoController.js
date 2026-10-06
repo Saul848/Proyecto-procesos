@@ -5,7 +5,18 @@
  * @module empleadoController
  */
 
+//Patrones para verificar informacion enviada en forma de solicitud
+// Se establecen los patrones para validar la informacion mandada
+const patronId = /^[1-9][0-9]*$/;
+const patronNombre = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ\x20]+$/;
+const patronTel = /^[0-9]{10}$/;
+const patronPassword = /^[a-zA-Z0-9ÁÉÍÓÚáéíóúñÑ\x20]+$/;
+const roles = ["empleado", "administrador", "gerente"];
+
 const empleadoDao = require("../dao/empleadoDao");
+const accesoDao = require("../dao/accesoDao");
+const jwt = require("jsonwebtoken"); // Libreria usada para fabricar el token de sesion
+
 /**
  * Funcion que verifica si se obtuvieron los datos de los empleados del lado del servidor
  * Regresa un arreglo de empleados con objetos js.
@@ -14,13 +25,12 @@ const empleadoDao = require("../dao/empleadoDao");
  * @returns {res} Respuesta con los datos de los empleados
  * @returns {error} Si no se pudieron recuperar los datos de los empleados
  */
-exports.obtenerEmpleado = async (req, res) => {
+exports.obtenerEmpleados = async (req, res) => {
     try {
-        //Guardamos en un arreglo los datos de los empleados
+        // Se recuperan en un arreglo los datos de los empleados
         const empleados = await empleadoDao.obtenerEmpleados();
-
-        //Verificar que se hayan recuperado estos datos correctamente
-        if (!empleados) {
+        // Se verifica que se hayan recuperado estos datos correctamente
+        if (empleados.length===0) {
             return res.status(404).json({
                 ok: false,
                 mensaje: "No se encontraron empleados en el sistema",
@@ -41,6 +51,7 @@ exports.obtenerEmpleado = async (req, res) => {
     }
 };
 
+
 /**
  * Funcion que verifica las altas de empleados en el sistema
  * Regresa una respuesta al cliente de exito o error
@@ -52,7 +63,7 @@ exports.obtenerEmpleado = async (req, res) => {
 exports.agregarEmpleado = async (req, res) => {
     try {
         // Se obtienen los datos de la solicitud
-        const { id, nombre, puesto, telefono, usuario, password } = req.body;
+        const { id, nombre, puesto, telefono, usuario, password, responsableAccion} = req.body;
 
         // Se verifica que ninguno de los datos este vacio
         if (!id || !nombre || !puesto || !telefono || !usuario || !password) {
@@ -61,13 +72,6 @@ exports.agregarEmpleado = async (req, res) => {
                 mensaje: "Todos los datos del formulario son obligatorios"
             });
         }
-
-        // Se establecen los patrones para validar la informacion mandada
-        let patronId = /^[1-9][0-9]*$/;
-        let patronNombre = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ\x20]+$/;
-        let patronTel = /^[0-9]{10}$/;
-        let patronContraseña = /^[a-zA-Z0-9ÁÉÍÓÚáéíóúñÑ\x20]+$/;
-        let roles = ["empleado", "administrador", "gerente"];
 
         // Verificamos que el id sea correcto
         if (!patronId.test(id)) {
@@ -102,7 +106,7 @@ exports.agregarEmpleado = async (req, res) => {
         }
 
         // Si el usuario no respeta el patron se envia un mensaje de error
-        if (!patronContraseña.test(usuario)) {
+        if (!patronPassword.test(usuario)) {
             return res.status(400).json({
                 ok: false,
                 mensaje: "El usuario no es valido"
@@ -110,44 +114,44 @@ exports.agregarEmpleado = async (req, res) => {
         }
 
         // Si la contraseña no respeta el patron se envia un mensaje de error
-        if (!patronContraseña.test(password)) {
+        if (!patronPassword.test(password)) {
             return res.status(400).json({
                 ok: false,
                 mensaje: "La contraseña no es valida"
             });
         }
 
-        // Verificaremos si el empleado a agregar ya existe en el sistema
+        //  Verificaremos si el empleado a agregar ya existe en el sistema
         const empleadoExistente = await empleadoDao.obtenerEmpleado(id);
-
-        // Si el empleado ya existe, se sobreescriben sus datos
+        // Si el empleado ya existe se envia un mensaje de error
         if (empleadoExistente) {
-            const empleadoActualizado = await empleadoDao.actualizarDatos(req.body);
-            // Validamos que se hayan modificado los datos del empleado
-            if (empleadoActualizado.ok) {
-                return res.status(201).json({
-                    ok: true,
-                    mensaje: "Empleado modificado correctamente"
-                });
-            } else {
-                return res.status(500).json({
-                    ok: false,
-                    mensaje: "No se pudo actualizar el empleado"
-                });
-            }
-        //Si el empleado no existe, se agrega a la base de datos
+            return res.status(404).json({
+                ok: false,
+                mensaje: "Error el empleado ya existe dentro del sistema"
+            });
+            //Si el empleado no existe, se agrega a la base de datos
         } else {
+            //Agregamos al empleado y verificamos su respuesta
             const empleadoCreado = await empleadoDao.agregarEmpleado(req.body);
+            //Creamos el registro de la accion y verificamos la respuesta
+            const registroCreado = await empleadoDao.registrarAccion("Alta", req.body, responsableAccion);
             // Validamos que se haya creado el nuevo empleado
             if (empleadoCreado.ok) {
-                return res.status(201).json({
-                    ok: true,
-                    mensaje: "Empleado agregado correctamente"
-                });
+                if(registroCreado.ok){
+                    return res.status(201).json({
+                        ok:true,
+                        mensaje: "Empleado agregado correctamente y accion registrada"
+                    });
+                }else{
+                    return res.status(201).json({
+                        ok: true,
+                        mensaje: "Empleado agregado correctamente, esta accion no pudo ser registrada"
+                    });
+                }
             } else {
                 return res.status(400).json({
-                    ok: true,
-                    mensaje: "El empleado no se pudo agregar"
+                    ok: false,
+                    mensaje: "El empleado no se pudo agregar, esta accion no sera registrada"
                 });
             }
         }
@@ -159,3 +163,302 @@ exports.agregarEmpleado = async (req, res) => {
         });
     }
 };
+
+/**
+ * Valida las credenciales de inicio de sesión de un empleado.
+ * @param {Object} req - Objeto de petición HTTP con usuario y password en el body.
+ * @param {Object} res - Objeto de respuesta HTTP.
+ */
+exports.loginEmpleado = async (req, res) => {
+    try {
+        const { usuario, password } = req.body;
+
+        if (!usuario || !password) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: "Por favor, completa todos los campos."
+            });
+        }
+
+        // Obtenemos los empleados desde el DAO (el servidor lee el XML de forma segura)
+        const empleados = await empleadoDao.obtenerEmpleados();
+        if (!Array.isArray(empleados)) empleados = [empleados];
+
+        // Buscamos si coincide el usuario y la contraseña
+        const empleadoEncontrado = empleados.find(
+            e => String(e.usuario) === usuario && String(e.password) === password
+        );
+
+
+        if (!empleadoEncontrado) {
+            return res.status(401).json({
+                ok: false,
+                mensaje: "Usuario o contraseña incorrectos."
+            });
+        }
+
+        await accesoDao.registrarAcceso(empleadoEncontrado.nombre, empleadoEncontrado.usuario, empleadoEncontrado.puesto, 'entrada');
+
+        // Fabricacion del token
+        const token = jwt.sign(
+            {
+                usuario: empleadoEncontrado.usuario,
+                puesto: empleadoEncontrado.puesto
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "2h"
+            }
+        );
+
+        // Si coincide, regresamos los datos necesarios para la sesión
+        return res.status(200).json({
+            ok: true,
+            mensaje: "Autenticación exitosa.",
+            data: {
+                nombre: empleadoEncontrado.nombre,
+                puesto: empleadoEncontrado.puesto.toLowerCase(),
+                usuario: empleadoEncontrado.usuario,
+                token: token
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error al intentar iniciar sesión"
+        })
+    }
+}
+
+/**
+ * 
+ * Funcion que responde al cliente, valida el id enviado en el req
+ * y regresa una respuesta cuando se elimina a un empleado
+ * @param {Object} req - Objeto de petición HTTP.
+ * @param {Object} res - Objeto de respuesta HTTP.
+ * @returns {res} Respuesta
+ * @returns {error} Si no se pudieron recuperar los datos de los empleados
+ */
+exports.eliminarEmpleado = async (req, res) => {
+    try {
+        //Obtenemos el id
+        const { id, responsableAccion } = req.body;
+
+        //Si mi id no tiene valor o si no es un entero regreso la respuesta correspondiente
+        if(!id || !Number.isInteger(id)){
+            return res.status(404).json({
+                ok: false,
+                mensaje: "Error el id del usuario no es valido"
+            })
+        }
+
+        //Verificamos si el empleado existe en la base de datos
+        const empleadoExistente = await empleadoDao.obtenerEmpleado(id);
+        if(empleadoExistente){
+            //Eliminamos al empleado de la base de datos y verificamos su respuesta
+            const empleadoEliminado = await empleadoDao.eliminarEmpleado(id);
+            //Creamos el registro de la accion y verificamos la respuesta
+            const registroCreado= await empleadoDao.registrarAccion("Baja", empleadoExistente, responsableAccion);
+            //Si el empleado fue eliminado con exito enviamos la respuesta correspondiente
+            if(empleadoEliminado.ok){
+                if(registroCreado.ok){
+                    return res.status(201).json({
+                        ok: true,
+                        mensaje: "Empleado eliminado correctamente y accion registrada"
+                    })
+                }else{
+                    return res.status(201).json({
+                        ok: true,
+                        mensaje: "Empleado eliminado correctamente, la accion no pudo ser registrada"
+                    })
+                }
+            //Si el empleado no pudo ser eliminado se envia el mensaje correspondiente
+            }else{
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: "El empleado no pudo ser eliminado, esta accion no sera registrada"
+                })
+            }
+        //Si el empleado no existe se envia el mensaje correspondiente
+        }else{
+            return res.status(404).json({
+                ok:false,
+                mensaje: "El empleado no existe en la BD"
+            })
+        }
+    } catch (error) {
+        //Resuelve ante cualquier error
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error en el servidor al intentar eliminar los datos del empleado"
+        });
+    }
+};
+
+/**
+ * Funcion que envia el reporte de desempeño de los empleados al cliente
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getReporteDesempeno = async (req, res) =>{
+    try{
+        const resultado = await empleadoDao.obtenerReporteDesempeno();
+        res.json(resultado);
+
+    } catch (error) {
+        res.status(500).json({ ok: false, mensaje: "error al obtener el reporte de desempeño" });
+
+    }
+};
+
+/**
+ * Funcion que responde ante una solicitud de modificacion
+ * Verifica la informacion enviada por el cliente
+ * Regresa una respuesta al cliente de exito o error
+ * @param {Object} req - Objeto de petición HTTP.
+ * @param {Object} res - Objeto de respuesta HTTP.
+ * @returns {res} Respuesta con un mensaje de confirmacion
+ * @returns {error} Si no pudo modificar a un empleado a un empleado
+ */
+exports.modificarEmpleado = async (req, res) => {
+    try {
+        // Se obtienen los datos de la solicitud
+        const { id, nombre, puesto, telefono, usuario, password, responsableAccion } = req.body;
+        //Se verifica que el cliente haya enviado un id
+        if (id === "") {
+            return res.status(404).json({
+                ok: false,
+                mensaje: "El id enviado esta vacio o es indefindo"
+            })
+        }
+        //Se verifica que el empleado exista en la bd
+        if (!(await empleadoDao.obtenerEmpleado(id))) {
+            return res.status(404).json({
+                ok: false,
+                mensaje: "El empleado no existe en la bd"
+            })
+        }
+
+        //Si existe mi empleado entonces se crea un arreglo para guardar los datos recuperados con contenido
+        let datosNuevos = [];
+        //Verificamos que los datos recuperados tengan un valor y lo agregamos a un arreglo "Datos nuevos"
+
+        if (nombre !== "") datosNuevos.push({ campo: 'nombre', valor: nombre });
+        if (puesto !== "") datosNuevos.push({ campo: 'puesto', valor: puesto });
+        if (telefono !== "") datosNuevos.push({ campo: 'telefono', valor: telefono });
+        if (usuario !== "") datosNuevos.push({ campo: 'usuario', valor: usuario });
+        if (password !== "") datosNuevos.push({ campo: 'password', valor: password });
+
+        //Se verifica la informacion del empleado, esto recorriendo el arreglo datosNuevos he identificando los valores, 
+        for (let m = 0; m < datosNuevos.length; m++) {
+            //Identificamos los campos de los objetos js y verificamos su valor
+            if (datosNuevos[m].campo === 'nombre') {
+                //Si el nuevo nombre no es valido entonces se envia un mensaje de error
+                if (!patronNombre.test(datosNuevos[m].valor)) {
+                    return res.status(404).json({
+                        ok: false,
+                        mensaje: "El nuevo nombre no es valido"
+                    })
+                }
+            }
+            if (datosNuevos[m].campo === 'puesto') {
+                //Si el nuevo puesto no es alguno de los existentes entonces se envia un mensaje de error
+                if (!roles.includes(datosNuevos[m].valor)) {
+                    return res.status(404).json({
+                        ok: false,
+                        mensaje: "El nuevo puesto no es valido"
+                    })
+                }
+            }
+            if (datosNuevos[m].campo === 'telefono') {
+                //Si el nuevo telefono no es valido entonces se envia un mensaje de error 
+                if (!patronTel.test(datosNuevos[m].valor)) {
+                    return res.status(404).json({
+                        ok: false,
+                        mensaje: "El nuevo telefono no es valido"
+                    })
+                }
+            }
+            if (datosNuevos[m].campo === 'usuario') {
+                //Si la nueva contraseña no es valida entonces se envia un mensaje de error 
+                if (!patronPassword.test(datosNuevos[m].valor)) {
+                    return res.status(404).json({
+                        ok: false,
+                        mensaje: "El nuevo usuario no es valido"
+                    })
+                }
+            }
+            if (datosNuevos[m].campo === 'password') {
+                //Si la nueva no es valido entonces se envia un mensaje de error 
+                if (!patronPassword.test(datosNuevos[m].valor)) {
+                    return res.status(404).json({
+                        ok: false,
+                        mensaje: "La nueva contraseña no es valida"
+                    })
+                }
+            }
+        }
+
+
+
+        //Se actualiza al empleado, utilizando el arreglo de datosNuevos que tiene toda la informacion necesaria para actualizar al empleado
+        const empleadoActualizado= await empleadoDao.actualizarEmpleado(id, datosNuevos, responsableAccion);
+        const registroCreado= await empleadoDao.registrarAccion("Cambio", await empleadoDao.obtenerEmpleado(id), responsableAccion);
+            // Validamos que se hayan modificado los datos del empleado
+            if (empleadoActualizado.ok) {
+                //Si la accion pudo ser registrada entonces se envia el mensaje correspondiente
+                if(registroCreado.ok){
+                    return res.status(201).json({
+                        ok: true,
+                        mensaje: "Empleado modificado correctamente y accion registrada"
+                    });
+                //Si la accion no pudo ser registrada entonces se envia el mensaje correspondiente
+                }else{
+                    return res.status(201).json({
+                        ok: true,
+                        mensaje: "Empleado modificado correctamente, la accion no pudo ser registrada"
+                    });                  
+                }
+            } else {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: "No se pudo actualizar al empleado, esta accion no sera registrada"
+                });
+            }
+    } catch (error) {
+        // Resolucion en caso de error
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error en el servidor al modificar los datos del empleado"
+        });
+    }
+};
+
+exports.enviarHistorial = async (req, res) =>{
+    try {
+        // Se recuperan los registros de los empleados
+        const historial = await empleadoDao.obtenerHistorial();
+        // Si el resultado fue un arreglo vacio entonces se envia la respuesta correspondiente
+        if(historial.length===0){
+            return res.status(500).json({
+                ok:false,
+                mensaje:"No se encontraron registros en el sistema"
+            });
+        // Si el resultado fue un arreglo con los objetos entonces se envia la respuesta correspondiente
+        }else{
+            return res.status(201).json({
+                ok:true,
+                mensaje:"Registros recuperados",
+                datos: historial
+            });
+        }
+    } catch (error) {
+        // Resolucion en caso de error
+        return res.status(500).json({
+            ok: false,
+            mensaje: "Error en el servidor obtener los registros de empleados"
+        });      
+    }
+}

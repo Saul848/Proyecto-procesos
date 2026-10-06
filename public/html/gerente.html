@@ -4,51 +4,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oxxo - Gerente</title>
     <link rel="stylesheet" href="../css/gerente.css">
+    <link rel="stylesheet" href="../css/barra_sesion.css">
 </head>
 <body>
-    <section class = "pestaña">
-        <label id="msgPestaña">Menu Gerente</label>
-        <nav>
-        </nav>
-        <button id="btnSalir"> Salir</button>
-    </section>
+    
+    <header class="barra-sesion-gerente">
+        <div>
+            <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Gerente</span></span>
+        </div>
+
+    <div>
+        <div>
+            <button id="btnMensajes"> Mensajes </button>
+            <button id="btnDevo">Devolución</button>
+            <button id="btnAccesos"><a href="reporteAccesos.html" title="reporte">Reporte de accesos</a></button>
+            <button id="btn-logout"> Cerrar sesión </button>
+        </div>
+    </div>
+    </header>
+    
     <section class = "contenido">
         <section class = "datos">
             <section class = "perfil">
                 <div id="divDatosPerfil">
                     <div id="divNumEmp">
-                        <label id="numEmp">Empleado #?</label>
+                        <label class="etiqueta">Empleado #: <label class="etiqueta" id="numEmp"></label></label>
                     </div>
                     <div id="divDatosEmp">
                         <div id="divDesgloce">
-                            <label id="nombreEmp">Nombre empleado</label>
-                            <label id="puestoEmp">Puesto</label>
-                            <label id="infoContacto">Info de contacto</label>    
+                            <label class="titulo-campo">Nombre:</label> 
+                            <label class="etiqueta" id="nombreEmp"></label>    
+
+                            <label class="titulo-campo">Puesto:</label> 
+                            <label class="etiqueta" id="puestoEmp"></label>
+
+                            <label class="titulo-campo">Contacto:</label> 
+                            <label class="etiqueta" id="infoContacto"></label>    
+
+                            <label class="titulo-campo">Usuario:</label> 
+                            <label class="etiqueta" id="usuarioEmp"></label>    
+
+                            <label class="titulo-campo">Contraseña:</label> 
+                            <label class="etiqueta" id="passwordEmp"></label>    
                         </div>
                         <div id="divImagenEmp"> 
-                            <img id="imgEmpleado" src="" alt=""> <Label>IMAGEN </Label>
+                            <img id="imgEmpleado" src="" alt="">
                         </div>
                     </div>
                 </div>    
             </section>
             <section class = "formulario">
-                <div id="divMsgAgregarEmp">
-                    <label id="msgAgregarEmp">Agregar empleado</label>
+                <div id="opcciones">
+                    <button id="btnAgregarEmpleado">Agregar empleado</button>
+                    <button id="btnModificarEmpleado">Modificar empleado</button>
+                </div> 
+                <div id="seccionAgregar">
+                    <div id="divMsgAgregarEmp">
+                        <div class="espacioBtnRegresar"><button class="btnRegresar">Regresar</button></div>
+                        <label id="msgAgregarEmp">Agregar empleado</label>
+                    </div>
+                    <div class="lineaInp">
+                        <label for="inpNombre">Nombre:</label><input type="text" id="inpNombre" placeholder="Escribe el nombre del empleado" />
+                    </div>
+                    <div class="lineaInp">
+                        <label for="selectPuesto">Puesto:</label>
+                        <select id="selectPuesto">
+                            <option value="empleado">Empleado</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="gerente">Gerente</option>
+                        </select>
+                    </div>
+                    <div class="lineaInp">
+                        <label for="inpTel">Telefono:</label> <input type="text" id="inpTel" placeholder="Escribe el telefono del empleado" />
+                    </div> 
+                    <div class="lineaInp">
+                        <label for="inpUsuario">Usuario:</label><input type="text" id="inpUsuario" placeholder="Escribe el usuario del empleado" />
+                    </div>
+                    <div class="lineaInp">
+                        <label for="inpPassword">Contraseña:</label> <input type="text" id="inpPassword" placeholder="Escribe la contraseña del empleado empleado" />
+                    </div>
+                    <div id="divBtnGuardarDatos">
+                        <button id="btnGuardarDatos">Guardar Datos</button>
+                    </div>
                 </div>
-                <div id="inputsEmp">
-                    <label htmlFor="inpNombre">Nombre: <input type="text" id="inpNombre" placeholder="Escribe el nombre del empleado" /></label>
-                    <label htmlFor="selectPuesto">Puesto:</label>
-                    <select id="selectPuesto">
-                        <option value="empleado">Empleado</option>
-                        <option value="administrador">Administrador</option>
-                        <option value="gerente">Gerente</option>
-                    </select>
-                    <label htmlFor="inpTel">Telefono: <input type="text" id="inpTel" placeholder="Escribe el telefono del empleado" /></label>
-                    <label htmlFor="inpUsuario">Usuario: <input type="text" id="inpUsuario" placeholder="Escribe el usuario del empleado" /></label>
-                    <label htmlFor="inpPassword">Contraseña: <input type="text" id="inpPassword" placeholder="Escribe la contraseña del empleado empleado" /></label>
-                </div>
-                <div id="divBtnAgregar">
-                    <button id="btnAgregarEmp">Agregar Empleado</button>
+
+                <div id="seccionModificar">
+                    <div id="divMsgModificarEmp">
+                        <div class="espacioBtnRegresar"><button class="btnRegresar">Regresar</button></div>
+                        <label id="msgModificarEmp">Modificar empleado</label>
+                    </div>
+                    <div class="lineaInp">
+                        <label for="inpNombreAct">Nombre actual:</label> <input type="text" id="inpNombreAct"/>
+                        <label for="inpNuevoNombre">Nuevo nombre: </label> <input type="text" id="inpNuevoNombre" placeholder="Escribe el nombre del empleado" />   
+                    </div>
+                    <div class="lineaInp">
+                        <label for="inpPuestoAct">Puesto actual:</label> <input type="text" id="inpPuestoAct" />
+                        <label for="selectNuevoPuesto">Nuevo puesto:</label>
+                        <select id="selectNuevoPuesto">
+                            <option value="empleado">Empleado</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="gerente">Gerente</option>
+                        </select>
+                    </div>
+                    <div class="lineaInp">
+                        <label for="inpTelefonoAct">Telefono actual:</label> <input type="text" id="inpTelefonoAct"/>
+                        <label for="inpNuevoTelefono">Nuevo telefono:</label> <input type="text" id="inpNuevoTelefono" placeholder="Escribe el telefono del empleado" />
+                    </div>
+                    <div class="lineaInp">
+                        <label for="inpUsuarioAct">Usuario actual:</label> <input type="text" id="inpUsuarioAct" />
+                        <label for="inpNuevoUsuario">Nuevo usuario:</label> <input type="text" id="inpNuevoUsuario" placeholder="Escribe el usuario del empleado" />
+                    </div>
+                    <div class="lineaInp">
+                        <label for="inpPasswordAct">Contraseña actual:</label> <input type="text" id="inpPasswordAct"/>
+                        <label for="inpNuevoPassword">Nueva contraseña:</label> <input type="text" id="inpNuevoPassword" placeholder="Escribe la contraseña del empleado"/>   
+                    </div>
+                    <div id="divBtnActualizarDatos">
+                        <button id="btnActualizarDatos">Actualizar datos</button>
+                    </div>
                 </div>
             </section>
         </section>
@@ -57,11 +129,63 @@
                 <div id="seccionEmp">
                 </div>
             </aside>
+            <div id="divBtnVerHistorialEmp">
+                <button id="btnVerHistorialEmp"> <a href="empleados-historial.html" title="Historial de registros de empleados">Ver historial de registros</a></button>
+            </div>
             <div id="divBtnGenReporte">
-                <button id="btnGenReporte">Generar reporte</button>
+                <button id="btnGenReporte"><a href="empleados-desempeno.html" title="reporte empleados">Ver reporte empleados</a></button>
             </div>
         </section>
+        <section id="sectMensajes">
+            <div id="formMensaje" class="modal-overlay" style="display: none;">
+                <div class="modal-caja">
+                    <h3>Nuevo mensaje</h3>
+                    <div id="datosMensaje">
+                        <label>Destinatario</label>
+                        <input id="inputDestinatario" placeholder="Ej. usuario123"></input>
+
+                        <label>Contenido</label>
+                        <textarea id="inputContenido"></textarea>
+                        
+                    </div>
+                    <label id="estadoMsjs"></label>
+                    <div class="botones-mensaje">
+                        <button id="btnCerrarModal">Cancelar</button>
+                        <button id="btnEnviarMensaje">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="sectDevoluciones">
+            <div id="formDevolucion" class="modal-overlay" style="display: none;">
+                <div class="modal-caja">
+                    <h3>Devolución de producto</h3>
+
+                    <div class="datos-devolucion">
+                        <label for="inpCantidadProducto">Cantidad:</label>
+                        <input type="text" id="inpCantidadProducto" />
+
+                        <label for="inpIdProducto">ID del producto:</label>
+                        <input type="text" id="inpIdProducto" />
+                    </div>
+
+                    <div class="motivo-devolucion">
+                        <label for="inpMotivoDevo">Motivo / observación</label>
+                        <textarea id="inpMotivoDevo"></textarea>
+                    </div>
+
+                    <label id="estadoDevo"></label>
+
+                    <div class="botones-devolucion">
+                        <button id="cancelarDevolucion">Cancelar</button>
+                        <button id="confirmarDevolucion">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+</section>
     </section>
 </body>
 </html>
+
 <script src="../js/gerente.js" defer></script>
+<script type="module" src="../js/cerrar_sesion.js"></script>

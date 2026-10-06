@@ -1,0 +1,174 @@
+/* Importar la fuente DM Sans desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+/* --- Estilos Globales --- */
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #9b6bc0;
+    margin: 0;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* --- Contenedor ancho para tablas --- */
+.card-gerente-wide {
+    background-color: #2b233c;
+    border: 2px solid #4a3d60;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 950px;
+    overflow: hidden;
+}
+
+/* --- Título superior estilo pestaña blanca --- */
+.card-header-title {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    text-align: center;
+    padding: 18px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 2px solid #4a3d60;
+}
+
+/* --- Cuerpo interno de la tarjeta --- */
+.card-body {
+    padding: 30px;
+}
+
+/* --- Sección de búsqueda --- */
+.formulario-busqueda {
+    background-color: #362c4a;
+    color: #e0d9ec;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border: 1px solid #4a3d60;
+}
+
+#divMsgBusqueda h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.inputs-row {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.inputs-row label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 14px;
+    color: #e0d9ec;
+    flex-grow: 1;
+}
+
+.inputs-row input[type="text"] {
+    background-color: #2b233c;
+    border: 1px solid #4a3d60;
+    border-radius: 6px;
+    padding: 10px 14px;
+    color: #ffffff;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+}
+
+.btn-accion, #btnBuscar {
+    background-color: #4a3d60;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    height: 41px;
+}
+
+.btn-accion:hover, #btnBuscar:hover {
+    background-color: #5c4c77;
+}
+
+/* --- Estilo de Tabla con tonos morados alternados (Franjas) --- */
+.tabla-desempeno-wrapper {
+    overflow-x: auto;
+}
+
+.tabla-desempeno {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #f3f0ff; /* Letras claras */
+    background-color: #2b233c;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tabla-desempeno th {
+    background-color: #362c4a;
+    color: #ffffff;
+    padding: 14px 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #4a3d60;
+}
+
+.tabla-desempeno td {
+    padding: 14px 15px;
+    border-bottom: 1px solid #362c4a;
+}
+
+/* Dos tonos de morado para las filas alternadas */
+.tabla-desempeno tbody tr:nth-child(even) {
+    background-color: #322844;
+}
+
+.tabla-desempeno tbody tr:nth-child(odd) {
+    background-color: #2b233c;
+}
+
+.tabla-desempeno tbody tr:hover {
+    background-color: #3c3053;
+}
+
+/* Fila de desabasto en rojo vino legible */
+.tabla-desempeno tr.fila-desabasto {
+    background-color: #612222 !important; 
+    color: #ffffff !important;
+}
+
+.tabla-desempeno tr.fila-desabasto td {
+    color: #ffffff !important;
+    border-bottom-color: #7d2e2e !important;
+}
+
+/* --- Botón de regresar --- */
+.btn-regresar-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-regresar {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-regresar:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}

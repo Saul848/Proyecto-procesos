@@ -19,8 +19,11 @@
   },
   "homepage": "https://github.com/Saul848/Proyecto-procesos#readme",
   "dependencies": {
+    "dotenv": "^18.0.5",
     "express": "^5.2.1",
-    "fast-xml-parser": "^5.11.1"
+    "fast-xml-parser": "^5.11.1",
+    "jsonwebtoken": "^9.0.3",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "jsdoc": "^4.0.5"

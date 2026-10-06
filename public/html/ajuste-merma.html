@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajuste de Inventario por Merma o Daño</title>
+    <!-- Vinculamos el archivo de estilos centralizado -->
+    <link rel="stylesheet" href="../css/mermaEstilo.css">
+</head>
+<body>
+
+    <div class="card-gerente">
+        <!-- Título superior en la pestaña blanca -->
+        <div class="card-header-title">
+            Gestión de Inventario: Ajuste por Merma
+        </div>
+        
+        <div class="card-body">
+            <form id="formMerma">
+                <div class="form-group">
+                    <label for="idProducto">ID del Producto:</label>
+                    <input type="number" id="idProducto" name="idProducto" placeholder="Ej. 1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cantidadAjustar">Cantidad a Descontar:</label>
+                    <input type="number" id="cantidadAjustar" name="cantidadAjustar" placeholder="Ej. 2" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="causa">Causa del Ajuste:</label>
+                    <select id="causa" name="causa" required>
+                        <option value="">Seleccione una causa...</option>
+                        <option value="Caducado">Caducado</option>
+                        <option value="Dañado / Roto">Dañado / Roto</option>
+                        <option value="Defectuoso de fábrica">Defectuoso de fábrica</option>
+                        <option value="Merma por manejo">Merma por manejo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="gerente">Nombre del Gerente:</label>
+                    <input type="text" id="gerente" value="gerente" required>
+                </div>
+                
+                <button type="submit" class="btn-alerta">Aplicar Ajuste de Merma</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="btn-regresar-container">
+        <a href="gerente.html" class="btn-regresar">← Regresar al Inicio</a>
+    </div>
+
+    <script>
+        document.getElementById("formMerma").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const datos = {
+                idProducto: document.getElementById("idProducto").value,
+                cantidadAjustar: document.getElementById("cantidadAjustar").value,
+                causa: document.getElementById("causa").value,
+                gerente: document.getElementById("gerente").value
+            };
+
+            try {
+                const respuesta = await fetch("/api/productos/merma", {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json" 
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                const resultado = await respuesta.json();
+
+                if (resultado.ok) {
+                    alert("¡Éxito! " + resultado.mensaje);
+                    document.getElementById("formMerma").reset();
+                } else {
+                    alert("Error: " + resultado.mensaje);
+                }
+            } catch (error) {
+                console.error("Error al conectar con el servidor:", error);
+                alert("Error de conexión con el servidor.");
+            }
+        });
+    </script>
+</body>
+</html>

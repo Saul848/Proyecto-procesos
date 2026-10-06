@@ -4,21 +4,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnVolver = document.getElementById("btnVolver");
     const seccionProductos = document.getElementById("seccionProductos");
 
-    
     const cargarProductos = async (termino = "") => {
         try {
-            
             const respuesta = await fetch(`/api/productos?busqueda=${encodeURIComponent(termino)}`);
             const datos = await respuesta.json();
 
             if (datos.ok) {
                 mostrarProductos(datos.productos);
             } else {
-                seccionProductos.innerHTML = `<p>Error al cargar el catálogo.</p>`;
+                seccionProductos.innerHTML = `<tr><td colspan="6" style="text-align: center;">Error al cargar el catálogo.</td></tr>`;
             }
         } catch (error) {
             console.error("Error de conexión:", error);
-            seccionProductos.innerHTML = `<p>No se pudo conectar con el servidor.</p>`;
+            seccionProductos.innerHTML = `<tr><td colspan="6" style="text-align: center;">No se pudo conectar con el servidor.</td></tr>`;
         }
     };
 
@@ -26,40 +24,44 @@ document.addEventListener("DOMContentLoaded", () => {
         seccionProductos.innerHTML = ""; 
 
         if (productos.length === 0) {
-            seccionProductos.innerHTML = `<p>No se encontraron productos.</p>`;
+            seccionProductos.innerHTML = `<tr><td colspan="6" style="text-align: center;">No se encontraron productos.</td></tr>`;
             return;
         }
 
         productos.forEach((prod) => {
-            const divProducto = document.createElement("div");
-            divProducto.className = "item-producto"; // Clase útil para estilos futuros
+            const fila = document.createElement("tr");
 
-            divProducto.innerHTML = `
-                <h3>${prod.nombre}</h3>
-                <p><strong>ID:</strong> ${prod.id}</p>
-                <p><strong>Descripción:</strong> ${prod.descripcion}</p>
-                <p><strong>Precio:</strong> $${prod.precio}</p>
-                <p><strong>Existencia actual:</strong> ${prod.stock}</p>
-                ${prod.sinStock ? `<p class="aviso-sin-stock" style="color: red; font-weight: bold;">¡Aviso: No hay stock disponible!</p>` : ""}
+            // Si no hay stock, aplicamos la clase de desabasto (fondo rojo vino y texto blanco)
+            if (prod.sinStock || prod.stock <= 0) {
+                fila.classList.add("fila-desabasto");
+            }
+
+            fila.innerHTML = `
+                <td>${prod.id}</td>
+                <td><strong>${prod.nombre}</strong></td>
+                <td>${prod.descripcion}</td>
+                <td>$${prod.precio}</td>
+                <td>${prod.stock}</td>
+                <td>
+                    ${prod.sinStock || prod.stock <= 0 
+                        ? '<span style="color: #ff9999; font-weight: bold;">⚠️ Sin Stock</span>' 
+                        : '<span style="color: #2ecc71; font-weight: bold;">Normal</span>'}
+                </td>
             `;
 
-            seccionProductos.appendChild(divProducto);
+            seccionProductos.appendChild(fila);
         });
     };
 
-    
     btnBuscar.addEventListener("click", () => {
         cargarProductos(inputBuscar.value);
     });
-/*
-    inputBuscar.addEventListener("input", () => {
-        cargarProductos(inputBuscar.value);
-    });
-*/
+
     if (btnVolver) {
-    btnVolver.addEventListener("click", () => {
-        window.location.href = "../index.html"; 
-    });
-}
+        btnVolver.addEventListener("click", () => {
+            window.location.href = "/gerente"; 
+        });
+    }
+
     cargarProductos();
 });

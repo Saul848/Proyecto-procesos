@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Desempeño de Empleados</title>
+    <link rel="stylesheet" href="../css/desempenoEstilo.css"> 
+</head>
+<body>
+
+    <div class="card-gerente-wide">
+        <!-- Título superior en la pestaña blanca -->
+        <div class="card-header-title">
+            Reporte de Desempeño y Promociones
+        </div>
+        
+        <div class="card-body">
+            <!-- Caja de resumen ordenada -->
+            <div class="card-resumen-box">
+                <h3>Empleados Evaluados: <span id="totalEmpleados">0</span></h3>
+            </div>
+
+            <!-- Tabla de datos -->
+            <div class="tabla-desempeno-wrapper">
+                <table class="tabla-desempeno">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Puesto</th>
+                            <th>Ventas</th>
+                            <th>Transacciones</th>
+                            <th>Estatus / Promoción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaDesempeno">
+                        <!-- Los datos se cargan dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-regresar-container">
+        <a href="gerente.html" class="btn-regresar">← Regresar al Inicio</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarReporteDesempeno();
+        });
+
+        async function cargarReporteDesempeno() {
+            try {
+                const respuesta = await fetch("/api/empleados/reporte-desempeno");
+                const datos = await respuesta.json();
+
+                if (datos.ok) {
+                    document.getElementById("totalEmpleados").textContent = datos.empleados.length;
+                    const cuerpoTabla = document.getElementById("cuerpoTablaDesempeno");
+                    cuerpoTabla.innerHTML = "";
+
+                    datos.empleados.forEach(emp => {
+                        const fila = document.createElement("tr");
+
+                        const esCandidato = emp.esCandidatoPromocion;
+                        const esMvp = String(datos.mvp) === String(emp.id);
+
+                        if (esCandidato && esMvp) {
+                            fila.style.backgroundColor = "#fff9c4"; // Amarillo suave
+                        } else if (esCandidato) {
+                            fila.style.backgroundColor = "#e8f8f5"; // Verde claro
+                        } else if (esMvp) {
+                            fila.style.backgroundColor = "#fff3e0"; // Naranja suave
+                        }
+
+                        fila.innerHTML = `
+                            <td>${emp.id}</td>
+                            <td><strong>${emp.nombre}</strong></td>
+                            <td>${emp.puesto}</td>
+                            <td>${emp.numVentas}</td>
+                            <td>${emp.numTransacciones}</td>
+                            <td>
+                                ${esCandidato 
+                                    ? '<span style="color: #27ae60; font-weight: bold;">⭐ Candidato a Promoción</span>' 
+                                    : '<span style="color: #7f8c8d;">En seguimiento</span>'}
+
+                                ${esMvp 
+                                    ? '<br><span style="color: #b7950b; font-weight: bold;">🏆 Empleado del mes</span>' 
+                                    : ''}
+                            </td>
+                        `;
+
+                        cuerpoTabla.appendChild(fila);
+                    });
+                } else {
+                    alert("No se pudo cargar el reporte de desempeño.");
+                }
+            } catch (error) {
+                console.error("Error al obtener el reporte de desempeño:", error);
+                alert("Error de conexión con el servidor.");
+            }
+        }
+    </script>
+</body>
+</html>

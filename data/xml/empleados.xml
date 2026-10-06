@@ -6,29 +6,9 @@
     <puesto>empleado</puesto>
     <telefono>3453244576</telefono>
     <usuario>roger01</usuario>
-    <password>rogelio123</password>
-    <numVentas>5</numVentas>
-    <numTransacciones>3</numTransacciones>
-  </empleado>
-  <empleado>
-    <id>2</id>
-    <nombre>Martha Garcia Morales</nombre>
-    <puesto>administrador</puesto>
-    <telefono>4564342365</telefono>
-    <usuario>martha01</usuario>
-    <password>martha123</password>
-    <numVentas>6</numVentas>
-    <numTransacciones>5</numTransacciones>
-  </empleado>
-  <empleado>
-    <id>3</id>
-    <nombre>Ruben Flores Martinez</nombre>
-    <puesto>gerente</puesto>
-    <telefono>4534234565</telefono>
-    <usuario>ruben01</usuario>
-    <password>ruben123</password>
-    <numVentas>8</numVentas>
-    <numTransacciones>3</numTransacciones>
+    <password>123</password>
+    <numVentas>16</numVentas>
+    <numTransacciones>14</numTransacciones>
   </empleado>
   <empleado>
     <id>4</id>
@@ -38,76 +18,73 @@
     <password>123</password>
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
+    <telefono>4234563424</telefono>
   </empleado>
   <empleado>
     <id>5</id>
-    <nombre>Rogelio Lopez Gonzales</nombre>
-    <puesto>administrador</puesto>
+    <nombre>Marco Polo</nombre>
+    <puesto>gerente</puesto>
     <usuario>roger134</usuario>
-    <password>123</password>
+    <password>12</password>
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
-  </empleado>
-  <empleado>
-    <id>6</id>
-    <nombre>Aurelio</nombre>
-    <puesto>empleado</puesto>
-    <usuario>roger123</usuario>
-    <password>234</password>
-    <numVentas>0</numVentas>
-    <numTransacciones>0</numTransacciones>
+    <telefono>1231231231</telefono>
   </empleado>
   <empleado>
     <id>7</id>
     <nombre>Misael</nombre>
     <puesto>gerente</puesto>
-    <usuario>Misa3l</usuario>
-    <password>misa123</password>
+    <usuario>MisaGoodMvp</usuario>
+    <password>324</password>
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
+    <telefono>4545454545</telefono>
   </empleado>
   <empleado>
-    <id>8</id>
-    <nombre>Pedro Antonio</nombre>
-    <puesto>gerente</puesto>
-    <usuario>Pedro09</usuario>
-    <password>pedro098</password>
-    <numVentas>0</numVentas>
-    <numTransacciones>0</numTransacciones>
-  </empleado>
-  <empleado>
-    <id>9</id>
-    <nombre>Emiliano Garcia</nombre>
-    <puesto>administrador</puesto>
-    <usuario>Cypher34</usuario>
-    <password>ueueueue</password>
-    <numVentas>0</numVentas>
-    <numTransacciones>0</numTransacciones>
-  </empleado>
-  <empleado>
-    <id>10</id>
-    <nombre>Emiliano Zapata</nombre>
-    <puesto>gerente</puesto>
-    <usuario>Mauricio032</usuario>
-    <password>ueueueue</password>
-    <numVentas>0</numVentas>
-    <numTransacciones>0</numTransacciones>
-  </empleado>
-  <empleado>
-    <id>11</id>
-    <nombre>d</nombre>
+    <id>19</id>
+    <nombre>Humberto Velez</nombre>
     <puesto>empleado</puesto>
-    <usuario>sde</usuario>
-    <password>cjkdsk s</password>
+    <usuario>OIRT</usuario>
+    <password>123</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+    <telefono>2344322341</telefono>
+  </empleado>
+  <empleado>
+    <id>23</id>
+    <nombre>Jose Antonio</nombre>
+    <puesto>empleado</puesto>
+    <usuario>ASDW</usuario>
+    <password>2432432</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+    <telefono>1212121212</telefono>
+  </empleado>
+  <empleado>
+    <id>24</id>
+    <nombre>Mauricia</nombre>
+    <puesto>empleado</puesto>
+    <usuario>LOK</usuario>
+    <password>123</password>
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
   </empleado>
   <empleado>
-    <id>12</id>
-    <nombre>fff</nombre>
+    <id>25</id>
+    <nombre>Veronica</nombre>
     <puesto>empleado</puesto>
-    <usuario>fjd</usuario>
-    <password>cjkdsk s</password>
+    <usuario>FRT</usuario>
+    <password>123</password>
+    <numVentas>0</numVentas>
+    <numTransacciones>0</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>26</id>
+    <nombre>María Concepcion</nombre>
+    <puesto>empleado</puesto>
+    <telefono>1231232132</telefono>
+    <usuario>XCV</usuario>
+    <password>123</password>
     <numVentas>0</numVentas>
     <numTransacciones>0</numTransacciones>
   </empleado>
