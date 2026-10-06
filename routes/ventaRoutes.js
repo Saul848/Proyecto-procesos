@@ -50,6 +50,6 @@ router.get("/:id", ventaControlador.obtenerVentaPorId);
  */
 router.get("/historial", ventaControlador.obtenerHistorialVentas);
 
-router.get("/devolucion", ventaControlador.devolverProducto);
+router.post("/devolucion", ventaControlador.devolverProducto);
 
 module.exports = router;

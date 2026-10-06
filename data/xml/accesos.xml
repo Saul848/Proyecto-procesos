@@ -696,64 +696,40 @@
     <evento>entrada</evento>
   </acceso>
   <acceso>
-    <fecha>2026-10-05</fecha>
-    <hora>17:57:25</hora>
-    <nombre>Marco Polo</nombre>
-    <usuario>roger134</usuario>
-    <puesto>gerente</puesto>
-    <evento>salida</evento>
-  </acceso>
-  <acceso>
-    <fecha>2026-10-05</fecha>
-    <hora>17:57:28</hora>
-    <nombre>Marco Polo</nombre>
-    <usuario>roger134</usuario>
-    <puesto>gerente</puesto>
-    <evento>entrada</evento>
-  </acceso>
-  <acceso>
-    <fecha>2026-10-05</fecha>
-    <hora>17:57:42</hora>
-    <nombre>Marco Polo</nombre>
-    <usuario>roger134</usuario>
-    <puesto>gerente</puesto>
-    <evento>salida</evento>
-  </acceso>
-  <acceso>
     <fecha>2026-10-06</fecha>
-    <hora>18:00:14</hora>
-    <nombre>Misael</nombre>
-    <usuario>MisaGoodMvp</usuario>
-    <puesto>gerente</puesto>
+    <hora>20:03:25</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
     <evento>entrada</evento>
   </acceso>
   <acceso>
     <fecha>2026-10-06</fecha>
-    <hora>18:10:48</hora>
-    <nombre>Misael</nombre>
-    <usuario>MisaGoodMvp</usuario>
-    <puesto>gerente</puesto>
-    <evento>salida</evento>
-  </acceso>
-  <acceso>
-    <fecha>2026-10-06</fecha>
-    <hora>18:13:35</hora>
-    <nombre>Misael</nombre>
-    <usuario>MisaGoodMvp</usuario>
-    <puesto>gerente</puesto>
+    <hora>20:29:02</hora>
+    <nombre>Humberto Velez</nombre>
+    <usuario>OIRT</usuario>
+    <puesto>empleado</puesto>
     <evento>entrada</evento>
   </acceso>
   <acceso>
     <fecha>2026-10-06</fecha>
-    <hora>18:46:40</hora>
-    <nombre>Misael</nombre>
-    <usuario>MisaGoodMvp</usuario>
-    <puesto>gerente</puesto>
+    <hora>20:29:05</hora>
+    <nombre>Humberto Velez</nombre>
+    <usuario>OIRT</usuario>
+    <puesto>empleado</puesto>
     <evento>salida</evento>
   </acceso>
   <acceso>
     <fecha>2026-10-06</fecha>
-    <hora>18:53:35</hora>
+    <hora>20:29:15</hora>
+    <nombre>Cesar</nombre>
+    <usuario>Cesa7r</usuario>
+    <puesto>administrador</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>20:40:16</hora>
     <nombre>Misael</nombre>
     <usuario>MisaGoodMvp</usuario>
     <puesto>gerente</puesto>

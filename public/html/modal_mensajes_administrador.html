@@ -1,21 +1,20 @@
 <!-- Modal para mensajes del gerente -->
-<div id="modal-mensajes" class="modal">
-    <div class="modal-contenido">
+<div id="checkMensajes" class="modal-overlay" style="display: none;">
+    <div class="modal-caja modal-mensajes">
+        <h3><i class="fa-solid fa-bell"></i> Mensajes pendientes:</h3>
 
-        <h3>
-            <i class="fa-solid fa-bell"></i>
-            Mensajes recibidos:
-        </h3>
+        <div class="panel-mensajes" id="panelMensajes">
+        <div class="lista-mensajes" id="listaMensajes">
+            <!-- Se inyectan dinámicamente los <div class="item-mensaje"> -->
+        </div>
 
-        <div id="contenedorDetalles">
-            <!-- Se inyectan dinámicamente los mensajes -->
+        <div class="contenido-mensaje" id="contenidoMensaje">
+            Haz click en un mensaje para verlo!
+        </div>
         </div>
 
         <div id="contenedorBoton" style="margin-top: 15px; text-align: right;">
-            <button class="btn-primary-mensajes" id="btnCerrarModalMensajes">
-                Cerrar
-            </button>
+        <button type="button" id="btnCerrarModalMensajes" class="btn-toggle-caja">Cerrar</button>
         </div>
-
     </div>
 </div>

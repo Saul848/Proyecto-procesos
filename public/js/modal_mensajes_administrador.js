@@ -17,6 +17,14 @@ function inicializarModalMensajes() {
             cerrarModalMensajes();
         });
     }
+
+    const btnMostrarMensajes = document.getElementById("btn-mensajes");
+
+    if(btnMostrarMensajes) {
+        btnMostrarMensajes.addEventListener('click', ()=>{
+            abrirModalMensajes();
+        })
+    }
 }
 
 /**
@@ -29,62 +37,28 @@ function inicializarModalMensajes() {
  */
 async function abrirModalMensajes() {
 
-    const modal = document.getElementById("modal-mensajes");
-
-    if (!modal) {
-        return;
-    }
+    const modal = document.getElementById("checkMensajes");
+    if (!modal) return;
 
     const usuario = sessionStorage.getItem("usuarioLogueado");
 
     try {
-
-        // Consultar mensajes al servidor
-        const respuesta = await fetch("/api/mensajes/verMensajes", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                usuario: usuario
-            })
+        const respuesta = await fetch('/api/mensajes/verMensajes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario })
         });
 
-        // Obtener el HTML de los mensajes
         const html = await respuesta.text();
 
-        // Mostrar los mensajes
-        const contenedorDetalles = document.getElementById("contenedorDetalles");
-
-        if (contenedorDetalles) {
-
-            contenedorDetalles.innerHTML = html;
-
-            // Obtener los mensajes de la lista
-            const mensajes = contenedorDetalles.querySelectorAll(".item-mensaje");
-
-            // Obtener el contenedor donde se mostrará el contenido
-            const contenidoMensaje = contenedorDetalles.querySelector("#contenidoMensaje");
-
-            // Agregar evento de clic a cada mensaje
-            mensajes.forEach(mensaje => {
-
-                mensaje.addEventListener("click", () => {
-
-                    contenidoMensaje.textContent = mensaje.dataset.contenido;
-
-                });
-
-            });
+        const panelMensajes = document.getElementById("panelMensajes");
+        if (panelMensajes) {
+        panelMensajes.innerHTML = html;
         }
 
-        // Mostrar modal
         modal.style.display = "flex";
-
     } catch (error) {
-
         console.error("Error al consultar los mensajes:", error);
-
         alert("Ocurrió un error al consultar los mensajes.");
     }
 }
@@ -97,9 +71,44 @@ async function abrirModalMensajes() {
  */
 function cerrarModalMensajes() {
 
-    const modal = document.getElementById("modal-mensajes");
+    const modal = document.getElementById("checkMensajes");
 
     if (modal) {
         modal.style.display = "none";
     }
 }
+
+// Delegación de eventos — selección de mensaje Y botón de eliminar
+document.addEventListener("click", async (e) => {
+    const btnEliminar = e.target.closest(".btn-eliminar-mensaje");
+    if (btnEliminar) {
+        e.stopPropagation();
+        const id = btnEliminar.getAttribute("data-id");
+
+        if (!confirm("¿Seguro que quieres eliminar este mensaje?")) return;
+
+        try {
+        const respuesta = await fetch(`/api/mensajes/${id}`, { method: "DELETE" });
+        const data = await respuesta.json();
+
+        if (data.ok) {
+            btnEliminar.closest(".item-mensaje").remove();
+        } else {
+            alert(data.mensaje);
+        }
+        } catch (error) {
+        console.error("Error al eliminar mensaje:", error);
+        }
+        return;
+    }
+
+    const item = e.target.closest(".item-mensaje");
+    if (!item) return;
+
+    document.querySelectorAll(".item-mensaje").forEach(i => i.classList.remove("activo"));
+    item.classList.add("activo");
+
+    document.getElementById("contenidoMensaje").textContent = item.getAttribute("data-contenido");
+});
+
+inicializarModalMensajes();

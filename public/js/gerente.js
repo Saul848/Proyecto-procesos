@@ -923,7 +923,7 @@ document.getElementById('confirmarDevolucion').addEventListener('click', () => {
         return; // detiene aquí, no manda el fetch
     }
 
-    fetch('/api/ventas', {
+    fetch('/api/ventas/devolucion', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ motivo, id, cantidad })
