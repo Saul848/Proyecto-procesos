@@ -1,4 +1,7 @@
-/* Fondo oscuro del modal */
+/* =========================================================
+   MODAL
+   ========================================================= */
+
 .modal {
     display: none;
     position: fixed;
@@ -12,112 +15,209 @@
 
     justify-content: center;
     align-items: center;
+
+    /* Fuente general */
+    font-family: "DM Sans", sans-serif;
 }
 
-/* Contenido del modal */
+
+/* =========================================================
+   CONTENIDO DEL MODAL
+   ========================================================= */
+
 .modal-contenido {
-    background-color: white;
+    background-color: color-mix(in srgb, #494030 90%, white);
     width: 450px;
     padding: 25px;
     border-radius: 10px;
 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    font-family: "DM Sans", sans-serif;
 }
 
-/* Título */
+
+/* =========================================================
+   TÍTULO
+   ========================================================= */
+
 .modal-contenido h2 {
     margin-top: 0;
     margin-bottom: 25px;
     text-align: center;
+    color: whitesmoke;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700; /* Bold */
 }
 
-/* Grupo de campos */
+
+/* =========================================================
+   GRUPO DE CAMPOS
+   ========================================================= */
+
 .grupo-campos {
     display: flex;
     flex-direction: column;
     gap: 15px;
+
+    font-family: "DM Sans", sans-serif;
 }
 
-/* Cada campo */
+
+/* =========================================================
+   CADA CAMPO
+   ========================================================= */
+
 .campo {
     display: flex;
     flex-direction: column;
     gap: 5px;
+
+    font-family: "DM Sans", sans-serif;
 }
 
-/* Etiquetas */
+
+/* =========================================================
+   ETIQUETAS
+   ========================================================= */
+
 .campo label {
-    font-weight: bold;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
 }
 
-/* Inputs */
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
 .campo input {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     font-size: 14px;
     box-sizing: border-box;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
 }
 
+
 /* Cuando se selecciona un input */
+
 .campo input:focus {
     outline: none;
     border-color: #003a70;
 }
 
-/* Select de categoría */
+
+/* =========================================================
+   SELECT DE CATEGORÍA
+   ========================================================= */
+
 .campo select {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     font-size: 14px;
     box-sizing: border-box;
+
     background-color: white;
     color: #333;
     cursor: pointer;
     width: 100%;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
 }
 
+
 /* Efecto al hacer clic / enfocar el select */
+
 .campo select:focus {
     outline: none;
     border-color: #003a70;
 }
 
-/* Contenedor de botones */
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.campo textarea {
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 12px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+    resize: vertical;
+    max-height: 150px;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
+
+    box-sizing: border-box;
+}
+
+
+.campo textarea:focus {
+    border-color: #6366f1;
+}
+
+
+/* =========================================================
+   CONTENEDOR DE BOTONES
+   ========================================================= */
+
 .contenedor-botones {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 25px;
+
+    font-family: "DM Sans", sans-serif;
 }
 
-/* Botones */
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
 .contenedor-botones button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 500; /* Medium */
 }
 
-/* Botón agregar */
-#boton-agregar-producto {
-    background-color: #00a86b;
-    color: white;
+
+/* =========================================================
+   BOTÓN PRINCIPAL - MODIFICAR
+   ========================================================= */
+
+.btn-primary-mod {
+    background-color: #f2c94c;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
+    font-size: 13px;
+
+    transition: background-color 0.2s;
 }
 
-/* Botón salir */
-#boton-salir-agregar {
-    background-color: #d1d5db;
-    color: #333;
-}
 
-/* Efecto al pasar el mouse */
-#boton-agregar-producto:hover {
-    background-color: #008f5b;
-}
+/* Hover */
 
-#boton-salir-agregar:hover {
-    background-color: #b8bdc5;
+.btn-primary-mod:hover {
+    background-color: #c49d28;
 }

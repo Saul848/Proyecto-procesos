@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const puesto = sessionStorage.getItem("puestoLogueado");
 
-    // Verificamos que sea administrador, de lo contrario se redirige
-    if (puesto !== "administrador") {
+    // Verificamos que sea gerente, de lo contrario se redirige
+    if (puesto !== "gerente") {
         alert("No tienes permisos para ver esta sección.");
         window.location.href = "login.html";
         return;
@@ -11,6 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarAccesos();
 });
 
+/**
+ * Carga y muestra la bitácora de accesos en la tabla.
+ * Aplica los filtros seleccionados (usuario, puesto, evento) 
+ * y renderiza las filas en la tabla.
+ * Los accesos se muestran del más reciente al más antiguo.
+ * 
+ * @async
+ * @function cargarAccesos
+ */
 async function cargarAccesos(){
     try{
         const respuesta = await fetch("/api/accesos");

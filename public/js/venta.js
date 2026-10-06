@@ -11,6 +11,7 @@ let itemsCuenta = [];       // Productos seleccionados en el carrito
 let ofertasActivas = [];    // Ofertas vigentes obtenidas de /api/ofertas
 let metodoPago = "Efectivo";
 let cajaAbierta = true;
+let folioVentaActual = null;
 
 // Referencias del DOM
 const tablaProductosCuerpo = document.getElementById("tablaProductosCuerpo");
@@ -92,6 +93,49 @@ function configurarEventos() {
     }
 }
 
+    btnRegistrarPago.addEventListener("click", () => {
+
+        // 1. Obtenemos la caja seleccionada del menú desplegable
+        const idCajaSeleccionada = document.getElementById('selectCaja').value;
+
+        // 2. Armamos el objeto con todos los datos incluyendo el método de pago
+        const datosVenta = {
+            idEmpleado: "1",               // O tu variable dinámica de empleado
+            idCaja: idCajaSeleccionada,    // "1" o "2" según el menú
+            metodoPago: metodoPago,        // <--- Aquí viaja "Efectivo" o "Tarjeta"
+            items: itemsCuenta.map((i) => ({
+                idProducto: i.id,
+                cantidad: i.cantidad
+            }))
+        };
+
+        // 3. Enviamos los datos al servidor
+        fetch('/api/ventas/confirmar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datosVenta)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log(`Venta registrada con éxito con tarjeta/efectivo en la Caja ${idCajaSeleccionada}`);
+                    // Aquí muestras tu ticket o modal de éxito
+                } else {
+                    alert(data.mensaje);
+                }
+            })
+            .catch(err => console.error("Error:", err));
+    });
+    btnCerrarModal.addEventListener("click", () => {
+        modalTicket.style.display = "none";
+        itemsCuenta = [];
+        inputMontoRecibido.value = "";
+        inputCambio.value = "$0.00";
+        actualizarTicket();
+        cargarFolioActual();
+        cargarProductos();
+    });
+}
 
 /**
  * Obtiene del servidor el siguiente número de folio para mostrarlo en pantalla.
@@ -168,7 +212,14 @@ function actualizarVistaCaja() {
 async function cargarDatos() {
     try {
         const [resProd, resOf] = await Promise.all([
-            fetch("/api/productos"),
+            //fetch de productos completo para validar autenticacion y autorizacion
+            fetch("/api/productos", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+                }
+            }),
             fetch("/api/ofertas")
         ]);
 
@@ -181,6 +232,9 @@ async function cargarDatos() {
             const listado = Array.isArray(dataOfertas) ? dataOfertas : (dataOfertas.ofertas || []);
             // Filtra únicamente las ofertas vigentes
             ofertasActivas = listado.filter(o => o.estado === "disponible");
+
+            //renderiza el carrusel con las ofertas 
+            renderizarCarruselOfertas();
         } else {
             ofertasActivas = [];
         }
@@ -274,7 +328,7 @@ function renderizarTabla() {
  * @param {string} idProducto - ID del producto seleccionado.
  * @param {boolean} checked - Indica si el checkbox fue marcado o desmarcado.
  */
-window.toggleSeleccion = function(idProducto, checked) {
+window.toggleSeleccion = function (idProducto, checked) {
     const prod = todosLosProductos.find((p) => {
         const idVal = String(p.id !== undefined ? p.id : p["@_id"]);
         return idVal === String(idProducto);
@@ -303,7 +357,7 @@ window.toggleSeleccion = function(idProducto, checked) {
  * @param {string} idProducto - ID del producto a modificar.
  * @param {number} delta - Variación en la cantidad (+1 o -1).
  */
-window.cambiarCantidadTicket = function(idProducto, delta) {
+window.cambiarCantidadTicket = function (idProducto, delta) {
     const item = itemsCuenta.find(i => String(i.id) === String(idProducto));
     if (!item) return;
 
@@ -471,11 +525,11 @@ async function procesarVenta() {
         return;
     }
 
-    const idEmpleadoActivo = sessionStorage.getItem("idEmpleado") 
-                          || sessionStorage.getItem("idUsuario") 
-                          || "1";
+    const idEmpleadoActivo = sessionStorage.getItem("idEmpleado")
+        || sessionStorage.getItem("idUsuario")
+        || "1";
 
-                          
+
     // capturamos la caja del menú y el método de pago activo
     const idCajaSeleccionada = document.getElementById("selectCaja") ? document.getElementById("selectCaja").value : "1";
     const metodoPagoActual = typeof metodoPago !== 'undefined' ? metodoPago : "Efectivo";
@@ -655,3 +709,198 @@ function ejecutarReimpresionTicket() {
     ventana.print();
     ventana.close();
 }
+
+/**
+ * Genera el carrusel de ofertas activas en la parte superior del punto de venta.
+ * 
+ * Genera una tarjeta por cada oferta activa, mostrando el nombre del producto, tipo de promoción
+ * y su precio original.
+ * 
+ * Si no hay ofertas activas, muestra el mensaje "No hay promociones vigentes".
+ */
+function renderizarCarruselOfertas(){
+    const pista = document.getElementById("carrusel-pista");
+    const vacio = document.getElementById("carrusel-vacio");
+    if(!pista) return;
+
+    pista.innerHTML = "";
+
+    //si no hay ofertas, mostramos el aviso
+    if(!ofertasActivas || ofertasActivas.length === 0){
+        vacio.style.display = "block";
+        return;
+    }
+    vacio.style.display = "none";
+
+    ofertasActivas.forEach((oferta) => {
+        const idProd = String(oferta.idProducto);
+        const producto = todosLosProductos.find((p) => {
+            const idVal = String(p.id !== undefined ? p.id : p["@_id"]);
+            return idVal === idProd;
+        });
+
+        //tipo de promoción
+        let textoOferta;
+        if (oferta.tipoProm === "porcentaje") {
+            textoOferta = `-${oferta.valorDesc}%`;
+        } else if (oferta.tipoProm === "cantidad") {
+            textoOferta = `${oferta.cantidadRecibe}x${oferta.cantidadPaga}`;
+        } else if (oferta.tipoProm === "precioFijo") {
+            textoOferta = `$${oferta.valorDesc}`;
+        } else {
+            textoOferta = "Oferta";
+        }
+
+        const nombre = producto ? producto.nombre : `Producto ${idProd}`;
+        const precio = producto ? (Number(producto.precio) || 0).toFixed(0) : "-";
+
+        const card = document.createElement("div");
+        card.className = "carrusel-tarjeta";
+        card.innerHTML = `
+            <div class="oferta-nombre">${nombre}</div>
+            <div class="oferta-tipo">${textoOferta}</div>
+            <div class="oferta-precio">Precio Original: $${precio}</div>
+        `;
+        pista.appendChild(card);
+    });
+}
+
+/**
+ * Boton izquierdo del carrusel.
+ * Desplaza las tarjetas hacia la izquierda.
+ */
+document.getElementById("btnCarruselIzq").addEventListener("click", () => {
+    const pista = document.getElementById("carrusel-pista");
+    const tarjeta = pista.querySelector(".carrusel-tarjeta");
+    const paso = tarjeta ? tarjeta.offsetWidth + 12 : 200;
+
+    if (pista.scrollLeft <= 0) {
+        pista.scrollTo({ left: pista.scrollWidth, behavior: "smooth" });
+    } else {
+        pista.scrollBy({ left: -paso * 2, behavior: "smooth" });
+    }
+});
+
+/**
+ * Botón derecho del carrusel.
+ * Desplaza las tarjetas hacia la derecha.
+ */
+document.getElementById("btnCarruselDer").addEventListener("click", () => {
+    const pista = document.getElementById("carrusel-pista");
+    const tarjeta = pista.querySelector(".carrusel-tarjeta");
+    const paso = tarjeta ? tarjeta.offsetWidth + 12 : 200;
+
+    if (pista.scrollLeft + pista.clientWidth >= pista.scrollWidth -1) {
+        pista.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+        pista.scrollBy({ left: paso * 2, behavior: "smooth" });
+    }
+});
+
+/**
+ * Abre el modal para capturar los datos fiscales del cliente (nombre,
+ * dirección, correo y teléfono).
+ */
+function abrirModalFactura() {
+    //toma el folio de la venta actual (se actualiza al registrar pago)
+    folioVentaActual = document.getElementById('lblFolioVenta').textContent.replace(/\D/g, "");
+    document.getElementById('modalFactura').style.display = 'block';
+}
+
+/**
+ * Cierra el modal de datos del cliente ocultándolo de la pantalla.
+ */
+function cerrarModalFactura() {
+    document.getElementById('modalFactura').style.display = 'none';
+}
+
+/**
+ * Envía los datos del cliente y el folio de la venta al servidor.
+ * 
+ * Si el servidor responde ok, muestra la factura generada y cierra el modal.
+ * Si hay error, muestra una alerta con el mensaje del servidor.
+ */
+function generarFactura() {
+    const nombre = document.getElementById('facturaNombre').value;
+    const direccion = document.getElementById('facturaDireccion').value;
+    const correo = document.getElementById('facturaCorreo').value;
+    const telefono = document.getElementById('facturaTelefono').value;
+
+    fetch('/api/ventas/factura', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folio: folioVentaActual, nombre, direccion, correo, telefono })
+    })
+    .then(r => r.json())
+    .then(respuesta => {
+        if (respuesta.ok) {
+            mostrarFactura(respuesta.factura);
+            cerrarModalFactura();
+        } else {
+            alert(respuesta.mensaje || 'Error al generar factura.');
+        }
+    })
+    .catch(() => alert('Error de conexión con el servidor.'));
+}
+
+/**
+ * Genera el HTML de la factura y lo inserta en el contenedor.
+ * 
+ * @param {Object} f - Objeto factura devuelto por el servidor.
+ */
+function mostrarFactura(f) {
+    const html = `
+        <div class="factura" style="max-width: 700px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow:  ️0 2px 8px rgba(0,0,0,.1); font-family: Arial, sans-serif;">
+            <h2 style="text-align: center; margin-bottom: 15px;">FACTURA COMERCIAL</h2>
+            <p><strong>FECHA:</strong> ${f.fechaEmision}</p>
+            <hr>
+            <p><strong>NOMBRE:</strong> ${f.cliente.nombre}</p>
+            <p><strong>DIRECCIÓN:</strong> ${f.cliente.direccion || "—"}</p>
+            <p><strong>TELÉFONO:</strong> ${f.cliente.telefono || "—"}</p>
+            <p><strong>CORREO:</strong> ${f.cliente.correo || "—"}</p>
+            <hr>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">FACTURA</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">PEDIDO</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">FECHA EMISIÓN</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${f.numeroFactura}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${f.folioVenta}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${f.fechaEmision}</td>
+                </tr>
+            </table>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">PRODUCTO</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">CANTIDAD</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">PRECIO</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">IVA</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">TOTAL</th>
+                </tr>
+                ${f.items.map(it => `
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${it.nombre}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${it.cantidad}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">$${it.precio}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">$${it.iva}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">$${it.totalLinea}</td>
+                    </tr>
+                `).join('')}
+            </table>
+            <div style="text-align: right; margin-bottom: 15px;">
+                <p>BASE IMPONIBLE: $${f.baseImponible}</p>
+                <p>IVA (16%): $${f.ivaTotal}</p>
+                <p><strong>TOTAL: $${f.total}</strong></p>
+            </div>
+            <hr>
+            <p><strong>DIRECCIÓN:</strong> ${f.tienda.direccion}</p>
+            <p><strong>CORREO:</strong> ${f.tienda.correo}</p>
+            <p><strong>TELÉFONO:</strong> ${f.tienda.telefono}</p>
+            <button onclick="window.print()" style="margin-top: 15px; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Imprimir factura</button>
+        </div>
+    `;
+    document.getElementById('contenedorFactura').innerHTML = html;
+}
+

@@ -6,6 +6,7 @@
  * 
  */
 
+require("dotenv").config(); // Libreria para acceder a la clave del .env y obtener la clave_secreta para cifrar los tokens
 
 const express = require("express");
 
@@ -25,7 +26,7 @@ const ofertaRoutes = require("./routes/ofertaRoutes");
 const categoriaRoutes = require("./routes/categoriaRoutes");
 //cajas
 const cajasRoutes = require("./routes/cajasRoutes");
-
+//accesoControlador
 const accesoControlador = require("./controladores/accesoControlador");
 
 //const transaccionRoutes
@@ -60,6 +61,7 @@ app.use("/api/movimientosProd", movimientoProdRoutes);
  */
 app.use("/api/empleados", empleadoRoutes);
 
+// Rutas de ofertas
 app.use("/api/ofertas", ofertaRoutes);
 
 /**
@@ -76,8 +78,11 @@ app.use("/api/mensajes", mensajeRoutes);
 
 
 app.use("/api/cajas", cajasRoutes);
+
+// Rutas de accesos (bitácora de entrada/salida)
 app.post('/api/accesos/registrar', accesoControlador.registrarAcceso);
 app.get('/api/accesos', accesoControlador.obtenerAccesos);
+
 const corteRoutes = require("./routes/corteRoutes");
 app.use("/api/cortes", corteRoutes);
 

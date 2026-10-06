@@ -28,6 +28,12 @@ router.post("/caja/estado", ventaControlador.cambiarEstadoCaja);
 router.post("/confirmar", ventaControlador.procesarVenta);
 
 /**
+ * Genera una factura comercial a partir de una venta ya registrada.
+ * @name POST /api/ventas/factura
+ */
+router.post("/factura", ventaControlador.generarFactura);
+
+/**
  * Obtiene el próximo número de folio consecutivo disponible para registrar una venta.
  * @name GET /api/ventas/folio/siguiente
  */
@@ -49,5 +55,7 @@ router.get("/:id", ventaControlador.obtenerVentaPorId);
  * @description Obtiene el historial de ventas filtrado por rango de fechas o empleado
  */
 router.get("/historial", ventaControlador.obtenerHistorialVentas);
+
+router.post("/devolucion", ventaControlador.devolverProducto);
 
 module.exports = router;

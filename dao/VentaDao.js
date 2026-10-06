@@ -348,11 +348,37 @@ function obtenerHistorialVentas(filtros = {}) {
     }
 }
 
+/**
+ * Busca y devuelve una venta específica dentro del archivo ventas.xml
+ * a partir de su número de folio.
+ * 
+ * @function obtenerVentaPorFolio
+ * @param {string|number} folio - Número de folio de la venta a buscar.
+ * @returns {Object|null} El objeto de la venta encontrada, o null si 
+ * no se encuentra la venta u ocurre un error.
+ */
+function obtenerVentaPorFolio(folio){
+    try{
+        if(!fs.existsSync(archivoVentas)) return null;
+        const xmlData = fs.readFileSync(archivoVentas, "utf-8");
+        const parser = new XMLParser(parserConfig);
+        const resultado = parser.parse(xmlData);
+        let ventas = resultado.ventas?.venta || [];
+        if(!Array.isArray(ventas)) ventas = [ventas];
+        const folioBuscado = String(folio).trim();
+        return ventas.find(v => extraerId(v) === folioBuscado) || null;
+    } catch(error){
+        console.error("Error al obtener venta por folio", error);
+        return null;
+    }
+}
+
 module.exports = {
     registrarVenta,
     obtenerSiguienteIdVenta,
     registrarVentaEmpleado,
     obtenerVentas,
     obtenerVentaPorId,
-    obtenerHistorialVentas
+    obtenerHistorialVentas,
+    obtenerVentaPorFolio
 };

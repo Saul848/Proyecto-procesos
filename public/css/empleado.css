@@ -480,4 +480,164 @@ header.header-empleado {
 
 #btnCerrarModal:hover {
     background-color: #000000 !important;
+    min-width: 300px;
+}
+
+/*Carrusel de ofertas*/
+.carrusel-ofertas {
+    background: linear-gradient(90deg, #e8f2ff, #f7fbff);
+    border-bottom: 2px solid #78b4f2;
+    padding: 10px 20px;
+    font-family: sans-serif;
+}
+
+.carrusel-encabezado {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.carrusel-titulo {
+    font-weight: bold;
+    color: #2a5d9e;
+    font-size: 0.95rem;
+}
+
+.carrusel-vacio {
+    color: #888;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.carrusel-viewport {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.carrusel-pista {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    width: 100%;
+    padding: 4px 2px;
+}
+.carrusel-pista::-webkit-scrollbar { height: 6px; }
+.carrusel-pista::-webkit-scrollbar-thumb { background: #bcd6f5; border-radius: 3px; }
+
+.carrusel-tarjeta {
+    min-width: calc(50% - 6px);
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+
+    background: #ffffff;
+    border: 1px solid #e0e7f0;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(42, 93, 158, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.carrusel-tarjeta:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(42, 93, 158, 0.15);
+}
+
+.carrusel-tarjeta .oferta-nombre {
+    font-weight: bold;
+    color: #333;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+}
+
+.carrusel-tarjeta .oferta-tipo {
+    color: #e74c3c;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.carrusel-tarjeta .oferta-precio {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.carrusel-flecha {
+    background: #78b4f2;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    cursor: pointer;
+    flex: 0 0 auto;
+    transition: background-color 0.2s ease;
+}
+.carrusel-flecha:hover { background: #5a9be0; }
+
+
+.modal-mensajes {
+    width: 500px;
+    max-width: 90vw;
+}
+
+.panel-mensajes {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.lista-mensajes {
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.item-mensaje {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    text-align: center;
+}
+
+.item-mensaje:hover {
+    background: #f0f0f0;
+}
+
+.item-mensaje.activo {
+  background: #d6e8fb; /* resalta el mensaje seleccionado */
+    font-weight: bold;
+}
+
+.contenido-mensaje {
+    flex: 1;
+    background: #2B2635;
+    color: white;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.sin-mensajes {
+    background: #4A90E2; /* azul más saturado, distinto al fondo claro del modal */
+    color: white;
+    border-radius: 8px;
+    padding: 20px 30px;
+    text-align: center;
+    font-weight: 500;
+    margin: 20px auto;
+    max-width: 80%;
 }

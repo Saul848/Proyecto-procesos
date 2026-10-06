@@ -2,6 +2,13 @@ const ofertaDao = require ("../dao/ofertaDao");
 const productoDao = require ("../dao/productoDao");
 const Oferta = require ("../clases/ofertaClass");
 
+/**
+ * Calcula el estado de una oferta según su rango de fechas.
+ *
+ * @param {string} fechaInicio - Fecha de inicio de vigencia (aaaa-mm-dd).
+ * @param {string} fechaFin - Fecha de fin de vigencia (aaaa-mm-dd).
+ * @returns {string} Estado de la oferta: disponible, proxima o caducada.
+ */
 function calcularEstado(fechaInicio, fechaFin){
     const hoy = new Date().toLocaleDateString('en-CA');
     if (hoy > fechaFin) return 'caducada';
@@ -9,6 +16,14 @@ function calcularEstado(fechaInicio, fechaFin){
     return 'disponible';
 }
 
+/**
+ * Lista las ofertas que están "disponibles" o "proximas" (excluye las caducadas),
+ * enriqueciéndolas con el nombre del producto y su estado calculado.
+ * 
+ * @param {Object} req - Petición HTTP (sin parámetros).
+ * @param {Object} res - Respuesta HTTP.
+ * @returns {void} Envía un arreglo de ofertas visibles, o error 500 si falla.
+ */
 function listarOfertas(req, res){
     try{
         const ofertas = ofertaDao.obtenerOfertas();
@@ -23,12 +38,25 @@ function listarOfertas(req, res){
             };
         });
 
-        res.json(ofertasConProducto);
+        const ofertasVisibles = ofertasConProducto.filter(o =>
+            o.estado === 'disponible' || o.estado === 'proxima'
+        );
+
+        res.json(ofertasVisibles);
     } catch(error){
         res.status(500).json({ ok: false, mensaje: "Error al listar ofertas.", error: error.message });
     }
 }
 
+/**
+ * Crea una nueva oferta, genera el ID, crea la instancia Oferta, la guarda en el XML
+ * y registra la acción en el historial.
+ * 
+ * @param {Object} req - Petición HTTP. En req.body espera: idProducto, tipoProm, valorDesc
+ * valorDesc, cantidadRecibe, cantidadPaga, fechaInicio y fechaFin.
+ * @param {Object} res - Respuesta HTTP.
+ * @returns {void} Envía { ok: true, oferta } con código 201, o error 400/500.
+ */
 function crearOferta(req, res){
     try{
         const { idProducto, tipoProm, valorDesc, cantidadRecibe, cantidadPaga, fechaInicio, fechaFin } = req.body;
@@ -38,6 +66,11 @@ function crearOferta(req, res){
         const productoExiste = productos.some(p => String(p.id) === idProductoStr);
         if (!productoExiste){
             return res.status(400).json({ ok: false, mensaje: "El producto seleccionado no existe." });
+        }
+
+        const producto = producto.find(p => String(p.id) === idProductoStr);
+        if(producto && Number(producto.stock) <= 0){
+            return res.status(400).json({ ok: false, mensaje: "No se puede craer una oferta para un producto sin stock."});
         }
 
         if (tipoProm === 'porcentaje' && (Number(valorDesc) <= 0 || Number(valorDesc) > 100)){
@@ -74,15 +107,39 @@ function crearOferta(req, res){
         //guardamos en el xml
         ofertaDao.agregarOferta(oferta.toJSON());
 
+
+
+        ofertaDao.agregarRegistroHistorial({
+            id: `H-${Date.now()}`,
+            accion: 'crear',
+            idOferta: id,
+            idProducto: idProductoStr,
+            tipoProm,
+            valorDesc: oferta.valorDesc,
+            cantidadRecibe: oferta.cantidadRecibe,
+            cantidadPaga: oferta.cantidadPaga,
+            fechaHora: new Date().toLocaleString('es-MX')
+        });
+
         res.status(201).json({ ok: true, mensaje: "Oferta creada exitosamente.", oferta: oferta.toJSON() });
     } catch(error){
         res.status(400).json({ ok: false, mensaje: "Error al crear la oferta.", error: error.message });
     }
 }
 
+/**
+ * Elimina una oferta por su ID, registrando la acción en el historial.
+ * 
+ * @param {Object} req - Petición HTTP. En req.params.id va el ID de la oferta.
+ * @param {Object} res - Respuesta HTTP.
+ * @returns {void} Envía { ok: true, mensaje } si se elimina, o error 404/500.
+ */
 function eliminarOferta(req, res){
     try{
         const {id} = req.params;
+
+        const ofertas = ofertaDao.obtenerOfertas();
+        const ofertaEncontrada = ofertas.find(o => String(o.id) === String(id));
 
         const resultado = ofertaDao.eliminarOferta(id);
 
@@ -90,14 +147,54 @@ function eliminarOferta(req, res){
             return res.status(404).json({ ok: false, mensaje: "Oferta no encontrada." });            
         }
 
+        ofertaDao.agregarRegistroHistorial({
+            id: `H-${Date.now()}`,
+            accion: 'eliminar',
+            idOferta: id,
+            idProducto: ofertaEncontrada ? ofertaEncontrada.idProducto : '',
+            tipoProm: ofertaEncontrada ? ofertaEncontrada.tipoProm : '',
+            valorDesc: ofertaEncontrada ? ofertaEncontrada.valorDesc : 0,
+            cantidadRecibe: ofertaEncontrada ? ofertaEncontrada.cantidadRecibe : 1,
+            cantidadPaga: ofertaEncontrada ? ofertaEncontrada.cantidadPaga : 1,
+            fechaHora: new Date().toLocaleString('es-MX')
+        });
+
         res.json({ ok: true, mensaje: `Oferta ${id} eliminada.` });
     } catch(error){
         res.status(500).json({ ok: false, mensaje: "Error al eliminar la oferta.", error: error.message });
     }
 }
 
+/**
+ * Obtiene todos los registros del historial de acciones sobre ofertas
+ * (crear/eliminar), enriqueciéndolos con el nombre del producto.
+ * 
+ * @param {Object} req - Petición HTTP (sin parámetros).
+ * @param {Object} res - Respuesta HTTP.
+ * @returns {void} Envía un arreglo de registros, o error 500 si falla.
+ */
+function obtenerHistorial(req, res){
+    try{
+        const registros = ofertaDao.obtenerHistorial();
+        const productos = productoDao.obtenerProductos();
+
+        const registrosConProducto = registros.map(r => {
+            const producto = productos.find(p => String(p.id) === String(r.idProducto));
+            return{
+                ...r,
+                nombreProducto: producto ? producto.nombre : 'Producto no encontrado'
+            };
+        });
+
+        res.json(registrosConProducto);
+    } catch(error){
+        res.status(500).json({ ok: false, mensaje: "Error al leer historial.", error: error.message});
+    }
+}
+
 module.exports = {
     listarOfertas,
     crearOferta,
-    eliminarOferta
+    eliminarOferta,
+    obtenerHistorial
 };

@@ -107,6 +107,60 @@ async function validarDatosAgregar(nombre, descripcion, categoria, precio, stock
     return { esValido: true, mensaje: "" };
 }
 
+async function validarDatosModificar(id, nombre, descripcion, categoria, precio, stock) {
+
+    if (nombre.trim() === "") {
+        return {
+            esValido: false,
+            mensaje: "El nombre del producto no puede estar vacío."
+        };
+    }
+
+    if (descripcion.trim() === "") {
+        return {
+            esValido: false,
+            mensaje: "La descripción del producto no puede estar vacía."
+        };
+    }
+
+    if (categoria.trim() === "") {
+        return {
+            esValido: false,
+            mensaje: "La categoria del producto no puede estar vacía."
+        };
+    }
+
+    // Verificar que la categoría exista
+    const categoriaExiste = await categoriaDao.existeCategoria(
+        categoria.toLowerCase()
+    );
+
+    if (!categoriaExiste) {
+        return {
+            esValido: false,
+            mensaje: "No existe la categoria especificada."
+        };
+    }
+
+    if (!Number.isFinite(precio) || precio < 0 || precio > 9999) {
+        return {
+            esValido: false,
+            mensaje: "El precio debe ser un número entre 0 y 9999."
+        };
+    }
+
+    if (!Number.isInteger(stock) || stock < 0 || stock > 9999) {
+        return {
+            esValido: false,
+            mensaje: "El stock debe ser un número entero entre 0 y 9999."
+        };
+    }
+
+    return {
+        esValido: true,
+        mensaje: ""
+    };
+}
 
 /**
  * Consulta el catálogo de productos con opción de búsqueda y filtros.
@@ -272,9 +326,41 @@ const ajustarMerma = async (req, res) => {
 async function actualizarProducto(req, res) {
     try {
         const { id } = req.params;
-        const datosActualizados = req.body;
+        const { nombre, descripcion, categoria, precio, stock } = req.body;
 
-        const resultado = await productoDao.actualizarProducto(id, datosActualizados);
+        // Validar datos
+        const validacion = await validarDatosModificar(
+            id,
+            nombre,
+            descripcion,
+            categoria,
+            precio,
+            stock
+        );
+
+        if (!validacion.esValido) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: validacion.mensaje
+            });
+        }
+
+        // Verificar que el nombre no pertenezca a otro producto
+        const productoExiste = await productoDao.existeProducto(nombre.toLowerCase());
+
+        if (productoExiste) {
+            const productoEncontrado = await productoDao.obtenerProducto(nombre.toLowerCase());
+
+            // Si el nombre pertenece a otro producto, no se permite modificar
+            if (productoEncontrado && String(productoEncontrado.nombre) !== String(nombre)) {
+                return {
+                    esValido: false,
+                    mensaje: "El nombre del producto ya existe."
+                };
+            }
+        }
+
+        const resultado = await productoDao.actualizarProducto(id, req.body);
 
         if (!resultado || !resultado.ok) {
             return res.status(404).json({
@@ -287,8 +373,10 @@ async function actualizarProducto(req, res) {
             ok: true,
             mensaje: "Producto modificado con éxito."
         });
+
     } catch (error) {
         console.error("Error en actualizarProducto:", error);
+
         return res.status(500).json({
             ok: false,
             mensaje: "Error interno al actualizar el producto."

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Registros de Empleados</title>
+    <link rel="stylesheet" href="../css/catalogo.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Historial de registros</h1>
+        
+        <div class="card-resumen" style="margin: 20px 0; padding: 15px; background: #f4f4f4; border-radius: 8px;">
+            <h3>Registros totales: <span id="totalRegistros">0</span></h3>
+        </div>
+
+        <aside id="Lista de registros" width: 80%; height: 80% , overflow-y: auto; background: #89868e>
+            <table class="tabla-registros" border="1" width="100%" style="border-collapse
+            : collapse; margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Tipo de Movimiento</th>
+                        <th>Estado del empleado</th>
+                        <th>Responsable</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTablaRegistros">
+                    
+                </tbody>
+            </table>
+        </aside>
+
+        <div style="margin-top: 20px;">
+            <a href="gerente.html" class="btn-regresar">Regresar al Inicio</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarHistorialRegistros();
+        });
+
+        async function cargarHistorialRegistros() {
+            try {
+                // Hacemos el fetch a la ruta que acabamos de crear en el backend
+                const respuesta = await fetch("/api/empleados/historial");
+                const resultado = await respuesta.json();
+                if (resultado.ok) {
+                    document.getElementById("totalRegistros").textContent = resultado.datos.length;
+                    const cuerpoTabla = document.getElementById("cuerpoTablaRegistros");
+                    cuerpoTabla.innerHTML = "";
+                    //Por cada uno de los registros obtenidos crearemos una fila con los datos correspondientes
+                    resultado.datos.forEach(reg => {
+                        const fila = document.createElement("tr");
+                        fila.innerHTML = `
+                            <td>${reg.idRegistro}</td>
+                            <td>${reg.fecha}</td>
+                            <td>${reg.hora}</td>
+                            <td>${reg.tipoMovimiento}</td>
+                            <td>${reg.estadoEmpleado}</td>
+                            <td>${reg.responsable}</td>
+                        `;
+                        cuerpoTabla.appendChild(fila);
+                    });
+                } else {
+                    alert("No se pudo cargar el reporte de desempeño.");
+                }
+            } catch (error) {
+                console.error("Error al obtener el reporte de desempeño:", error);
+                alert("Error de conexión con el servidor.");
+            }
+        }
+    </script>
+</body>
+</html>

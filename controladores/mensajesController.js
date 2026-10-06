@@ -9,19 +9,19 @@ const rutaXml = path.join(__dirname, '..', 'data', 'xml', 'mensajes.xml');
 async function agregarMensaje(req, res) {
     const { destino, contenido } = req.body;
 
-    const xmlContent = fs.readFileSync(rutaXml, 'utf-8');
-    const parser = new xml2js.Parser({ explicitArray: false });
-    const result = await parser.parseStringPromise(xmlContent);
-
-    let mensajes = result.mensajes.mensaje || [];
-    if (!Array.isArray(mensajes)) mensajes = [mensajes];
-
     if(!destino || !contenido){
         return res.status(400).json({
             ok: false,
             mensaje: "Todos los datos del formulario son obligatorios"
         });
     }
+
+    const xmlContent = fs.readFileSync(rutaXml, 'utf-8');
+    const parser = new xml2js.Parser({ explicitArray: false });
+    const result = await parser.parseStringPromise(xmlContent);
+    
+    let mensajes = result.mensajes.mensaje || [];
+    if (!Array.isArray(mensajes)) mensajes = [mensajes];
 
     // Verificaremos si el empleado a agregar ya existe en el sistema
     const empleadoExistente = await empleadoDao.obtenerEmpleadoPorUsuario(destino);
@@ -48,9 +48,26 @@ async function agregarMensaje(req, res) {
     res.json({ ok: true, mensaje: 'Mensaje enviado correctamente' });
 }
 
+function escaparHtml(texto) {
+    return texto
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 async function leerMensajes(req, res) {
     const { usuario } = req.body;
 
+    // 1. Validar primero, antes de leer el archivo
+    if (!usuario) {
+        return res.status(400).json({
+        ok: false,
+        mensaje: "No se detectó usuario en la sesión actual"
+        });
+    }
+
+    const rutaXml = path.join(__dirname, '..', 'data', 'xml', 'mensajes.xml');
     const xmlContent = fs.readFileSync(rutaXml, 'utf-8');
     const parser = new xml2js.Parser({ explicitArray: false });
     const result = await parser.parseStringPromise(xmlContent);
@@ -58,52 +75,26 @@ async function leerMensajes(req, res) {
     let mensajes = result.mensajes.mensaje || [];
     if (!Array.isArray(mensajes)) mensajes = [mensajes];
 
-    if(!usuario){
-        return res.status(400).json({
-            ok: false,
-            mensaje: "No se detectó usuario en la sesión actual"
-        });
+    const mensajesFiltrados = mensajes.filter(m => m.destino === usuario);
+
+    // 2. Caso sin mensajes
+    if (mensajesFiltrados.length === 0) {
+        return res.send(`<div class="sin-mensajes">Ningún mensaje pendiente hoy :b</div>`);
     }
 
-    let filas = '';
-    let msjTotal = 0;
+    // 3. Caso con mensajes: lista + panel de detalle
+    const items = mensajesFiltrados.map((m, index) => `
+        <div class="item-mensaje" data-contenido="${escaparHtml(m.contenido)}">
+        ${m.remitente || `Mensaje #${index + 1}`}
+        </div>
+    `).join('');
 
-    for(const mensaje of mensajes){
-        if(mensaje.destino === usuario){
-            msjTotal += 1;
-            filas +=`
-                <tr>
-                    <td>${mensaje.destino}</td>
-                    <td>${mensaje.contenido}</td>
-                </tr>
-            `;
-        }
-    }
-
-
-    let tabla = `
-        <table id="tabla_mensajes" border="1">
-            <thead>
-                <tr>
-                    <th>Destino:</th>
-                    <th>Mensaje:</th>
-                </tr>
-            </thead>
-            <tbody>${filas}</tbody>
-        </table>
-    `
-    
-    
-    if(msjTotal <= 0){
-        tabla = `
-            <div>
-                <h3 id="label_cero_mensajes">No hay mensajes para ti hoy :)<h3>
-            </div>
-        `
-    }
-
-    res.send(tabla);
+    res.send(`
+        <div class="lista-mensajes" id="listaMensajes">${items}</div>
+        <div class="contenido-mensaje" id="contenidoMensaje">Haz click en un mensaje para verlo!</div>
+    `);
 }
+
 
 function mensajeBajoStock(producto){
     const xmlContent = fs.readFileSync(rutaXml, 'utf-8');

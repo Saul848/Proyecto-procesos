@@ -3,8 +3,11 @@
  * @module controladores/ventaControlador
  */
 
-const ventaDao = require('../dao/ventaDao');
+const ventaDao = require('../dao/VentaDao');
+const path = require('path');
+const fs = require("fs");
 
+const xml2js = require('xml2js');
 /**
  * Estado en memoria de la caja registradora.
  * @type {boolean}
@@ -190,6 +193,112 @@ function obtenerVentaPorId(req, res) {
     }
 }
 
+
+let contadorFacturas = 0;
+
+/**
+ * Genera una factura comercial a partir de una venta ya registrada.
+ */
+function generarFactura(req, res){
+    try{
+        //datos enviados por el cliente
+        const { folio, nombre, direccion, correo, telefono } = req.body;
+
+        if (!folio) return res.status(400).json({ ok: false, mensaje: "El folio de la venta es obligatorio." });
+        if (!nombre) return res.status(400).json({ ok: false, mensaje: "El nombre es obligatorio." });
+
+        //buscamos la venta por su folio
+        const venta = ventaDao.obtenerVentaPorFolio(folio);
+        if (!venta) return res.status(404).json({ ok: false, mensaje: "Venta no encontrada." });
+
+        contadorFacturas++;
+
+        //datos de la tienda
+        const tienda = {
+            nombre: "OXXO",
+            direccion: "Calle Cualquiera 123, Xalapa, Ver. CP 91000",
+            correo: "tiendaOxxo@oxxo.com",
+            telefono: "(55) 1234-5678"
+        };
+
+        const itemsVenta = venta.items?.item || [];
+        const items = (Array.isArray(itemsVenta) ? itemsVenta : [itemsVenta]).map(it => {
+            const precio = Number(it.precioUnitario || it.precio) || 0;
+            const cantidad = Number(it.cantidad) || 1;
+            const iva = precio * 0.16;
+            return {
+                nombre: it.nombre || "Producto",
+                cantidad,
+                precio: Number(precio.toFixed(2)),
+                iva: Number(iva.toFixed(2)),
+                totalLinea: Number(((precio + iva) * cantidad).toFixed(2))
+            };
+        });
+
+        const baseImponible = items.reduce((sum, it) => sum + (it.precio * it.cantidad), 0);
+        const ivaTotal = items.reduce((sum, it) => sum + (it.iva * it.cantidad), 0);
+        const total = baseImponible + 0.16 * baseImponible;
+
+        //construimos factura
+        const factura = {
+            numeroFactura: contadorFacturas,
+            folioVenta: folio,
+            fechaEmision: new Date().toLocaleDateString('es-MX'),
+            cliente: { nombre, direccion: direccion || "", correo: correo || "", telefono: telefono || "" },
+            items,
+            baseImponible: Number(baseImponible.toFixed(2)),
+            ivaTotal: Number(ivaTotal.toFixed(2)),
+            total: Number(total.toFixed(2)),
+            tienda
+        };
+
+        res.json({ ok: true, factura });
+    } catch(error){
+        res.status(500).json({ ok: false, mensaje: "Error al generar factura.", error: error.message });
+    }
+}
+  
+async function devolverProducto(req, res) {
+    const { id, cantidad, motivo } = req.body;
+    if (!id || !cantidad || !motivo) {
+        return res.status(400).json({
+        ok: false,
+        mensaje: "El ID y la cantidad son obligatorios"
+        });
+    }
+    const cantidadNum = Number(cantidad);
+    if (isNaN(cantidadNum) || cantidadNum <= 0) {
+        return res.status(400).json({
+        ok: false,
+        mensaje: "La cantidad debe ser un número mayor a 0"
+        });
+    }
+    const rutaXml = path.join(__dirname, '..', 'data', 'xml', 'productos.xml');
+    const xmlContent = fs.readFileSync(rutaXml, 'utf-8');
+    const parser = new xml2js.Parser({ explicitArray: false });
+    const result = await parser.parseStringPromise(xmlContent);
+    let productos = result.productos.producto;
+    if (!Array.isArray(productos)) productos = [productos];
+    const producto = productos.find(p => p.$.id === id);
+    if (!producto) {
+        return res.status(404).json({
+        ok: false,
+        mensaje: "No se encontró el producto"
+        });
+    }
+    // Suma la cantidad devuelta al stock actual
+    const stockActual = Number(producto.stock);
+    producto.stock = String(stockActual + cantidadNum);
+    result.productos.producto = productos;
+    const builder = new xml2js.Builder();
+    const xmlFinal = builder.buildObject(result);
+    fs.writeFileSync(rutaXml, xmlFinal, 'utf-8');
+    res.json({
+        ok: true,
+        mensaje: `Se devolvieron ${cantidadNum} unidades. Stock actual: ${stockActual + cantidadNum}`
+    });
+}
+
 module.exports = {
     obtenerEstadoCaja,
     cambiarEstadoCaja,
@@ -197,5 +306,7 @@ module.exports = {
     obtenerProximoFolio,
     listarVentas,
     obtenerVentaPorId,
-    obtenerHistorialVentas
-};
+    obtenerHistorialVentas,
+    generarFactura,
+    devolverProducto
+}

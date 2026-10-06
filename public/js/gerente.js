@@ -4,6 +4,15 @@
 const listaActDom = document.querySelector(".listaAct"); //Contenedor gris de lista
 const seccionEmpDom = document.getElementById("seccionEmp") //Contenedor con scrollbar para la lista
 
+//Panel de informacion
+const labelId = document.getElementById("numEmp");
+const labelNombre = document.getElementById("nombreEmp");
+const labelPuesto = document.getElementById("puestoEmp");
+const labelContacto = document.getElementById("infoContacto");
+const labelUsuario = document.getElementById("usuarioEmp");
+const labelPassword = document.getElementById("passwordEmp");
+const imgEmpleado = document.getElementById("imgEmpleado");
+
 //Dom de las secciones
 const seccionOpcciones= document.getElementById("opcciones");
 const seccionAgregar = document.getElementById("seccionAgregar");
@@ -91,7 +100,8 @@ document.addEventListener("DOMContentLoaded", async function(){
             seccionEmpDom.innerHTML+=`
                 <div class="panelEmpleado" id="panelEmpleado${id}" onclick="iluminarEmpleado(${id})">
                     <div class="cajaTexto">
-                        <div class="emp#">${"Empleado# "+id}</div>
+                        <div class="emp#">${"Empleado #"+id}</div>
+                        <br>
                         <div class="nombreCompleto">${nombre}</div>
                     </div>
                     <button class="btnEliminar" onclick="eliminarEmpleado(${id})">E<img src="" alt=""></button>
@@ -126,6 +136,25 @@ async function obtenerEmpleados(){
     //Regresa el arreglo con los datos de los empleados
     return empleados;
 }  
+
+/**
+ * Funcion para construir la cadena del responsable
+ * @returns {String}
+ */
+function obtenerResponsable(){
+    //Se define la variable que contendra la cadena
+    let cadenaResponsable
+    //Se recuperan los datos de la sesion del usuario
+    const nombre = sessionStorage.getItem("nombreUsuario");
+    const usuario = sessionStorage.getItem("usuarioLogueado");
+    //Si los datos existen se regresa una cadena con el nombre y el usuario
+    if(nombre && usuario){
+        return cadenaResponsable = "Accion realizada por: "+nombre+" | Usuario: "+usuario
+    
+    //Si los datos no existen entonces regresamos una cadena con datos desconocidos
+    }
+    return cadenaResponsable = "Accion realizada por: Desconocido | Usuario: Desconocido"
+}
 
 /**
  * Funcion para verificar los campos de la seccion agregar empleado
@@ -481,7 +510,8 @@ async function guardarEmpleado() {
             puesto: puesto,
             telefono: tel,
             usuario: usuario,
-            password: password
+            password: password,
+            responsableAccion: obtenerResponsable()
         })
     });
 
@@ -514,7 +544,8 @@ async function eliminarEmpleado(id){
             "Content-Type": "application/json"
         },
         body: JSON .stringify({
-            id: id
+            id: id,
+            responsableAccion: obtenerResponsable()
         })
     });
 
@@ -525,6 +556,8 @@ async function eliminarEmpleado(id){
         alert(resultado.mensaje)
         //Disparamos el listener del DOMContentLoaded para actualizar la lista
         document.dispatchEvent(new Event("DOMContentLoaded"));
+        //Se muestran las opcciones principales
+        setEnModificacion(null);
     }else{
         alert(resultado.mensaje);
     }
@@ -555,7 +588,8 @@ async function modificarEmpleado(id) {
             puesto: puestoP,
             telefono: tel,
             usuario: usuarioP,
-            password: passwordP
+            password: passwordP,
+            responsableAccion: obtenerResponsable()
         })
     });
     //Obtencion de la repuesta
@@ -568,6 +602,7 @@ async function modificarEmpleado(id) {
         document.dispatchEvent(new Event("DOMContentLoaded"));
         //Se limpian los campos
         limpiarCamposMod();
+        btnModificarEmpDom
         //Se muestran las opcciones principales
         setEnModificacion(null);
     }else{
@@ -588,6 +623,7 @@ window.addEventListener('modificandoDatos', (evento)=>{
     //Si la bandera "enModificacion" es null entonces no se muestra ninguna seccion        
     }else if(estadoActual===null){
         seccionOpcciones.classList.remove('escondido')
+        btnModificarEmpDom.classList.add('escondido');
         seccionAgregar.classList.add('escondido')
         seccionMod.classList.add('escondido')
     }else{
@@ -671,7 +707,10 @@ document.addEventListener("click", function(event){
         //Si no se esta en proceso de modificacion entonces se realizan las siguientes opcciones
         if(enModificacion!==true){
             //Se limpia el ultimo panel de empleado seleccionado
-            document.getElementById(ultimoPanelEmpSeleccionado).style.backgroundColor="";
+            let ultimoPanel=document.getElementById(ultimoPanelEmpSeleccionado)
+            if(ultimoPanel!==null){
+                ultimoPanel.style.backgroundColor="";
+            }
             //Se oculta el boton
             btnModificarEmpDom.classList.add('escondido')
         }
@@ -685,7 +724,7 @@ document.addEventListener("click", function(event){
 /**
  * Listener para el botón que habilita el modal para enviar un mensaje
  */
-document.getElementById("btnMensaje").addEventListener('click', ()=> {
+document.getElementById("btnMensajes").addEventListener('click', ()=> {
     document.getElementById('formMensaje').style.display = 'flex';
 });
 
@@ -701,20 +740,45 @@ document.getElementById('btnCerrarModal').addEventListener('click', () => {
  * Lógica detrás del envio de mensajes
  */
 document.getElementById('btnEnviarMensaje').addEventListener('click', () => {
-    const destino = document.getElementById("inputDestinatario").value;
-    const contenido = document.getElementById("inputContenido").value;
+    const destino = document.getElementById("inputDestinatario").value.trim();
+    const contenido = document.getElementById("inputContenido").value.trim();
+    const estado = document.getElementById('estadoMsjs');
+
+    if (!destino || !contenido) {
+        estado.textContent = 'Por favor completa todos los campos.';
+        estado.style.color = 'red';
+        return; // detiene aquí, no manda el fetch
+    }
 
     fetch('/api/mensajes', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ destino, contenido })
     })
-    .then(res => res.json())
-    .then(data => {
-        console.log('Mensaje enviado:', data);
-        document.getElementById('formMensaje').style.display = 'none';
+    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+    .then(({ status, body }) => {
+        if (body.ok) {
+        estado.textContent = body.mensaje; // "Mensaje enviado correctamente"
+        estado.style.color = 'green';
+
+        // Limpia el formulario y cierra el modal tras un momento
+        document.getElementById('inputDestinatario').value = '';
+        document.getElementById('inputContenido').value = '';
+
+        setTimeout(() => {
+            document.getElementById('formMensaje').style.display = 'none';
+            estado.textContent = ''; // limpia el mensaje para la próxima vez
+        }, 2000);
+        } else {
+        estado.textContent = body.mensaje; // "No se encontró al empleado...", etc.
+        estado.style.color = 'red';
+        }
     })
-    .catch(err => console.error('Error:', err));
+    .catch(err => {
+        estado.textContent = 'Error de conexión con el servidor.';
+        estado.style.color = 'red';
+        console.error('Error:', err);
+    });
 });
 
 /*
@@ -726,14 +790,44 @@ function iluminarEmpleado(id){
     if(enModificacion!==true){
         //Si hay un panel de empleado seleccionado anteriormente se devuelve a la normalidad
         if(ultimoPanelEmpSeleccionado!==null){
-            document.getElementById(ultimoPanelEmpSeleccionado).style.backgroundColor="";    
+            let ultimoPanel= document.getElementById(ultimoPanelEmpSeleccionado)
+            if(ultimoPanel){
+                ultimoPanel.style.backgroundColor="";
+            }    
         }
         //Construimos el id del ultimo panel seleccionado y lo guardamos en una variable
         ultimoPanelEmpSeleccionado=("panelEmpleado"+id);
         //Iluminamos el panel actual
         document.getElementById(ultimoPanelEmpSeleccionado).style.setProperty('background-color', 'blue', 'important');
+        mostrarDatosEmpleado(true)
     }else{
         return
+    }
+}
+
+function mostrarDatosEmpleado(mostrar){
+    //Si la variable ingresada es igual a true se muestra la info del empleado
+    if(mostrar===true){
+        datosEmp.forEach(emp=>{
+            if(emp.id===(Number(ultimoPanelEmpSeleccionado.replace("panelEmpleado", "")))){
+                labelId.innerHTML=`${emp.id}`
+                labelNombre.innerHTML=`${emp.nombre}`;
+                labelPuesto.innerHTML= `${emp.puesto}`;
+                labelContacto.innerHTML= `${emp.telefono}`;
+                labelUsuario.innerHTML=`${emp.usuario}`;
+                labelPassword.innerHTML= `${emp.password}`;
+                imgEmpleado.src= "../img/usuarioLogo.png";
+                imgEmpleado.innerHTML="";
+                imgEmpleado.style="width: 250; height: 250;";
+            }
+        })
+    //Si la variable ingresada es igual a false o null se borra la informacion del usuario
+    }else{
+        labelNombre.innerHTML=``;
+        labelPuesto.innerHTML=``;
+        labelContacto.innerHTML=``;
+        labelUsuario.innerHTML=``;
+        labelPassword.innerHTML=``;
     }
 }
 
@@ -822,8 +916,42 @@ document.getElementById('confirmarDevolucion').addEventListener('click', () => {
     const motivo = document.getElementById("inpMotivoDevo").value;
     const id = document.getElementById("inpIdProducto").value;
     const cantidad = document.getElementById("inpCantidadProducto").value;
+    const estado = document.getElementById('estadoDevo');
 
-    console.log("Motivo: "+ motivo);
-    console.log("Cantidad: "+cantidad);
-    console.log("id: "+id);
+    if(!motivo || !id || !cantidad){
+        estado.textContent = 'Por favor completa todos los campos.';
+        estado.style.color = 'red';
+        return; // detiene aquí, no manda el fetch
+    }
+
+    fetch('/api/ventas/devolucion', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ motivo, id, cantidad })
+    })
+    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+    .then(({ status, body }) => {
+        if (body.ok) {
+        estado.textContent = body.mensaje; // "Mensaje enviado correctamente"
+        estado.style.color = 'green';
+
+        // Limpia el formulario y cierra el modal tras un momento
+        document.getElementById('inpMotivoDevo').value = '';
+        document.getElementById('inpIdProducto').value = '';
+        document.getElementById('inpCantidadProducto').value = '';
+
+        setTimeout(() => {
+            document.getElementById('formDevolucion').style.display = 'none';
+            estado.textContent = ''; // limpia el mensaje para la próxima vez
+        }, 2000);
+        } else {
+        estado.textContent = body.mensaje; // "No se encontró al empleado...", etc.
+        estado.style.color = 'red';
+        }
+    })
+    .catch(err => {
+        estado.textContent = 'Error de conexión con el servidor.';
+        estado.style.color = 'red';
+        console.error('Error:', err);
+    });
 });
