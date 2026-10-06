@@ -1,29 +1,485 @@
-.pestañaSuperior{
-    display: flex;
-    flex-direction: row;
-    background-color: #97c0f7;
-    justify-content: space-between;
-    border: solid 2px black;
-    height: 60px; /*Alto en px*/
+/* ===================================================
+   PUNTO DE VENTA - ESTILO FIGMA (DM SANS)
+   =================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'DM Sans', sans-serif;
 }
 
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* fondo oscuro semitransparente */
+body {
+    background-color: #f1f5f9;
+    color: #1e293b;
+    min-height: 100vh;
+}
+
+/* 1. BARRA SUPERIOR (HEADER AZUL) */
+.barra-sesion-empleado, 
+header.header-empleado {
+    background-color: #4a90e2;
+    padding: 14px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+}
+
+.sesion-info {
+    font-size: 20px;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    justify-content: center;
-    z-index: 1000; /* asegura que quede por encima de todo */
+    gap: 10px;
 }
 
-.modal-caja {
-    background: white;
-    padding: 20px;
+.acciones-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-header-icon {
+    background: #ffffff;
+    border: none;
+    width: 38px;
+    height: 38px;
     border-radius: 8px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #334155;
+    font-size: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* 2. SUB-BARRA DE ESTADO DE CAJA (CELESTE PASTEL) */
+.sub-barra-caja {
+    background-color: #cfe2f7;
+    margin: 18px auto 0;
+    max-width: 1240px;
+    border-radius: 14px;
+    padding: 14px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titulo-caja-actual {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.caja-controles {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.indicador-caja {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.indicador-caja .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #22c55e;
+}
+
+.select-caja-figma {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+}
+
+.btn-caja-blanco {
+    background: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.btn-caja-azul {
+    background: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+/* 3. CONTENEDOR PRINCIPAL OSCURO (FONDO DE LA MAQUETA) */
+.contenedor-pos-principal {
+    background-color: #272233;
+    max-width: 1240px;
+    margin: 12px auto 30px;
+    border-radius: 14px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+}
+
+/* 4. PANEL IZQUIERDO: CATÁLOGO Y TABLA */
+.panel-catalogo {
+    background-color: #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    overflow: hidden;
+}
+
+.fila-busqueda {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.buscador-wrapper {
+    position: relative;
+    width: 65%;
+}
+
+.buscador-wrapper input {
+    width: 100%;
+    padding: 8px 36px 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 13px;
+    outline: none;
+}
+
+.buscador-wrapper i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.titulo-id-prod {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.tabla-pos {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tabla-pos th {
+    background-color: #ffffff;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla-pos td {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+}
+
+/* Badges redondeados de la maqueta */
+.badge-oferta-figma {
+    background-color: #ede9fe;
+    color: #6366f1;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.badge-stock-figma {
+    background-color: #e0f2fe;
+    color: #0284c7;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+/* Botón "+" para agregar fila */
+.btn-agregar-item {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #1e293b;
+    padding: 2px 8px;
+}
+
+/* 5. PANEL DERECHO: TICKET DE VENTA */
+.panel-ticket-figma {
+    background-color: #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.titulo-venta-folio {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 18px;
+}
+
+.items-ticket-lista {
+    flex-grow: 1;
+    min-height: 120px;
+    max-height: 200px;
+    overflow-y: auto;
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.fila-item-ticket {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.btn-eliminar-item {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 6px;
+}
+
+.resumen-totales-ticket {
+    font-size: 13px;
+    margin-bottom: 14px;
+}
+
+.fila-total-linea {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    color: #475569;
+}
+
+.fila-total-linea.total-destacado {
+    font-size: 16px;
+    font-weight: 800;
+    color: #2563eb;
+    margin-top: 6px;
+}
+
+/* Botones base de método de pago */
+.toggle-metodo-pago {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.btn-metodo {
+    flex: 1;
+    padding: 9px 0;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #ffffff;  /* Estado inactivo: blanco */
+    color: #475569;            /* Texto gris */
+    transition: all 0.2s ease;
+}
+
+/* Estado activo: cuando JS le pone la clase "active" */
+.btn-metodo.active {
+    background-color: #3b82f6 !important; /* Azul de Figma */
+    color: #ffffff !important;            /* Texto blanco */
+    border-color: #3b82f6 !important;
+}
+
+.campo-cobro-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #334155;
+}
+
+.campo-cobro-fila input {
+    width: 110px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    text-align: right;
+    font-size: 13px;
+    outline: none;
+}
+
+.acciones-finales-ticket {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.btn-registrar-cobro {
+    flex: 1.6;
+    background: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.btn-factura {
+    flex: 1;
+    background: #475569;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+/* Centrar las celdas de la tabla para las columnas de badges */
+.tabla-pos th:nth-child(4),
+.tabla-pos td:nth-child(4),
+.tabla-pos th:nth-child(5),
+.tabla-pos td:nth-child(5) {
+    text-align: center;
+}
+
+/* Estilo exacto de las píldoras de la imagen */
+.badge-pildora {
+    display: inline-block;
+    background-color: #eef2ff; /* Fondo lila / azul muy claro */
+    color: #6366f1;            /* Azul-morado del texto */
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 9999px;     /* Bordes completamente redondeados (píldora) */
+    min-width: 55px;
+    text-align: center;
+}
+
+/* ===================================================
+   MODAL DE RECIBO / COMPROBANTE (ESTILO TICKET FÍSICO)
+   =================================================== */
+
+/* Fondo oscurecido con desenfoque */
+#modalTicket.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.65) !important;
+    backdrop-filter: blur(2px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999 !important;
+}
+
+/* Tarjeta contenedor simulando papel blanco */
+#modalTicket .modal-card {
+    background-color: #ffffff !important;
+    width: 100%;
+    max-width: 340px;
+    padding: 24px 20px 18px;
+    border-radius: 6px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    color: #111111 !important;
+    border: 1px solid #e0e0e0;
+}
+
+/* Título superior del modal */
+#modalTicket .modal-card h3 {
+    text-align: center;
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #333333 !important;
+    margin: 0 0 12px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+}
+
+/* Cuerpo del ticket con tipografía monoespaciada */
+#reciboDetalle {
+    background: #fafafa !important;
+    border: 1px dashed #999999 !important;
+    border-radius: 4px;
+    padding: 16px 14px;
+    margin-bottom: 16px;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #000000 !important;
+    max-height: 340px;
+    overflow-y: auto;
+}
+
+/* Botón de acción inferior neutro */
+#btnCerrarModal {
+    background-color: #222222 !important;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 4px;
+    padding: 11px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    transition: background-color 0.2s ease;
+}
+
+#btnCerrarModal:hover {
+    background-color: #000000 !important;
     min-width: 300px;
 }
 

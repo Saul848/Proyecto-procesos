@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OXXO - Módulo de Transacciones</title>
+
+    <!-- FontAwesome & Google Fonts: DM Sans -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+
+    <!-- Hojas de estilo -->
+    <link rel="stylesheet" href="../css/barra_sesion.css">
+    <link rel="stylesheet" href="../css/transacciones.css">
+</head>
+<body>
+
+    <!-- 1. Barra superior de sesión -->
+    <header class="barra-sesion-empleado">
+        <div class="sesion-info">
+            <strong>OXXO</strong> | <span>Hola, <span id="saludo-nombre">Empleado</span></span>
+        </div>
+        <div>
+            <button id="btnCerrarSesion" type="button">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión
+            </button>
+        </div>
+    </header>
+
+    <!-- 2. Sub-barra pastel superior -->
+    <section class="sub-barra-transacciones">
+        <h2>Módulo de Transacciones</h2>
+        <a href="empleado.html" class="btn-volver-pos">
+            <i class="fa-solid fa-arrow-left"></i> Volver a Punto de Venta
+        </a>
+    </section>
+
+    <!-- 3. Contenedor principal con las dos opciones clicables -->
+    <main class="contenedor-transacciones">
+        
+        <!-- Tarjeta Recarga -->
+        <article class="card-transaccion card-seleccionable" id="cardRecarga">
+            <div class="card-transaccion-header">
+                <div>
+                    <h3>Recarga Telefónica</h3>
+                    <p class="subtitulo-card">Tiempo aire para Telcel, Movistar, AT&T y más.</p>
+                </div>
+                <span class="badge-tipo">Telefonía</span>
+            </div>
+            <div class="card-accion-callout">
+                <i class="fa-solid fa-mobile-screen-button icono-grande"></i>
+                <button type="button" class="btn-iniciar-op">Realizar Recarga</button>
+            </div>
+        </article>
+
+        <!-- Tarjeta Pago de Servicios -->
+        <article class="card-transaccion card-seleccionable" id="cardServicio">
+            <div class="card-transaccion-header">
+                <div>
+                    <h3>Pago de Servicios</h3>
+                    <p class="subtitulo-card">Cobro de recibos de CFE, Agua, Internet y más.</p>
+                </div>
+                <span class="badge-tipo">Servicios</span>
+            </div>
+            <div class="card-accion-callout">
+                <i class="fa-solid fa-file-invoice-dollar icono-grande"></i>
+                <button type="button" class="btn-iniciar-op">Cobrar Servicio</button>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Contenedor dinámico donde tu JS inyecta modal_transaccion.html -->
+    <div id="contenedorModales"></div>
+
+    <script type="module" src="../js/cerrar_sesion.js"></script>
+    <script src="../js/transacciones.js"></script>
+</body>
+</html>

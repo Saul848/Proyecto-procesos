@@ -1,13 +1,13 @@
 /* Estilo general de la barra de sesión de empleado*/
 .barra-sesion-empleado {
     display: flex;
-    justify-content: space-between; /* Manda un bloque a la izquierda y otro a la derecha */
-    align-items: center;            /* Los centra verticalmente */
-    background-color: #78b4f2;      /* Un tono celeste */
-    color: #ffffff;                 /* Texto blanco */
-    padding: 15px 30px;             /* Espaciado interno arriba/abajo y a los lados */
-    font-family: sans-serif;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Una ligera sombrita abajo */
+    justify-content: space-between;
+    align-items: center;
+    background-color: #78b4f2;
+    color: #ffffff;
+    padding: 15px 30px;
+    font-family: 'DM Sans', sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilo para el texto de bienvenida de la izquierda */

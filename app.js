@@ -29,6 +29,9 @@ const cajasRoutes = require("./routes/cajasRoutes");
 //accesoControlador
 const accesoControlador = require("./controladores/accesoControlador");
 
+//const transaccionRoutes
+const transaccionRoutes = require('./routes/transaccionRoutes');
+
 const path = require('path');
 
 const app = express();
@@ -46,6 +49,7 @@ app.use('/data', express.static(path.join(__dirname, 'data')));
 // app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);
 app.use("/api/ventas", ventaRoutes);
+app.use('/api/transacciones', transaccionRoutes);
 
 // Consulta de movimientos sobre inventario
 app.use("/api/movimientosProd", movimientoProdRoutes); 

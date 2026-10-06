@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Configuración básica de metadatos y codificación de caracteres -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OXXO - Punto de Venta (Empleado)</title>
-
-    <!-- Hojas de estilos externas e internas -->
+    <title>OXXO - Punto de Venta</title>
+    <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/empleado.css">
-    <link rel="stylesheet" href="../css/venta.css">
+    <!-- Google Fonts: DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="../css/barra_sesion.css">
+    <link rel="stylesheet" href="../css/empleado.css">
 </head>
 <body>
     <!-- ====================================================================
@@ -24,12 +26,22 @@
         </div>
     <div>
         <div>
-            <button id="btnMensajes"> Mensajes </button>
-            <button id="btn-logout"> Cerrar sesión </button>
+            <div>
+                <button id="btnMensajes" type="button"><i class="fa-regular fa-envelope"></i> Mensajes</button>
+                <button id="btnCerrarSesion" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</button>
+            </div>
         </div>
-    </div>
     </header>
 
+    <!-- 2. Sub-barra de estado de caja -->
+    <section class="sub-barra-caja">
+        <h2 class="titulo-caja-actual">Punto de Venta</h2>
+        
+        <div class="caja-controles">
+            <span class="indicador-caja">
+                <span class="dot" id="cajaDot"></span>
+                <span id="cajaTexto">Caja abierta</span>
+            </span>
     <!-- ====================================================================
     Carrusel de ofertas
     ==================================================================== -->
@@ -56,89 +68,75 @@
                 <span id="cajaDot" class="status-dot"></span>
                 <span id="cajaTexto">Caja Abierta</span>
 
-                <!-- Menú desplegable para elegir la caja -->
-                <select id="selectCaja" style="margin-left: 10px; padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold;">
+            <select id="selectCaja" class="select-caja-figma">
                 <option value="1">Caja 1</option>
                 <option value="2">Caja 2</option>
-                </select>
-                
-                <!-- Botón para retiros y aportaciones -->
-                <button id="btnMovimientoCaja" class="btn-movimiento" style="margin-left: 8px; padding: 4px 10px; border-radius: 4px; border: none; background-color: #ff806a; font-weight: bold; cursor: pointer;">
-                <i class="fa-solid fa-right-left"></i> Retiro / Aportación
-                </button> 
+            </select>
 
+            <button type="button" id="btnToggleCaja" class="btn-caja-blanco">Cerrar/abrir caja</button>
+            <button type="button" id="btnAbrirHistorial" class="btn-caja-blanco" onclick="abrirHistorialVentas()">Historial</button>
+            <button type="button" id="btnTransacciones" class="btn-caja-azul">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i> Transacciones
+            </button>
+        </div>
+    </section>
+
+    <!-- 3. Contenedor principal oscuro (Grid de 2 columnas) -->
+    <main class="contenedor-pos-principal">
+        
+        <!-- Columna Izquierda: Catálogo de productos -->
+        <section class="panel-catalogo">
+            <div class="fila-busqueda">
+                <div class="buscador-wrapper">
+                    <input type="text" id="inputBuscar" placeholder="Buscar producto por nombre o ID...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <span class="titulo-id-prod">ID producto</span>
                 <button type="button" id="btnToggleCaja" class="btn-toggle-caja">Cerrar Caja</button>
                 <button type="button" id="btnHistorialVentas" class="btn-toggle-caja" onclick="abrirHistorialVentas()">
                     <i class="fa-solid fa-clock-rotate-left"></i> Historial / Reimprimir
                 </button>
             </div>
-        </header>
 
-        <!-- Cuadrícula de trabajo (Catálogo a la izquierda, Ticket a la derecha) -->
-        <main class="content-grid">
+            <table class="tabla-pos">
+                <thead>
+                    <tr>
+                        <th style="width: 45px;">Select</th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Oferta</th>
+                        <th>Cantidad</th>
+                        <th>ID</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaProductosCuerpo">
+                    <!-- Se llena con renderizarTabla() -->
+                </tbody>
+            </table>
+        </section>
 
-            
-            <!--PANEL IZQUIERDO: Catálogo de Productos y Búsqueda-->
-            
-            <section class="products-panel">
-                <!-- Barra de búsqueda por texto o ID -->
-                <div class="search-header-bar">
-                    <div class="search-input-wrapper">
-                        <input type="text" id="inputBuscar" placeholder="Buscar producto por nombre o ID...">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </div>
-                    <span class="label-id-filter">ID producto</span>
+        <!-- Columna Derecha: Panel de ticket y cobro -->
+        <aside class="panel-ticket-figma">
+            <h3 class="titulo-venta-folio" id="lblFolioVenta">Venta numero ##</h3>
+
+            <div class="items-ticket-lista" id="listaItemsTicket">
+                <p style="text-align:center; color:#999; font-size:12px; margin-top:35px;">No hay productos en la cuenta</p>
+            </div>
+
+            <div class="resumen-totales-ticket">
+                <div class="fila-total-linea">
+                    <span>subtotal</span>
+                    <span id="lblSubtotal">$0.00</span>
                 </div>
-
-                <!-- Tabla responsiva del catálogo de productos -->
-                <div class="table-wrapper">
-                    <table class="table-pos">
-                        <thead>
-                            <tr>
-                                <th>Select</th>
-                                <th>Producto</th>
-                                <th>Precio</th>
-                                <th>Oferta</th>   <!-- Sincronizado con módulo de ofertas -->
-                                <th>Cantidad</th> <!-- Stock disponible en inventario -->
-                                <th>ID</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaProductosCuerpo">
-                            <!-- Filas generadas dinámicamente desde venta.js -->
-                        </tbody>
-                    </table>
+                <div class="fila-total-linea">
+                    <span>IVA</span>
+                    <span id="lblIva">$0.00</span>
                 </div>
-            </section>
-
-            <!-- PANEL DERECHO: Resumen de Venta, Totales y Métodos de Cobro -->
-            <section class="ticket-panel">
-                <!-- Folio autoincrementable de la transacción actual -->
-                <div class="ticket-header" id="lblFolioVenta">
-                    Venta numero 1
+                <div class="fila-total-linea total-destacado">
+                    <span>Total</span>
+                    <span id="lblTotal">$0.00</span>
                 </div>
-
-                <!-- Lista de artículos agregados a la cuenta actual con controles +/- -->
-                <div id="listaItemsTicket" class="ticket-items-list">
-                    <p style="text-align: center; color: #888; font-size: 13px; margin-top: 30px;">
-                        No hay productos en la cuenta
-                    </p>
-                </div>
-
-                <!-- Desglose de totales financieros -->
-                <div class="ticket-totals">
-                    <div class="row">
-                        <span>subtotal</span>
-                        <span id="lblSubtotal">$0.00</span>
-                    </div>
-                    <div class="row">
-                        <span>IVA</span>
-                        <span id="lblIva">$0.00</span>
-                    </div>
-                    <div class="row row-total">
-                        <span>Total</span>
-                        <span id="lblTotal">$0.00</span>
-                    </div>
-                </div>
+            </div>
 
                 <!-- Zona de liquidación, selección de método y cálculo de cambio -->
                 <div class="payment-area">
@@ -165,22 +163,58 @@
                 </div>
             </section>
 
-        </main>
-    </div>
+            <div class="campo-cobro-fila">
+                <label for="inputMontoRecibido">Monto recibido</label>
+                <input type="number" id="inputMontoRecibido" placeholder="0.00" step="any">
+            </div>
 
-    <!-- 3. VENTANAS MODALES EMERGENTES-->
+            <div class="campo-cobro-fila">
+                <label for="inputCambio">Cambio</label>
+                <input type="text" id="inputCambio" value="$0.00" readonly>
+            </div>
 
-    <!-- Modal 1: Comprobante / Recibo de venta confirmada -->
-    <div id="modalTicket" class="modal">
-        <div class="modal-content">
-            <h3 style="color: #27ae60;"><i class="fa-solid fa-circle-check"></i> Comprobante</h3>
-            <div id="reciboDetalle" class="receipt-body"></div>
-            <button type="button" id="btnCerrarModal" class="btn-registrar" style="width: 100%; margin-top: 10px;">
-                Aceptar y Nueva Venta
-            </button>
+            <div class="acciones-finales-ticket">
+                <button type="button" id="btnRegistrarPago" class="btn-registrar-cobro" disabled>Registrar pago</button>
+                <button type="button" id="btnFactura" class="btn-factura">Factura</button>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Modales existentes de ticket e historial -->
+    <div id="modalTicket" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <h3>Comprobante</h3>
+            <div id="reciboDetalle"></div>
+            <button type="button" id="btnCerrarModal" class="btn-primario">Aceptar y Nueva Venta</button>
         </div>
     </div>
 
+    <!-- Modal Ticket Comprobante con estructura estática -->
+<div id="modalTicket" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+        <h3>Comprobante</h3>
+
+        <div id="reciboDetalle">
+            <div class="ticket-encabezado">
+                <strong>CADENA COMERCIAL OXXO</strong>
+                <span>Folio: <span id="ticketFolio">#0000</span></span>
+                <small id="ticketFecha">--/--/---- --:--</small>
+            </div>
+
+            <hr class="ticket-separador">
+
+            <!-- Único contenedor donde se insertan filas dinámicas -->
+            <div id="ticketListaProductos" class="ticket-cuerpo-items"></div>
+
+            <hr class="ticket-separador">
+
+            <div class="ticket-linea-total">
+                <span>TOTAL:</span>
+                <span id="ticketTotal">$0.00</span>
+            </div>
+
+            <div class="ticket-pie-metodo">
+                Método: <span id="ticketMetodo">Efectivo</span>
 
     <!-- Modal Factura: Datos fiscales del cliente -->
     <div id="modalFactura" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: auto;">
@@ -351,13 +385,9 @@
         </div>
     </div>
 
-
-    <!--4. CARGA DE SCRIPTS
-    Se cargan en orden: lógica general del empleado, gestión de sesión,
-    y lógica operativa del punto de venta con ofertas integradas.-->
     <script src="../js/empleado.js"></script>
-    <script src="../js/venta.js"></script>
     <script type="module" src="../js/cerrar_sesion.js"></script>
+    <script src="../js/venta.js"></script>
     <script src="../js/movimientoCaja.js"></script>
     <script src="../js/cerrar_sesion.js"></script>
 </body>

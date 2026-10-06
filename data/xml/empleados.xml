@@ -6,9 +6,29 @@
     <puesto>empleado</puesto>
     <telefono>3453244576</telefono>
     <usuario>roger01</usuario>
-    <password>123</password>
-    <numVentas>16</numVentas>
-    <numTransacciones>14</numTransacciones>
+    <password>rogelio123</password>
+    <numVentas>30</numVentas>
+    <numTransacciones>28</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>2</id>
+    <nombre>Martha Garcia Morales</nombre>
+    <puesto>administrador</puesto>
+    <telefono>4564342365</telefono>
+    <usuario>martha01</usuario>
+    <password>martha123</password>
+    <numVentas>6</numVentas>
+    <numTransacciones>5</numTransacciones>
+  </empleado>
+  <empleado>
+    <id>3</id>
+    <nombre>Ruben Flores Martinez</nombre>
+    <puesto>gerente</puesto>
+    <telefono>4534234565</telefono>
+    <usuario>ruben01</usuario>
+    <password>ruben123</password>
+    <numVentas>8</numVentas>
+    <numTransacciones>3</numTransacciones>
   </empleado>
   <empleado>
     <id>4</id>
