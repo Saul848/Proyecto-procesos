@@ -727,4 +727,12 @@
     <puesto>administrador</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>20:40:16</hora>
+    <nombre>Misael</nombre>
+    <usuario>MisaGoodMvp</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
