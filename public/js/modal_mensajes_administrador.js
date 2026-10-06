@@ -57,7 +57,25 @@ async function abrirModalMensajes() {
         const contenedorDetalles = document.getElementById("contenedorDetalles");
 
         if (contenedorDetalles) {
+
             contenedorDetalles.innerHTML = html;
+
+            // Obtener los mensajes de la lista
+            const mensajes = contenedorDetalles.querySelectorAll(".item-mensaje");
+
+            // Obtener el contenedor donde se mostrará el contenido
+            const contenidoMensaje = contenedorDetalles.querySelector("#contenidoMensaje");
+
+            // Agregar evento de clic a cada mensaje
+            mensajes.forEach(mensaje => {
+
+                mensaje.addEventListener("click", () => {
+
+                    contenidoMensaje.textContent = mensaje.dataset.contenido;
+
+                });
+
+            });
         }
 
         // Mostrar modal

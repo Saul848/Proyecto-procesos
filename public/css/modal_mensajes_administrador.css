@@ -41,3 +41,34 @@
 .btn-primary-mensajes:hover {
   background-color: #c49d28;
 }
+
+/* Lista de mensajes */
+.lista-mensajes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Cada mensaje de la lista */
+.item-mensaje {
+    background-color: #5a513e;
+    color: whitesmoke;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.item-mensaje:hover {
+    background-color: #6b614c;
+}
+
+/* Contenido del mensaje seleccionado */
+.contenido-mensaje {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    color: #333;
+    border-radius: 6px;
+    min-height: 50px;
+}
