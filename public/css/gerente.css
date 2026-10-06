@@ -9,10 +9,11 @@ body{
 .pestaña{
     display: flex;
     flex-direction: row;
-    background-color: yellow;
+    background-color: #9b6bc0;
     justify-content: space-between;
-    border: solid 2px black;
+    border: none;
     height: 60px; /*Alto en px*/
+    
 }
 
 .contenido{
@@ -33,18 +34,34 @@ body{
 .perfil{
     display: flex;
     flex-direction: column;
-    border: solid 2px black;
-    padding: 5px 5px;
+    border: none;
+    padding: 10px 10px;
     height: 50%;
+    border-radius: 6px;
+    background-color: #4a3d60;
 }
 
 /*Seccion en gris*/
 #divDatosPerfil{
     display: flex;
     flex-direction: column;
-    background-color: gray;
+    background-color: white;
     width: 100%;
     height: 100%;
+    gap: 7px 7px;
+}
+
+#divDesgloce {
+    display: grid;
+    grid-template-columns: 110px 1fr; /* 110px para las etiquetas y el resto para el valor */
+    gap: 8px 12px;                    /* Espacio vertical y horizontal entre elementos */
+    align-items: left;
+    font-family: 'DM Sans', sans-serif;
+    margin-left: 5px;
+}
+
+.titulo-campo {
+    font-weight: bold; /* Opcional: para que resalten */
 }
 
 #divNumEmp{
@@ -80,7 +97,10 @@ body{
     display: flex;
     flex-direction: column;
     height: 50%;
-    border: solid 2px black;
+    border: none;
+    background-color: #4a3d60;
+    border-radius: 6px;
+    border: none;
 }
 
 .formulario input{
@@ -93,7 +113,7 @@ body{
     align-items: center;
     justify-content: center;
     gap: 5px 5px;
-    background-color: yellow;
+    background-color: #2b233c;
     width: 50%;
     border: solid 2px black;
 }
@@ -102,7 +122,8 @@ body{
     width: 80%;
     height: 80%; /* Altura fija obligatoria para activar la barra de desplazamiento */
     overflow-y: auto; /* Genera la barra para subir y bajar de forma nativa */
-    background: #89868e;
+    background: #2b233c;
+    border: none;
 }
 
 #seccionEmp{
@@ -111,12 +132,20 @@ body{
     gap: 20px 20px;
 }
 
+.panelEmpleado{
+    font-family: 'DM Sans', sans-serif;
+    background-color: white;
+    padding: 7px 7px;
+}
+
 .formulario input{
     width: 200px;
 }
 
 .formulario button{
     width: 200px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
 }
 
 .formulario select{
@@ -127,7 +156,7 @@ body{
     display: flex;
     flex-direction: row;
     gap: 5px 5px;
-    padding: 5px 5px;
+    padding: 10px 10px;
     justify-content: space-between;
     margin-left: 100px;
     margin-right: 100px;   
@@ -136,11 +165,18 @@ body{
 #opcciones button{
     width: 200px;
     height: 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    border: none;
+    border-radius: 6px;
+    background-color: #9b6bc0;
+    color: #FFFFFF;
 }
 
 #seccionAgregar{
     display: flex;
     flex-direction: column;
+    gap: 7px 7px;
 }
 
 #divBtnGuardarDatos{
@@ -149,11 +185,22 @@ body{
     justify-content: center;
 }
 
+#btnGuardarDatos{
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+    border-radius: 6px;
+    background-color: #9b6bc0;
+    color: #FFFFFF;
+}
+
 #divMsgAgregarEmp{
     display: flex;
     flex-direction: row;
     align-items: center;
-    border-bottom: solid 2px black;     
+    border-bottom: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    color: #FFFFFF;     
 }
 
 #MsgAgregarEmp{
@@ -170,9 +217,12 @@ body{
 .btnRegresar{
     width: 100px;
     height: 25px;
+    font-family: 'DM Sans', sans-serif;
+    background-color: #9b6bc0;
+    border: none;
+    border-radius: 6px;
+    color: #FFFFFF;
 }
-
-
 
 .lineaInp{
     display: flex;
@@ -185,16 +235,23 @@ body{
     width: 200px;
     height: 20px;
     margin-right: 30px;
+    border-radius: 16px;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .lineaInp label{
     margin-left: 30px;
-    width: 130px;
+    width: 160px;
+    font-family: 'DM Sans', sans-serif;
+    color: #FFFFFF
 }
 
 .lineaInp input{
     margin-right: 30px;
     width: 200px;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+    border-radius: 16px;
 }
 
 #seccionModificar{
@@ -205,8 +262,7 @@ body{
 #divMsgModificarEmp{
     display: flex;
     flex-direction: row;
-    align-items: center;
-    border-bottom: solid 2px black;   
+    align-items: center;  
 }
 
 #msgModificarEmp{
@@ -214,6 +270,9 @@ body{
     flex-direction: row;
     justify-content: center;
     width: 70%;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    color: #FFFFFF;
 }
 
 #divBtnActualizarDatos{
@@ -222,39 +281,62 @@ body{
     padding: 5px 5px;
 }
 
-.panelEmpleado{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border: solid 2px black;
+#btnActualizarDatos{
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    border: none;
+    border-radius: 6px;
+    background-color: #9b6bc0;
+    color: #FFFFFF;
 }
 
 .cajaTexto{
     display: flex;
     flex-direction: column;
     width: 200px;
+}
+
+#btnVerHistorialEmp{
+    width: 200px;
+    height: 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    border: none;
+    border-radius: 6px;
+    background-color: #9b6bc0;
+    color: #FFFFFF;   
+}
+
+#btnGenReporte{
+    width: 200px;
+    height: 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    border: none;
+    border-radius: 6px;
+    background-color: #9b6bc0;
+    color: #FFFFFF;
+}
+
+.panelEmpleado{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: none;     
 }
 
 .panelEmpleado button{
     width: 50px;
     height: 50px ;
-}
-
-#divBtnGenReporte{
-    background-color: #a37bc0;
-}
-
-.panelEmpleado{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border: solid 2px black;       
+    background-color: #ff0000;
+    border: none;
 }
 
 .cajaTexto{
     display: flex;
     flex-direction: column;
     width: 200px;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .modal-overlay {
@@ -281,3 +363,235 @@ body{
     display: none !important;
 }
 
+/* Contenedor morado del modal */
+#formMensaje .modal-caja {
+    background: #8E5BA6;
+    padding: 25px;
+    border-radius: 14px;
+    width: 360px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 10px #F4F1F6; /* el "marco" claro detrás */
+}
+
+/* Título "Nuevo mensaje" — barra blanca superior */
+#formMensaje h3 {
+    background: white;
+    color: #222;
+    text-align: center;
+    padding: 14px;
+    border-radius: 10px;
+    margin: 0 0 20px 0;
+    font-size: 1.2rem;
+}
+
+/* Caja oscura que agrupa los campos */
+#formMensaje #datosMensaje {
+    background: #2B2635;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Labels como barras blancas con texto centrado */
+#formMensaje #datosMensaje label {
+    background: white;
+    color: #222;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 6px;
+    display: block;
+}
+
+/* Campos de entrada */
+#formMensaje #datosMensaje input,
+#formMensaje #datosMensaje textarea {
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 1rem;
+    background: white;
+    color: #222;
+    margin-bottom: 10px;
+    font-family: inherit;
+}
+
+#formMensaje #datosMensaje input::placeholder,
+#formMensaje #datosMensaje textarea::placeholder {
+    color: #999;
+    opacity: 0.7;
+}
+
+#formMensaje #datosMensaje textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Mensaje de error/confirmación */
+#formMensaje #estadoMsjs {
+    display: block;
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    margin: 15px 0;
+    min-height: 20px;
+}
+
+/* Botones */
+.botones-mensaje {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+#formMensaje button {
+    padding: 12px 30px; /* ancho según el texto, no estirado */
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: opacity 0.2s;
+  /* ya no lleva flex: 1 */
+}
+
+#formMensaje button:hover {
+    opacity: 0.85;
+}
+
+#btnCerrarModal {
+    background: #D64545;
+    color: white;
+    margin-right: 4%;
+}
+
+#btnEnviarMensaje {
+    background: #A569BD;
+    color: white;
+}
+
+#formDevolucion .modal-caja {
+    background: #8E5BA6;
+    padding: 25px;
+    border-radius: 14px;
+    width: 400px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 10px #F4F1F6;
+}
+
+#formDevolucion h3 {
+    background: white;
+    color: #222;
+    text-align: center;
+    padding: 14px;
+    border-radius: 10px;
+    margin: 0 0 15px 0;
+    font-size: 1.2rem;
+}
+
+/* Caja oscura: Cantidad + ID (en fila, etiqueta junto a su input) */
+.datos-devolucion {
+    background: #2B2635;
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.datos-devolucion > div,
+.datos-devolucion label {
+    color: white;
+    font-weight: bold;
+}
+
+.datos-devolucion label {
+    display: inline-block;
+    width: 130px;
+}
+
+.datos-devolucion input {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 1rem;
+    width: 150px;
+}
+
+/* Caja oscura: Motivo (igual patrón que el modal de mensajes) */
+.motivo-devolucion {
+    background: #2B2635;
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.motivo-devolucion label {
+    background: white;
+    color: #222;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.motivo-devolucion textarea {
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 1rem;
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* Mensaje de error/confirmación */
+#estadoDevo {
+    display: block;
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    margin: 15px 0;
+    min-height: 20px;
+}
+
+/* Botones lado a lado, centrados */
+.botones-devolucion {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+#formDevolucion button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: opacity 0.2s;
+}
+
+#formDevolucion button:hover {
+    opacity: 0.85;
+}
+
+#cancelarDevolucion {
+    background: #D64545;
+    color: white;
+}
+
+#confirmarDevolucion {
+    background: #A569BD;
+    color: white;
+}

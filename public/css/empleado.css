@@ -125,3 +125,63 @@
     transition: background-color 0.2s ease;
 }
 .carrusel-flecha:hover { background: #5a9be0; }
+
+
+.modal-mensajes {
+    width: 500px;
+    max-width: 90vw;
+}
+
+.panel-mensajes {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.lista-mensajes {
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.item-mensaje {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    text-align: center;
+}
+
+.item-mensaje:hover {
+    background: #f0f0f0;
+}
+
+.item-mensaje.activo {
+  background: #d6e8fb; /* resalta el mensaje seleccionado */
+    font-weight: bold;
+}
+
+.contenido-mensaje {
+    flex: 1;
+    background: #2B2635;
+    color: white;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.sin-mensajes {
+    background: #4A90E2; /* azul más saturado, distinto al fondo claro del modal */
+    color: white;
+    border-radius: 8px;
+    padding: 20px 30px;
+    text-align: center;
+    font-weight: 500;
+    margin: 20px auto;
+    max-width: 80%;
+}

@@ -16,29 +16,39 @@
     <div>
         <div>
             <button id="btnMensajes"> Mensajes </button>
-            <button id="btn-logout"> Cerrar sesión </button>
             <button id="btnDevo">Devolución</button>
-            <button id="btnHistorial"><a href="historialVentas.html" title="historial">Historial de ventas</a></button>
             <button id="btnAccesos"><a href="reporteAccesos.html" title="reporte">Reporte de accesos</a></button>
+            <button id="btn-logout"> Cerrar sesión </button>
         </div>
     </div>
     </header>
-
+    
     <section class = "contenido">
         <section class = "datos">
             <section class = "perfil">
                 <div id="divDatosPerfil">
                     <div id="divNumEmp">
-                        <label id="numEmp">Empleado #?</label>
+                        <label class="etiqueta">Empleado #: <label class="etiqueta" id="numEmp"></label></label>
                     </div>
                     <div id="divDatosEmp">
                         <div id="divDesgloce">
-                            <label id="nombreEmp">Nombre empleado</label>
-                            <label id="puestoEmp">Puesto</label>
-                            <label id="infoContacto">Info de contacto</label>    
+                            <label class="titulo-campo">Nombre:</label> 
+                            <label class="etiqueta" id="nombreEmp"></label>    
+
+                            <label class="titulo-campo">Puesto:</label> 
+                            <label class="etiqueta" id="puestoEmp"></label>
+
+                            <label class="titulo-campo">Contacto:</label> 
+                            <label class="etiqueta" id="infoContacto"></label>    
+
+                            <label class="titulo-campo">Usuario:</label> 
+                            <label class="etiqueta" id="usuarioEmp"></label>    
+
+                            <label class="titulo-campo">Contraseña:</label> 
+                            <label class="etiqueta" id="passwordEmp"></label>    
                         </div>
                         <div id="divImagenEmp"> 
-                            <img id="imgEmpleado" src="" alt=""> <Label>IMAGEN </Label>
+                            <img id="imgEmpleado" src="" alt="">
                         </div>
                     </div>
                 </div>    
@@ -119,6 +129,9 @@
                 <div id="seccionEmp">
                 </div>
             </aside>
+            <div id="divBtnVerHistorialEmp">
+                <button id="btnVerHistorialEmp"> <a href="empleados-historial.html" title="Historial de registros de empleados">Ver historial de registros</a></button>
+            </div>
             <div id="divBtnGenReporte">
                 <button id="btnGenReporte"><a href="empleados-desempeno.html" title="reporte empleados">Ver reporte empleados</a></button>
             </div>
@@ -127,35 +140,52 @@
             <div id="formMensaje" class="modal-overlay" style="display: none;">
                 <div class="modal-caja">
                     <h3>Nuevo mensaje</h3>
-                    <label>Destinatario</label>
-                    <input id="inputDestinatario"></input>
+                    <div id="datosMensaje">
+                        <label>Destinatario</label>
+                        <input id="inputDestinatario" placeholder="Ej. usuario123"></input>
 
-                    <label>Contenido</label>
-                    <textarea id="inputContenido"></textarea>
-
-                    <button id="btnEnviarMensaje">Enviar</button>
-                    <button id="btnCerrarModal">Cancelar</button>
+                        <label>Contenido</label>
+                        <textarea id="inputContenido"></textarea>
+                        
+                    </div>
+                    <label id="estadoMsjs"></label>
+                    <div class="botones-mensaje">
+                        <button id="btnCerrarModal">Cancelar</button>
+                        <button id="btnEnviarMensaje">Enviar</button>
+                    </div>
                 </div>
             </div>
         </section>
         <section id="sectDevoluciones">
             <div id="formDevolucion" class="modal-overlay" style="display: none;">
                 <div class="modal-caja">
-                    <div class="inputsDevolucion">
-                        <label for="inpMotivoDevo">Motivo de la devolución:</label> <input type="text" id="inpMotivoDevo"/>
-                        <label for="inpIdProducto">Id del producto:</label> <input type="text" id="inpIdProducto"/>
-                        <label for="inpCantidadProducto">Cantidad a devolver:</label> <input type="text" id="inpCantidadProducto"/>
+                    <h3>Devolución de producto</h3>
+
+                    <div class="datos-devolucion">
+                        <label for="inpCantidadProducto">Cantidad:</label>
+                        <input type="text" id="inpCantidadProducto" />
+
+                        <label for="inpIdProducto">ID del producto:</label>
+                        <input type="text" id="inpIdProducto" />
                     </div>
-                    <div id="botonesDevolucion">
-                        <button id="confirmarDevolucion">Confirmar</button>
+
+                    <div class="motivo-devolucion">
+                        <label for="inpMotivoDevo">Motivo / observación</label>
+                        <textarea id="inpMotivoDevo"></textarea>
+                    </div>
+
+                    <label id="estadoDevo"></label>
+
+                    <div class="botones-devolucion">
                         <button id="cancelarDevolucion">Cancelar</button>
+                        <button id="confirmarDevolucion">Confirmar</button>
                     </div>
                 </div>
             </div>
-        </section>
+</section>
     </section>
 </body>
 </html>
+
 <script src="../js/gerente.js" defer></script>
-<script src="../js/cerrar_sesion.js"></script>
-<script src="../js/empleado.js"></script>
+<script type="module" src="../js/cerrar_sesion.js"></script>

@@ -4,7 +4,10 @@
  */
 
 const ventaDao = require('../dao/VentaDao');
+const path = require('path');
+const fs = require("fs");
 
+const xml2js = require('xml2js');
 /**
  * Estado en memoria de la caja registradora.
  * @type {boolean}
@@ -253,6 +256,46 @@ function generarFactura(req, res){
     } catch(error){
         res.status(500).json({ ok: false, mensaje: "Error al generar factura.", error: error.message });
     }
+  
+async function devolverProducto(req, res) {
+    const { id, cantidad, motivo } = req.body;
+    if (!id || !cantidad || !motivo) {
+        return res.status(400).json({
+        ok: false,
+        mensaje: "El ID y la cantidad son obligatorios"
+        });
+    }
+    const cantidadNum = Number(cantidad);
+    if (isNaN(cantidadNum) || cantidadNum <= 0) {
+        return res.status(400).json({
+        ok: false,
+        mensaje: "La cantidad debe ser un número mayor a 0"
+        });
+    }
+    const rutaXml = path.join(__dirname, '..', 'data', 'xml', 'productos.xml');
+    const xmlContent = fs.readFileSync(rutaXml, 'utf-8');
+    const parser = new xml2js.Parser({ explicitArray: false });
+    const result = await parser.parseStringPromise(xmlContent);
+    let productos = result.productos.producto;
+    if (!Array.isArray(productos)) productos = [productos];
+    const producto = productos.find(p => p.$.id === id);
+    if (!producto) {
+        return res.status(404).json({
+        ok: false,
+        mensaje: "No se encontró el producto"
+        });
+    }
+    // Suma la cantidad devuelta al stock actual
+    const stockActual = Number(producto.stock);
+    producto.stock = String(stockActual + cantidadNum);
+    result.productos.producto = productos;
+    const builder = new xml2js.Builder();
+    const xmlFinal = builder.buildObject(result);
+    fs.writeFileSync(rutaXml, xmlFinal, 'utf-8');
+    res.json({
+        ok: true,
+        mensaje: `Se devolvieron ${cantidadNum} unidades. Stock actual: ${stockActual + cantidadNum}`
+    });
 }
 
 module.exports = {
@@ -263,5 +306,6 @@ module.exports = {
     listarVentas,
     obtenerVentaPorId,
     obtenerHistorialVentas,
-    generarFactura
+    generarFactura,
+    devolverProducto
 };

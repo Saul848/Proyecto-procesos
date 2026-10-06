@@ -1,21 +1,21 @@
-export { inicializarModalProducto, abrirModalProducto, abrirModalEditarProducto };
+export { inicializarModalProducto, abrirModalProducto };
 
-let idProductoEnEdicion = null; 
-let onProductoGuardadoCallback = null; 
+const token = sessionStorage.getItem("token");
 
-// PREPARAR BOTONES E INPUTS DEL MODAL
+
+// ------------------ INICIALIZAR MODAL ------------------
+
 /**
  * Inicializa los botones e inputs del modal de producto.
  *
  * Configura los eventos de los botones para cerrar y agregar productos,
  * carga las categorías disponibles y establece las restricciones de
- * entrada para precio, stock.
+ * entrada para precio y stock.
  *
  * @function inicializarModalProducto
  * @returns {void}
  */
-function inicializarModalProducto(callbackActualizacion = null) {
-    onProductoGuardadoCallback = callbackActualizacion;
+function inicializarModalProducto() {
 
     const btnSalir = document.getElementById("boton-salir-agregar");
     const btnAgregar = document.getElementById("boton-agregar-producto");
@@ -33,7 +33,6 @@ function inicializarModalProducto(callbackActualizacion = null) {
         guardarProducto();
     });
 
-   
 
     const inputPrecio = document.getElementById("input-precio-producto");
     const inputStock = document.getElementById("input-stock-producto");
@@ -120,48 +119,26 @@ function inicializarModalProducto(callbackActualizacion = null) {
  * @returns {void}
  */
 async function abrirModalProducto() {
-    idProductoEnEdicion = null;
+
     limpiarCamposProducto();
 
     const titulo = document.querySelector("#modal-producto h2");
-    if (titulo) titulo.textContent = "Nuevo producto";
 
-    const btnGuardar = document.getElementById("boton-agregar-producto");
-    if (btnGuardar) btnGuardar.textContent = "Agregar";
-
-    await mostrarCategorias();
-    document.getElementById("modal-producto").style.display = "flex";
-}
-/**
- * Abre el modal en modo EDICIÓN precargando los datos del producto.
- * @param {Object} producto - Datos del producto seleccionado en la tabla.
- */
-async function abrirModalEditarProducto(producto) {
-    if (!producto) return;
-
-    idProductoEnEdicion = producto.id !== undefined ? producto.id : producto["@_id"];
-
-    const titulo = document.querySelector("#modal-producto h2");
-    if (titulo) titulo.textContent = `Editar producto #${idProductoEnEdicion}`;
-
-    const btnGuardar = document.getElementById("boton-agregar-producto");
-    if (btnGuardar) btnGuardar.textContent = "Guardar cambios";
-
-    await mostrarCategorias();
-
-    // Precargar campos con los datos actuales
-    document.getElementById("input-nombre-producto").value = producto.nombre || "";
-    document.getElementById("input-descripcion-producto").value = producto.descripcion || "";
-    document.getElementById("input-precio-producto").value = producto.precio !== undefined ? producto.precio : "";
-    document.getElementById("input-stock-producto").value = producto.stock !== undefined ? producto.stock : "";
-
-    const selectCat = document.getElementById("select-categoria-producto");
-    if (selectCat && producto.categoria) {
-        selectCat.value = String(producto.categoria).trim().toLowerCase();
+    if (titulo) {
+        titulo.textContent = "Nuevo producto";
     }
 
+    const btnAgregar = document.getElementById("boton-agregar-producto");
+
+    if (btnAgregar) {
+        btnAgregar.textContent = "Agregar";
+    }
+
+    await mostrarCategorias();
+
     document.getElementById("modal-producto").style.display = "flex";
 }
+
 
 /**
  * Cierra el modal de producto.
@@ -170,6 +147,7 @@ async function abrirModalEditarProducto(producto) {
  * @returns {void}
  */
 function cerrarModalProducto() {
+
     document.getElementById("modal-producto").style.display = "none";
 }
 
@@ -200,14 +178,11 @@ function limpiarCamposProducto() {
  * de productos.
  *
  * @async
- * @function agregarProducto
+ * @function guardarProducto
  * @returns {Promise<void>}
  */
-
-/**
- * Procesa la acción: si idProductoEnEdicion existe realiza PUT, de lo contrario POST.
- */
 async function guardarProducto() {
+
     if (!validarDatosProducto()) return;
 
     const nombre = document.getElementById("input-nombre-producto").value.trim().toLowerCase();
@@ -224,38 +199,38 @@ async function guardarProducto() {
         stock
     };
 
-    const esEdicion = idProductoEnEdicion !== null;
-    const url = esEdicion ? `/api/productos/${idProductoEnEdicion}` : "/api/productos";
-    const metodo = esEdicion ? "PUT" : "POST";
-
     try {
-        const respuesta = await fetch(url, {
-            method: metodo,
-            headers: { "Content-Type": "application/json" },
+
+        const respuesta = await fetch("/api/productos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
             body: JSON.stringify(payload)
         });
 
         const resultado = await respuesta.json();
 
         if (respuesta.ok) {
-            alert(resultado.mensaje || (esEdicion ? "Producto actualizado correctamente." : "Producto agregado correctamente."));
+
+            alert(resultado.mensaje || "Producto agregado correctamente.");
+
             cerrarModalProducto();
             limpiarCamposProducto();
 
-            // Si se pasó un callback para refrescar la lista (o evento personalizado)
-            if (typeof onProductoGuardadoCallback === "function") {
-                onProductoGuardadoCallback();
-            } else {
-                window.dispatchEvent(new CustomEvent("producto-actualizado"));
-            }
         } else {
-            alert(resultado.mensaje || "Error al procesar la solicitud.");
+
+            alert(resultado.mensaje || "Error al agregar el producto.");
         }
+
     } catch (error) {
+
         console.error("Error de conexión:", error);
         alert("Ocurrió un error al comunicarse con el servidor.");
     }
 }
+
 
 // ------------------ VALIDAR PRODUCTO ------------------
 
@@ -264,7 +239,7 @@ async function guardarProducto() {
  * al servidor.
  *
  * Verifica que el nombre, descripción y categoría no estén vacíos,
- * además de comprobar que el precio, stock se encuentren
+ * además de comprobar que el precio y stock se encuentren
  * dentro de los rangos permitidos.
  *
  * @function validarDatosProducto
@@ -272,7 +247,6 @@ async function guardarProducto() {
  */
 function validarDatosProducto() {
 
-    // Obtener valores
     const nombre = document.getElementById("input-nombre-producto").value.trim();
     const descripcion = document.getElementById("input-descripcion-producto").value.trim();
     const categoria = document.getElementById("select-categoria-producto").value;
@@ -315,7 +289,6 @@ function validarDatosProducto() {
     }
 
 
-    // Todos los datos son válidos
     return true;
 }
 
@@ -325,9 +298,6 @@ function validarDatosProducto() {
 /**
  * Obtiene las categorías disponibles desde la API de categorías.
  *
- * Realiza una petición al servidor y devuelve el arreglo de categorías
- * cuando la respuesta es correcta.
- *
  * @async
  * @function cargarCategorias
  * @returns {Promise<Array>} Lista de categorías disponibles.
@@ -336,7 +306,14 @@ async function cargarCategorias() {
 
     try {
 
-        const respuesta = await fetch("/api/categorias");
+        const respuesta = await fetch("/api/categorias", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        
         const datos = await respuesta.json();
 
         if (datos.ok) {
@@ -369,13 +346,14 @@ async function mostrarCategorias() {
     );
 
     if (!selectCategorias) {
+
         console.error(
             "No se encontró el elemento #select-categoria-producto"
         );
+
         return;
     }
 
-    const valorPrevio = selectCategorias.value;
     const categorias = await cargarCategorias();
 
 
@@ -413,5 +391,5 @@ async function mostrarCategorias() {
 
 
     selectCategorias.innerHTML = cadenaHtml;
-    if (valorPrevio) { selectCategorias.value = valorPrevio; }
 }
+

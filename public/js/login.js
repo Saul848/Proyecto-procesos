@@ -53,6 +53,7 @@ document.getElementById("boton-login").addEventListener('click', async () => {
             sessionStorage.setItem("nombreUsuario", resultado.data.nombre);
             sessionStorage.setItem("puestoLogueado", resultado.data.puesto);
             sessionStorage.setItem("usuarioLogueado", resultado.data.usuario);
+            sessionStorage.setItem("token", resultado.data.token); // Recibe un token de sesion para autorizacion de llamadas al servidor
 
             alert(`¡Bienvenid@, ${resultado.data.nombre}!`);
 

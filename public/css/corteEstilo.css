@@ -1,0 +1,105 @@
+/* --- Estilos Globales inspirados en la plantilla de Gerencia --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #9b6bc0; /* Color morado de fondo de la plantilla */
+    margin: 0;
+    padding: 40px; /* Margenes generales para que la tarjeta respire */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Contenedor principal estilo Tarjeta / Modal de Gerente */
+.card-gerente {
+    background-color: #2b233c; /* Tono oscuro característico de la plantilla */
+    border: 3px solid #6c4b8a; /* Borde morado de acento */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 450px;
+    color: #ffffff;
+}
+
+/* Encabezados internos */
+.card-gerente h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 22px;
+    border-bottom: 2px solid #6c4b8a;
+    padding-bottom: 10px;
+}
+
+/* Grupos de formularios */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #e0d9ec;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 15px;
+    color: #333;
+}
+
+input:focus {
+    outline: none;
+    border-color: #8c52ff;
+    box-shadow: 0 0 5px rgba(140, 82, 255, 0.5);
+}
+
+/* Botón de acción principal */
+.btn-principal {
+    width: 100%;
+    padding: 12px;
+    background-color: #6c4b8a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-principal:hover {
+    background-color: #8c52ff;
+}
+
+/* Cajas de mensajes o resultados */
+#resultadoCorte {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 6px;
+    display: none;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.success { 
+    background-color: #1e4620; 
+    color: #d4edda; 
+    border: 1px solid #28a745; 
+}
+
+.error { 
+    background-color: #5c1d1d; 
+    color: #f8d7da; 
+    border: 1px solid #dc3545; 
+}

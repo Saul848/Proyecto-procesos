@@ -1,0 +1,110 @@
+/* --- Fondo general de la página en tono morado --- */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+body {
+    font-family: 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #9b6bc0;
+    margin: 0;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Contenedor principal estilo Tarjeta del equipo */
+.card-gerente {
+    background-color: #2b233c;
+    border: 2px solid #4a3d60;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+}
+
+/* Título superior estilo pestaña blanca */
+.card-header-title {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    text-align: center;
+    padding: 18px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 2px solid #4a3d60;
+}
+
+/* Cuerpo de la tarjeta */
+.card-body {
+    padding: 30px;
+}
+
+/* Grupos de formularios */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #e0d9ec;
+    font-size: 14px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 15px;
+    color: #333;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #9b6bc0;
+    box-shadow: 0 0 5px rgba(155, 107, 192, 0.5);
+}
+
+/* Botón de acción principal (Rojo para alertas/mermas como en la plantilla) */
+.btn-alerta {
+    width: 100%;
+    padding: 12px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+.btn-alerta:hover {
+    background-color: #c9302c;
+}
+
+/* Botón de regresar */
+.btn-regresar-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-regresar {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: opacity 0.2s;
+}
+
+.btn-regresar:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}

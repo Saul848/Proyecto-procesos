@@ -1,10 +1,9 @@
+/* --- Estilos Globales inspirados en la plantilla de Gerencia --- */
 /* Importar la fuente DM Sans desde Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
-
-/* --- Estilos Globales --- */
 body {
-    font-family: 'DM Sans', sans-serif;
-    background-color: #9b6bc0;
+    font-family: 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #9b6bc0; /* Color morado de fondo */
     margin: 0;
     padding: 40px;
     display: flex;
@@ -15,7 +14,18 @@ body {
     box-sizing: border-box;
 }
 
-/* --- Contenedor ancho para tablas --- */
+/* --- Contenedor estándar (para formularios) --- */
+.card-gerente {
+    background-color: #2b233c;
+    border: 2px solid #4a3d60;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+}
+
+/* --- Contenedor ancho para tablas y reportes --- */
 .card-gerente-wide {
     background-color: #2b233c;
     border: 2px solid #4a3d60;
@@ -42,67 +52,24 @@ body {
     padding: 30px;
 }
 
-/* --- Sección de búsqueda --- */
-.formulario-busqueda {
+/* --- Caja de resumen superior dentro de la tarjeta --- */
+.card-resumen-box {
     background-color: #362c4a;
     color: #e0d9ec;
-    padding: 20px;
+    padding: 15px 20px;
     border-radius: 8px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     border: 1px solid #4a3d60;
+    font-size: 16px;
 }
 
-#divMsgBusqueda h3 {
-    margin: 0 0 15px 0;
+.card-resumen-box h3 {
+    margin: 0;
     font-size: 16px;
     color: #ffffff;
 }
 
-.inputs-row {
-    display: flex;
-    gap: 15px;
-    align-items: flex-end;
-    flex-wrap: wrap;
-}
-
-.inputs-row label {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    font-size: 14px;
-    color: #e0d9ec;
-    flex-grow: 1;
-}
-
-.inputs-row input[type="text"] {
-    background-color: #2b233c;
-    border: 1px solid #4a3d60;
-    border-radius: 6px;
-    padding: 10px 14px;
-    color: #ffffff;
-    font-size: 14px;
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-}
-
-.btn-accion, #btnBuscar {
-    background-color: #4a3d60;
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    height: 41px;
-}
-
-.btn-accion:hover, #btnBuscar:hover {
-    background-color: #5c4c77;
-}
-
-/* --- Estilo de Tabla con tonos morados alternados (Franjas) --- */
+/* --- Estilo profesional para la tabla con filas oscuras alternadas --- */
 .tabla-desempeno-wrapper {
     overflow-x: auto;
 }
@@ -111,7 +78,7 @@ body {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
-    color: #f3f0ff; /* Letras claras */
+    color: #f3f0ff; /* Texto general claro y nítido */
     background-color: #2b233c;
     border-radius: 8px;
     overflow: hidden;
@@ -131,7 +98,7 @@ body {
     border-bottom: 1px solid #362c4a;
 }
 
-/* Dos tonos de morado para las filas alternadas */
+/* Franjas alternadas oscuras (igual que el reporte de accesos) */
 .tabla-desempeno tbody tr:nth-child(even) {
     background-color: #322844;
 }
@@ -140,19 +107,21 @@ body {
     background-color: #2b233c;
 }
 
+/* Efecto hover al pasar el cursor */
 .tabla-desempeno tbody tr:hover {
     background-color: #3c3053;
 }
 
-/* Fila de desabasto en rojo vino legible */
+/* --- Clase específica para filas en desabasto / stock bajo --- */
+/* Forzamos un fondo rojo vino oscuro y texto completamente blanco para legibilidad total */
 .tabla-desempeno tr.fila-desabasto {
-    background-color: #612222 !important; 
+    background-color: #4a0000 !important; 
     color: #ffffff !important;
 }
 
 .tabla-desempeno tr.fila-desabasto td {
     color: #ffffff !important;
-    border-bottom-color: #7d2e2e !important;
+    border-bottom-color: #4a0000 !important;
 }
 
 /* --- Botón de regresar --- */
@@ -166,6 +135,7 @@ body {
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
+    transition: opacity 0.2s;
 }
 
 .btn-regresar:hover {
