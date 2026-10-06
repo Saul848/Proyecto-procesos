@@ -1,32 +1,34 @@
+/* Importación de la fuente DM Sans desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+/* Regla global de tipografía */
+* {
+    font-family: 'DM Sans', sans-serif;
+}
+
 /* Título del modal de mensajes */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+.modal-contenido {
+    background-color: color-mix(in srgb, #494030 90%, white);
+    font-family: 'DM Sans', sans-serif;
 }
 
-#checkMensajes .modal-caja {
-  background: #F2C94C;
-  padding: 25px;
-  border-radius: 14px;
-  width: 420px;
-  max-width: 90vw;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 0 10px #FBEFD1;
+.modal-contenido h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    color: whitesmoke;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700; /* Bold */
 }
 
-#checkMensajes h3 {
-  color: #3D3426;
-  margin: 0 0 15px 0;
-  font-size: 1.2rem;
+/* Contenedor de los mensajes */
+#contenedorDetalles {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: 'DM Sans', sans-serif;
 }
 
 #checkMensajes .panel-mensajes {
@@ -43,23 +45,21 @@
   overflow-y: auto;
 }
 
-/* Fila de cada mensaje, con el botón de eliminar al lado */
-.item-mensaje {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer;
+.btn-primary-mensajes {
+    background-color: #f2c94c;
+    color: #1a160d;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600; /* Semi-bold */
+    font-size: 13px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-#checkMensajes .item-mensaje:hover {
-    background: #FBEFD1;
-}
-
-#checkMensajes .item-mensaje.activo {
-    background: #F2C94C;
-    font-weight: bold;
+.btn-primary-mensajes:hover {
+    background-color: #c49d28;
 }
 
 
@@ -71,14 +71,22 @@
     border-radius: 8px;
     padding: 20px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    flex-direction: column;
+    gap: 8px;
+    font-family: 'DM Sans', sans-serif;
 }
 
-#checkMensajes #contenedorBoton {
-    margin-top: 15px;
-    text-align: right;
+/* Cada mensaje de la lista */
+.item-mensaje {
+    background-color: #5a513e;
+    color: whitesmoke;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500; /* Medium */
+    font-size: 14px;
+    transition: background-color 0.2s ease;
 }
 
 #btnCerrarModalMensajes {
@@ -91,6 +99,16 @@
     cursor: pointer;
 }
 
-#btnCerrarModalMensajes:hover {
-    opacity: 0.85;
+/* Contenido del mensaje seleccionado */
+.contenido-mensaje {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #fbf8f0;
+    color: #333333;
+    border-radius: 6px;
+    min-height: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 14px;
+    border-left: 4px solid #f2c94c;
 }
