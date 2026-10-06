@@ -479,4 +479,28 @@
     <puesto>gerente</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>07:27:58</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>07:28:48</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>07:29:35</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
