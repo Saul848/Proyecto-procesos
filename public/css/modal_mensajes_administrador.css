@@ -31,11 +31,18 @@
     font-family: 'DM Sans', sans-serif;
 }
 
-/* Contenedor del botón cerrar */
-#contenedorBoton {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px !important;
+#checkMensajes .panel-mensajes {
+  display: flex;
+  gap: 15px;
+}
+
+#checkMensajes .lista-mensajes {
+  flex: 1;
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  max-height: 250px;
+  overflow-y: auto;
 }
 
 .btn-primary-mensajes {
@@ -55,8 +62,14 @@
     background-color: #c49d28;
 }
 
-/* Lista de mensajes */
-.lista-mensajes {
+
+#checkMensajes .contenido-mensaje,
+#checkMensajes .sin-mensajes {
+    flex: 1;
+    background: #3D3426;
+    color: white;
+    border-radius: 8px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -76,8 +89,14 @@
     transition: background-color 0.2s ease;
 }
 
-.item-mensaje:hover {
-    background-color: #6b614c;
+#btnCerrarModalMensajes {
+    background: #3D3426;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 /* Contenido del mensaje seleccionado */
