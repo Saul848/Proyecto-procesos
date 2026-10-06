@@ -15,6 +15,12 @@ const empleadoController = require("../controladores/empleadoController");
 router.get("/reporte-desempeno", empleadoController.getReporteDesempeno);
 
 /**
+ * @name GET /historial
+ * @description Obtiene el historial de registros de los empleados
+ */
+router.get("/historial", empleadoController.enviarHistorial);
+
+/**
  * @name POST /login
  * @description Valida las credenciales de acceso para iniciar sesión en el sistema
  */

@@ -4,46 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajuste de Inventario por Merma o Daño</title>
-    <link rel="stylesheet" href="../css/catalogo.css">
+    <!-- Vinculamos el archivo de estilos centralizado -->
+    <link rel="stylesheet" href="../css/mermaEstilo.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Gestión de Inventario: Ajuste por Merma o Daño</h1>
-        <p>Como gerente, registra aquí los productos defectuosos o caducados para descontar el stock y registrar la pérdida.</p>
 
-        <!-- Formulario de Ajuste -->
-        <div class="card-formulario" style="margin: 20px 0; padding: 20px; background: #f4f4f4; border-radius: 8px; max-width: 500px;">
-            <form id="formMerma" style="display: flex; flex-direction: column; gap: 15px;">
-                <div>
-                    <label for="idProducto"><strong>ID del Producto:</strong></label><br>
-                    <input type="number" id="idProducto" name="idProducto" placeholder="Ej. 1" required style="width: 100%; padding: 8px; margin-top: 5px;">
+    <div class="card-gerente">
+        <!-- Título superior en la pestaña blanca -->
+        <div class="card-header-title">
+            Gestión de Inventario: Ajuste por Merma
+        </div>
+        
+        <div class="card-body">
+            <form id="formMerma">
+                <div class="form-group">
+                    <label for="idProducto">ID del Producto:</label>
+                    <input type="number" id="idProducto" name="idProducto" placeholder="Ej. 1" required>
                 </div>
-                <div>
-                    <label for="cantidadAjustar"><strong>Cantidad a Descontar:</strong></label><br>
-                    <input type="number" id="cantidadAjustar" name="cantidadAjustar" placeholder="Ej. 2" min="1" required style="width: 100%; padding: 8px; margin-top: 5px;">
+                
+                <div class="form-group">
+                    <label for="cantidadAjustar">Cantidad a Descontar:</label>
+                    <input type="number" id="cantidadAjustar" name="cantidadAjustar" placeholder="Ej. 2" min="1" required>
                 </div>
-                <div>
-                    <label for="causa"><strong>Causa del Ajuste:</strong></label><br>
-                    <select id="causa" name="causa" required style="width: 100%; padding: 8px; margin-top: 5px;">
+                
+                <div class="form-group">
+                    <label for="causa">Causa del Ajuste:</label>
+                    <select id="causa" name="causa" required>
                         <option value="">Seleccione una causa...</option>
                         <option value="Caducado">Caducado</option>
                         <option value="Dañado / Roto">Dañado / Roto</option>
                         <option value="Defectuoso de fábrica">Defectuoso de fábrica</option>
                         <option value="Merma por manejo">Merma por manejo</option>
                     </select>
+                </div>
 
+                <div class="form-group">
                     <label for="gerente">Nombre del Gerente:</label>
                     <input type="text" id="gerente" value="gerente" required>
                 </div>
-                <div>
-                    <button type="submit" style="padding: 10px 20px; background: #d9534f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Aplicar Ajuste de Merma</button>
-                </div>
+                
+                <button type="submit" class="btn-alerta">Aplicar Ajuste de Merma</button>
             </form>
         </div>
+    </div>
 
-        <div style="margin-top: 20px;">
-            <a href="../index.html" class="btn-regresar">Regresar al Inicio</a>
-        </div>
+    <div class="btn-regresar-container">
+        <a href="gerente.html" class="btn-regresar">← Regresar al Inicio</a>
     </div>
 
     <script>
@@ -58,7 +64,6 @@
             };
 
             try {
-                
                 const respuesta = await fetch("/api/productos/merma", {
                     method: "POST",
                     headers: { 

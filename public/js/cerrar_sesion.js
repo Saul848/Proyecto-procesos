@@ -75,10 +75,6 @@ window.cerrarSesion = function() {
     window.location.href = "login.html";
 };
 
-document.getElementById("salir_xd").addEventListener('click', ()=>{
-    window.location.href = "login.html";
-})
-
 /**
  * Gestión de cierre de sesión automático por inactividad (10 minutos).
  * Definimos el tiempo límite en milisegundos (10 minutos = 10 * 60 * 1000)
@@ -131,11 +127,3 @@ eventosUsuario.forEach(evento => {
 
 // Iniciamos el temporizador por primera vez al cargar la página
 reiniciarTemporizador();
-
-
-/**
- * Listener para ocultar el modal
- */
-document.getElementById('btnCerrarModal').addEventListener('click', () => {
-    document.getElementById('checkMensajes').style.display = 'none';
-});
