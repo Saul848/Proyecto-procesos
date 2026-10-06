@@ -26,24 +26,4 @@
     <valorDesc>20</valorDesc>
     <fechaHora>3/10/2026, 6:59:06 p.m.</fechaHora>
   </registro>
-  <registro>
-    <id>H-1791081130909</id>
-    <accion>crear</accion>
-    <idOferta>OF-06</idOferta>
-    <idProducto>12</idProducto>
-    <tipoProm>cantidad</tipoProm>
-    <valorDesc>1</valorDesc>
-    <fechaHora>3/10/2026, 8:32:10 p.m.</fechaHora>
-  </registro>
-  <registro>
-    <id>H-1791082359485</id>
-    <accion>eliminar</accion>
-    <idOferta>OF-06</idOferta>
-    <idProducto>12</idProducto>
-    <tipoProm>cantidad</tipoProm>
-    <valorDesc>1</valorDesc>
-    <cantidadRecibe>2</cantidadRecibe>
-    <cantidadPaga>1</cantidadPaga>
-    <fechaHora>3/10/2026, 8:52:39 p.m.</fechaHora>
-  </registro>
 </historial>
