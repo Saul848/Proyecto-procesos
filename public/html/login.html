@@ -7,16 +7,21 @@
     <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-    <div id="cabecera_sesion">
-        <h1>Inicio de sesión</h1>
-    </div>
-    <div id="cuestionario_sesion">
-        <label for="input-user" class="label-inputs">Ingresa tu usuario:</label>
-        <input type="text" class="campos_datos" placeholder="Ej. usuario123" id="input-user"></input>
-        <label for="input-contra" class="label-inputs">Ingresa tu contraseña:</label>
-        <input type="password" class="campos_datos" placeholder="Ej. contra123" id="input-contra"></input>
+    
+    <div class="contenedor-principal">
+        <div id="cabecera_sesion">
+            <h1>BIENVENIDO<br>INICIO DE SESIÓN</h1>
+        </div>
+        
+        <div id="cuestionario_sesion">
+            <label for="input-user" class="label-inputs">Usuario</label>
+            <input type="text" class="campos_datos" placeholder="Ingresa tu usuario" id="input-user">
+            
+            <label for="input-contra" class="label-inputs">Contraseña</label>
+            <input type="password" class="campos_datos" placeholder="••••••••••••" id="input-contra">
 
-        <button id="boton-login">Iniciar sesión</button>
+            <button id="boton-login">Acceder</button>
+        </div>
     </div>
 
     <script src="../js/login.js"></script>
