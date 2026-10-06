@@ -14,6 +14,11 @@ fetch('/api/productos')
         llenarSelect(todosProductos);
     });
 
+/**
+ * Llena el select de productos con las opciones recibidas.
+ * 
+ * @param {Array} productos - Arreglo de productos a mostrar.
+ */
 function llenarSelect(productos){
     const select = document.getElementById('producto');
     select.innerHTML = '';
@@ -34,6 +39,9 @@ function llenarSelect(productos){
     });
 }
     
+/**
+ * Filtra los productos según el texto buscado (por nombre o ID).
+ */
 function filtrarProductos(){
     const texto = document.getElementById('buscarProducto').value.toLowerCase();
     if (!texto){
@@ -47,6 +55,10 @@ function filtrarProductos(){
     llenarSelect(filtrados);
 }
 
+/**
+ * Actualiza el formulario según el tipo de promoción seleccionado.
+ * Sea porcentaje, cantidad o precio fijo.
+ */
 function actualizarFormulario(){
     const tipo = tipoSelect.value;
 
@@ -67,21 +79,28 @@ function actualizarFormulario(){
         campoValor.style.display = 'block';
     }
 }
-
 tipoSelect.addEventListener('change', actualizarFormulario);
 actualizarFormulario();
 
-
-
+/**
+ * Abre el modal de historial y carga sus datos.
+ */
 function verHistorial(){
     cargarHistorial();
     document.getElementById('modalHistorial').style.display = 'flex';
 }
 
+/**
+ * Cierra el modal de historial.
+ */
 function cerrarHistorial(){
     document.getElementById('modalHistorial').style.display = 'none';
 }
 
+/**
+ * Carga el historial de acciones y lo muestra en la tabla. 
+ * Traduce los tipos de promoción y el beneficio a texto legible.
+ */
 function cargarHistorial(){
     fetch('/api/ofertas/historial')
         .then(r => r.json())
@@ -128,7 +147,10 @@ function cargarHistorial(){
         });
 }
 
-//muestra ofertas
+/**
+ * Carga las ofertas y las muestra en la tabla.
+ * Traduce tipo de promoción, formatea el beneficio y las fechas.
+ */
 function cargarOfertas() {
     fetch('/api/ofertas')
         .then(r => r.json())
@@ -173,13 +195,24 @@ function cargarOfertas() {
         });
 }
 
+/**
+ * Convierte una fecha en formato ISO (aaaa-mm-dd) a formato mexicano (dd/mm/aaaa).
+ * @param {string} fecha - Fecha en formato aaaa-mm-dd.
+ * @returns {string} Fecha en formato dd/mm/aaaa, o "-" si no hay fecha.
+ */
 function formatearFecha(fecha){
     if (!fecha) return '-';
     const [anio, mes, dia] = fecha.split('-');
     return dia + '/' + mes + '/' + anio;
 }
 
-//guarda una oferta
+/**
+ * Envía una nueva oferta al servidor.
+ * Construye el cuerpo según el tipo de promoción:
+ * - "cantidad": envía cantidadRecibe y cantidadPaga.
+ * - Otros: envía valorDesc.
+ * Muestra un mensaje de éxito o error según la respuesta.
+ */
 function guardarOferta() {
     const tipo = tipoSelect.value;
     let body;
@@ -221,7 +254,11 @@ function guardarOferta() {
     .catch(() => mostrarMensaje('Error de conexión con el servidor.', false));
 }
 
-//elimina una oferta
+/**
+ * Elimina una oferta por su ID tras confirmación del usuario.
+ * 
+ * @param {string} id - ID de la oferta a eliminar (ej. "OF-01").
+ */
 function eliminarOferta(id) {
     if (!confirm(`¿Seguro que quieres eliminar la oferta ${id}?`)) return;
 
@@ -237,7 +274,9 @@ function eliminarOferta(id) {
         .catch(() => mostrarMensaje('Error de conexión con el servidor.'));
 }
 
-//limpiar formulario
+/**
+ * Limpia todos los campos del formulario y restaura el estado inicial.
+ */
 function cancelar() {
     document.getElementById('producto').value = '';
     document.getElementById('buscarProducto').value = '';
@@ -252,7 +291,13 @@ function cancelar() {
     actualizarFormulario();
 }
 
-//mensajes
+/**
+ * Muestra un mensaje de retroalimentación al usuario con estilo
+ * de éxito (verde) o error (rojo).
+ * 
+ * @param {string} texto - Mensaje a mostrar.
+ * @param {boolean} esExito - true para estilo de éxito, false para error.
+ */
 function mostrarMensaje(texto, esExito) {
     const div = document.getElementById('mensaje');
     div.textContent = texto;

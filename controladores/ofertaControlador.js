@@ -2,6 +2,13 @@ const ofertaDao = require ("../dao/ofertaDao");
 const productoDao = require ("../dao/productoDao");
 const Oferta = require ("../clases/ofertaClass");
 
+/**
+ * Calcula el estado de una oferta según su rango de fechas.
+ *
+ * @param {string} fechaInicio - Fecha de inicio de vigencia (aaaa-mm-dd).
+ * @param {string} fechaFin - Fecha de fin de vigencia (aaaa-mm-dd).
+ * @returns {string} Estado de la oferta: disponible, proxima o caducada.
+ */
 function calcularEstado(fechaInicio, fechaFin){
     const hoy = new Date().toLocaleDateString('en-CA');
     if (hoy > fechaFin) return 'caducada';
@@ -9,6 +16,14 @@ function calcularEstado(fechaInicio, fechaFin){
     return 'disponible';
 }
 
+/**
+ * Lista las ofertas que están "disponibles" o "proximas" (excluye las caducadas),
+ * enriqueciéndolas con el nombre del producto y su estado calculado.
+ * 
+ * @param {Object} req - Petición HTTP (sin parámetros).
+ * @param {Object} res - Respuesta HTTP.
+ * @returns {void} Envía un arreglo de ofertas visibles, o error 500 si falla.
+ */
 function listarOfertas(req, res){
     try{
         const ofertas = ofertaDao.obtenerOfertas();
@@ -33,6 +48,15 @@ function listarOfertas(req, res){
     }
 }
 
+/**
+ * Crea una nueva oferta, genera el ID, crea la instancia Oferta, la guarda en el XML
+ * y registra la acción en el historial.
+ * 
+ * @param {Object} req - Petición HTTP. En req.body espera: idProducto, tipoProm, valorDesc
+ * valorDesc, cantidadRecibe, cantidadPaga, fechaInicio y fechaFin.
+ * @param {Object} res - Respuesta HTTP.
+ * @returns {void} Envía { ok: true, oferta } con código 201, o error 400/500.
+ */
 function crearOferta(req, res){
     try{
         const { idProducto, tipoProm, valorDesc, cantidadRecibe, cantidadPaga, fechaInicio, fechaFin } = req.body;
@@ -103,6 +127,13 @@ function crearOferta(req, res){
     }
 }
 
+/**
+ * Elimina una oferta por su ID, registrando la acción en el historial.
+ * 
+ * @param {Object} req - Petición HTTP. En req.params.id va el ID de la oferta.
+ * @param {Object} res - Respuesta HTTP.
+ * @returns {void} Envía { ok: true, mensaje } si se elimina, o error 404/500.
+ */
 function eliminarOferta(req, res){
     try{
         const {id} = req.params;
@@ -134,6 +165,14 @@ function eliminarOferta(req, res){
     }
 }
 
+/**
+ * Obtiene todos los registros del historial de acciones sobre ofertas
+ * (crear/eliminar), enriqueciéndolos con el nombre del producto.
+ * 
+ * @param {Object} req - Petición HTTP (sin parámetros).
+ * @param {Object} res - Respuesta HTTP.
+ * @returns {void} Envía un arreglo de registros, o error 500 si falla.
+ */
 function obtenerHistorial(req, res){
     try{
         const registros = ofertaDao.obtenerHistorial();

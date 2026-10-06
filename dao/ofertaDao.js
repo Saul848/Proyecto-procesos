@@ -8,8 +8,11 @@ const archivo = path.join(__dirname, "../data/xml/ofertas.xml");
 const archivoHistorial = path.join(__dirname, "../data/xml/historialOfertas.xml");
 
 /**
- * Obtiene todas las ofertas del archivo XML.
- * @returns {Array} Arreglo con las ofertas.
+ * Obtiene todas las ofertas del archivo XML. 
+ * 
+ * @function obtenerOfertas
+ * @returns {Array} Arreglo con las ofertas (objetos planos del XML).
+ * @throws {Error} Si ocurre un error al leer o procesar el archivo XML.
  */
 function obtenerOfertas(){
     try{
@@ -28,8 +31,11 @@ function obtenerOfertas(){
 
 /**
  * Agrega una nueva oferta al XML
- * @param {Object} oferta - Datos de la oferta
- * @returns {object} Resultado de la operación
+ * 
+ * @function agregarOferta
+ * @param {Object} oferta - Datos de la oferta a guardar (objeto serializable).
+ * @returns {Object} Resultado de la operación: { ok: true }.
+ * @throws {Error} Si ocurre un error al leer, modificar o escribir el archivo.
  */
 function agregarOferta(oferta){
     try{
@@ -66,8 +72,11 @@ function agregarOferta(oferta){
 
 /**
  * Obtiene una oferta por su id.
- * @param {String} id - ID de la oferta 
- * @returns {Object|null} La oferta encontrada o null
+ * 
+ * @function obtenerOferta
+ * @param {string} id - ID de la oferta (ej. "OF-01").
+ * @returns {Object|null} La oferta encontrada, o null si no existe.
+ * @throws {Error} Si ocurre un error al leer el archivo.
  */
 function obtenerOferta(id){
     try{
@@ -82,8 +91,13 @@ function obtenerOferta(id){
 
 /**
  * Elimina una oferta por su id.
- * @param {String} id - ID de la oferta a eliminar
- * @returns {object} Resultado de la operación
+ * 
+ * @function eliminarOferta
+ * @param {string} id - ID de la oferta a eliminar (ej. "OF-01").
+ * @returns {Object} Resultado de la operación:
+ *   - { ok: true, encontrado: true } si se eliminó.
+ *   - { ok: false, encontrado: false } si no se encontró.
+ * @throws {Error} Si ocurre un error al leer, modificar o escribir el archivo.
  */
 function eliminarOferta(id) {
     try {
@@ -119,9 +133,15 @@ function eliminarOferta(id) {
     }
 }
 
-
-
-//historial de ofertas
+/**
+ * Obtiene todos los registros del historial de acciones sobre ofertas.
+ * Lee historialOfertas.xml y devuelve el arreglo de registros
+ * (acciones de crear/eliminar ofertas).
+ * 
+ * @function obtenerHistorial
+ * @returns {Array} Arreglo con los registros del historial.
+ * @throws {Error} Si ocurre un error al leer el archivo.
+ */
 function obtenerHistorial(){
     try{
         const xml = fs.readFileSync(archivoHistorial, "utf8");
@@ -137,6 +157,15 @@ function obtenerHistorial(){
     }
 }
 
+/**
+ * Agrega un nuevo registro al historial de acciones sobre ofertas.
+ * 
+ * @function agregarRegistroHistorial
+ * @param {Object} registro - Datos del registro a guardar: id, accion, idOferta, idProducto,
+ * tipoProm, valorDesc, cantidadRecibe, cantidadPaga, fechaHora
+ * @returns {Object} Resultado de la operación: { ok: true }.
+ * @throws {Error} Si ocurre un error al leer, modificar o escribir el archivo.
+ */
 function agregarRegistroHistorial(registro){
     try{
         if (!fs.existsSync(archivoHistorial) || fs.readFileSync(archivoHistorial, "utf8").trim() === "") {

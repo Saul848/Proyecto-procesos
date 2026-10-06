@@ -25,7 +25,7 @@ const ofertaRoutes = require("./routes/ofertaRoutes");
 const categoriaRoutes = require("./routes/categoriaRoutes");
 //cajas
 const cajasRoutes = require("./routes/cajasRoutes");
-
+//accesoControlador
 const accesoControlador = require("./controladores/accesoControlador");
 
 const path = require('path');
@@ -56,6 +56,7 @@ app.use("/api/movimientosProd", movimientoProdRoutes);
  */
 app.use("/api/empleados", empleadoRoutes);
 
+// Rutas de ofertas
 app.use("/api/ofertas", ofertaRoutes);
 
 /**
@@ -72,8 +73,11 @@ app.use("/api/mensajes", mensajeRoutes);
 
 
 app.use("/api/cajas", cajasRoutes);
+
+// Rutas de accesos (bitácora de entrada/salida)
 app.post('/api/accesos/registrar', accesoControlador.registrarAcceso);
 app.get('/api/accesos', accesoControlador.obtenerAccesos);
+
 const corteRoutes = require("./routes/corteRoutes");
 app.use("/api/cortes", corteRoutes);
 
