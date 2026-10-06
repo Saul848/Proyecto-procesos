@@ -143,4 +143,180 @@
     <puesto>empleado</puesto>
     <evento>salida</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>22:42:11</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>22:56:48</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>23:53:10</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>23:55:36</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>00:13:48</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>00:22:03</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>00:32:14</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>00:34:16</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-03</fecha>
+    <hora>00:34:57</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>20:49:45</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>20:54:56</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>21:57:23</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>22:14:54</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>22:16:54</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>22:34:29</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>22:37:52</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>22:49:15</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>23:15:50</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>23:40:11</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>23:46:49</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>23:51:53</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>23:58:06</hora>
+    <nombre>Rogelio Lopez Gonzales</nombre>
+    <usuario>roger01</usuario>
+    <puesto>empleado</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>

@@ -1,0 +1,76 @@
+<!-- ==========================================
+     1. MODAL DE FORMULARIO (CAPTURA DE DATOS)
+     ========================================== -->
+<div id="modalFormulario" class="modal-overlay" style="display: none;">
+    <div class="modal-card-transaccion">
+        <div class="modal-header-barra">
+            <h3 id="modalTitulo">Nueva Operación</h3>
+            <button type="button" id="btnCerrarFormulario" class="btn-cerrar-x">&times;</button>
+        </div>
+
+        <form id="formOperacion" class="form-modal-cuerpo">
+            <div class="grupo-campo">
+                <label id="lblCompania" for="selectCompania">Compañía / Convenio:</label>
+                <select id="selectCompania" required></select>
+            </div>
+
+            <div class="grupo-campo">
+                <label id="lblReferencia" for="inputReferencia">Número o Referencia:</label>
+                <input type="text" id="inputReferencia" required>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="inputCliente">Nombre del Cliente (Opcional):</label>
+                <input type="text" id="inputCliente" placeholder="Público General">
+            </div>
+
+            <div class="grupo-campo">
+                <label for="inputMonto">Monto a pagar ($):</label>
+                <input type="number" id="inputMonto" required>
+            </div>
+
+            <div class="acciones-modal">
+                <button type="submit" class="btn-primario-azul">Continuar a Confirmación</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ==========================================
+     2. MODAL DE CONFIRMACIÓN (REVISIÓN PREVIA)
+     ========================================== -->
+<div id="modalConfirmar" class="modal-overlay" style="display: none;">
+    <div class="modal-card-transaccion">
+        <div class="modal-header-barra">
+            <h3>Confirmar Operación</h3>
+        </div>
+
+        <div class="cuerpo-confirmacion">
+            <div id="resumenDatos" class="caja-resumen-datos"></div>
+
+            <div class="acciones-modal">
+                <button type="button" id="btnCorregir" class="btn-secundario-gris">Corregir</button>
+                <button type="button" id="btnEjecutarTransaccion" class="btn-primario-azul">Confirmar y Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================
+     3. MODAL DE ÉXITO (COMPROBANTE TÉRMICO)
+     ========================================== -->
+<div id="modalExito" class="modal-overlay" style="display: none;">
+    <div class="modal-card-transaccion">
+        <div class="modal-header-barra">
+            <h3>Comprobante Emitido</h3>
+        </div>
+
+        <div class="cuerpo-ticket">
+            <div id="detalleComprobante" class="recibo-transaccion-cuerpo"></div>
+
+            <button type="button" id="btnFinalizar" class="btn-primario-azul" style="width: 100%; margin-top: 14px;">
+                Aceptar y Finalizar
+            </button>
+        </div>
+    </div>
+</div>

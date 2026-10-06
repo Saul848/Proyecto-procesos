@@ -32,6 +32,7 @@ const reciboDetalle = document.getElementById("reciboDetalle");
 const btnCerrarModal = document.getElementById("btnCerrarModal");
 const lblFolioVenta = document.getElementById("lblFolioVenta");
 const idCajaSeleccionada = document.getElementById('selectCaja').value; // Tomará "1" o "2"
+const btnTransacciones = document.getElementById("btnTransacciones");
 
 document.addEventListener("DOMContentLoaded", () => {
     verificarEstadoCaja();
@@ -70,49 +71,27 @@ function configurarEventos() {
     });
 
     inputMontoRecibido.addEventListener("input", calcularCambio);
-    btnRegistrarPago.addEventListener("click", () => {
 
-        // 1. Obtenemos la caja seleccionada del menú desplegable
-        const idCajaSeleccionada = document.getElementById('selectCaja').value;
-        
-        // 2. Armamos el objeto con todos los datos incluyendo el método de pago
-        const datosVenta = {
-            idEmpleado: "1",               // O tu variable dinámica de empleado
-            idCaja: idCajaSeleccionada,    // "1" o "2" según el menú
-            metodoPago: metodoPago,        // <--- Aquí viaja "Efectivo" o "Tarjeta"
-            items: itemsCuenta.map((i) => ({
-                idProducto: i.id,
-                cantidad: i.cantidad
-        }))
-        };
+    // Conectar el botón de cobro directamente a procesarVenta
+    btnRegistrarPago.addEventListener("click", procesarVenta);
 
-        // 3. Enviamos los datos al servidor
-        fetch('/api/ventas/confirmar', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datosVenta)
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.ok) {
-                console.log(`Venta registrada con éxito con tarjeta/efectivo en la Caja ${idCajaSeleccionada}`);
-                // Aquí muestras tu ticket o modal de éxito
-            } else {
-                alert(data.mensaje);
-            }
-        })
-        .catch(err => console.error("Error:", err));
+    btnCerrarModal.addEventListener("click", () => {
+        modalTicket.style.display = "none";
+        itemsCuenta = [];
+        inputMontoRecibido.value = "";
+        inputCambio.value = "$0.00";
+        actualizarTicket();
+        cargarFolioActual();
+        cargarDatos(); // Corregido: se llama a cargarDatos()
     });
-        btnCerrarModal.addEventListener("click", () => {
-            modalTicket.style.display = "none";
-            itemsCuenta = [];
-            inputMontoRecibido.value = "";
-            inputCambio.value = "$0.00";
-            actualizarTicket();
-            cargarFolioActual();
-            cargarProductos();
+
+    if (btnTransacciones) {
+        btnTransacciones.addEventListener("click", () => {
+            window.location.href = "transacciones.html";
         });
     }
+}
+
 
 /**
  * Obtiene del servidor el siguiente número de folio para mostrarlo en pantalla.
@@ -276,14 +255,14 @@ function renderizarTabla() {
             <td>
                 <input type="checkbox" 
                        ${estaMarcado ? "checked" : ""} 
-                       ${stockActual <= 0 ? "disabled" : ""}
+                       ${stockActual <= 0 ? "disabled" : ""} 
                        onchange="toggleSeleccion('${idProd}', this.checked)">
             </td>
-            <td style="text-transform: capitalize; text-align: left; padding-left: 10px;">${prod.nombre}</td>
-            <td>$${precioActual.toFixed(0)}</td>
-            <td><span class="${claseOferta}">${textoOferta}</span></td>
-            <td><span class="badge-stock">${stockActual}</span></td>
-            <td><span class="badge-id">${idProd}</span></td>
+            <td style="font-weight: 500; text-transform: capitalize;">${prod.nombre}</td>
+            <td style="font-weight: 600;">$${precioActual.toFixed(0)}</td>
+            <td><span class="badge-pildora">${textoOferta}</span></td>
+            <td><span class="badge-pildora">${stockActual}</span></td>
+            <td style="color: #64748b; font-weight: 600;">${idProd}</td>
         `;
 
         tablaProductosCuerpo.appendChild(tr);
@@ -535,42 +514,47 @@ async function procesarVenta() {
         btnRegistrarPago.textContent = "Registrar pago";
     }
 }
-
 /**
  * Muestra el modal con el desglose del comprobante de venta emitido por el backend.
  * @param {Object} ticket - Datos de la venta devueltos por el servidor.
  */
 function mostrarTicketModal(ticket) {
-    const fecha = new Date(ticket.fecha).toLocaleString();
-    const items = Array.isArray(ticket.items.item) ? ticket.items.item : [ticket.items.item];
+    if (!ticket) return;
 
-    let itemsHtml = items.map((it) => `
-        <div style="display:flex; justify-content:space-between; margin:3px 0;">
-            <span>${it.nombre} (x${it.cantidad})</span>
-            <span>$${Number(it.subtotal).toFixed(2)}</span>
+    const fecha = ticket.fecha ? new Date(ticket.fecha).toLocaleString() : new Date().toLocaleString();
+    const itemsRaw = ticket.items?.item || ticket.items || [];
+    const items = Array.isArray(itemsRaw) ? itemsRaw : [itemsRaw];
+
+    const itemsHtml = items.map((it) => `
+        <div class="ticket-linea-item">
+            <span>${it.nombre || 'Producto'} (x${it.cantidad || 1})</span>
+            <span>$${Number(it.subtotal || 0).toFixed(2)}</span>
         </div>
     `).join("");
 
     reciboDetalle.innerHTML = `
-        <div style="text-align: center; margin-bottom: 6px;">
-            <strong>TIENDA / COMPROBANTE</strong><br>
-            Folio: #${ticket["@_id"]}<br>
-            ${fecha}
+        <div class="ticket-encabezado">
+            <strong>CADENA COMERCIAL OXXO</strong>
+            <span>Folio: #${ticket["@_id"] || ticket.id || ticket.folio || '0'}</span>
+            <small>${fecha}</small>
         </div>
-        <hr style="border:none; border-top:1px dashed #aaa; margin:6px 0;">
-        ${itemsHtml}
-        <hr style="border:none; border-top:1px dashed #aaa; margin:6px 0;">
-        <div style="display:flex; justify-content:space-between; font-weight:bold;">
+        <hr class="ticket-separador">
+        <div class="ticket-cuerpo-items">
+            ${itemsHtml}
+        </div>
+        <hr class="ticket-separador">
+        <div class="ticket-linea-total">
             <span>TOTAL:</span>
-            <span>$${Number(ticket.total).toFixed(2)}</span>
+            <span>$${Number(ticket.total || 0).toFixed(2)} MXN</span>
         </div>
-        <div style="font-size:11px; margin-top:4px; color:#666;">
+        <div class="ticket-pie-metodo">
             Método: ${metodoPago}
         </div>
     `;
 
     modalTicket.style.display = "flex";
 }
+ 
 /* HISTORIAL Y REIMPRESIÓN DE TICKETS */
 
 let ventasHistorialCache = [];

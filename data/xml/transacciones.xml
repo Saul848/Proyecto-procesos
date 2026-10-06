@@ -1,0 +1,79 @@
+<transacciones>
+  <transaccion id="1">
+    <tipo>RECARGA</tipo>
+    <companiaServicio>Telcel</companiaServicio>
+    <referencia>2281109277</referencia>
+    <cliente>rubi</cliente>
+    <monto>40</monto>
+    <idEmpleado>1</idEmpleado>
+    <fecha>5/10/2026</fecha>
+    <hora>8:55:57 p.m.</hora>
+    <estado>EXITOSA</estado>
+  </transaccion>
+  <transaccion id="2">
+    <tipo>SERVICIO</tipo>
+    <companiaServicio>CFE (Luz)</companiaServicio>
+    <referencia>123456780</referencia>
+    <cliente>rubi</cliente>
+    <monto>212</monto>
+    <idEmpleado>1</idEmpleado>
+    <fecha>5/10/2026</fecha>
+    <hora>9:01:22 p.m.</hora>
+    <estado>EXITOSA</estado>
+  </transaccion>
+  <transaccion id="3">
+    <tipo>SERVICIO</tipo>
+    <companiaServicio>CFE (Luz)</companiaServicio>
+    <referencia>123456789</referencia>
+    <cliente>rafael</cliente>
+    <monto>245</monto>
+    <idEmpleado>1</idEmpleado>
+    <fecha>5/10/2026</fecha>
+    <hora>9:05:32 p.m.</hora>
+    <estado>EXITOSA</estado>
+  </transaccion>
+  <transaccion id="4">
+    <tipo>RECARGA</tipo>
+    <companiaServicio>Telcel</companiaServicio>
+    <referencia>1234567891</referencia>
+    <cliente>alex</cliente>
+    <monto>100</monto>
+    <idEmpleado>1</idEmpleado>
+    <fecha>5/10/2026</fecha>
+    <hora>9:18:55 p.m.</hora>
+    <estado>EXITOSA</estado>
+  </transaccion>
+  <transaccion id="5">
+    <tipo>SERVICIO</tipo>
+    <companiaServicio>CFE (Luz)</companiaServicio>
+    <referencia>1234561234</referencia>
+    <cliente>yareli</cliente>
+    <monto>357</monto>
+    <idEmpleado>1</idEmpleado>
+    <fecha>5/10/2026</fecha>
+    <hora>9:19:27 p.m.</hora>
+    <estado>EXITOSA</estado>
+  </transaccion>
+  <transaccion id="6">
+    <tipo>RECARGA</tipo>
+    <companiaServicio>Telcel</companiaServicio>
+    <referencia>1234567899</referencia>
+    <cliente>rubi</cliente>
+    <monto>50</monto>
+    <idEmpleado>1</idEmpleado>
+    <fecha>5/10/2026</fecha>
+    <hora>11:58:54 p.m.</hora>
+    <estado>EXITOSA</estado>
+  </transaccion>
+  <transaccion id="7">
+    <tipo>SERVICIO</tipo>
+    <companiaServicio>CFE (Luz)</companiaServicio>
+    <referencia>123456789</referencia>
+    <cliente>rafael</cliente>
+    <monto>471.00</monto>
+    <idEmpleado>1</idEmpleado>
+    <fecha>5/10/2026</fecha>
+    <hora>11:59:14 p.m.</hora>
+    <estado>EXITOSA</estado>
+  </transaccion>
+</transacciones>
