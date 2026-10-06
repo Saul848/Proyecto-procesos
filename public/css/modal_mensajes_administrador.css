@@ -1,95 +1,197 @@
-/* Título del modal de mensajes */
+/* =========================================================
+   MODAL DE MENSAJES
+   Fuente general: DM Sans
+   ========================================================= */
+
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1000;
+
+    font-family: "DM Sans", sans-serif;
 }
+
+
+/* =========================================================
+   CAJA DEL MODAL
+   ========================================================= */
 
 #checkMensajes .modal-caja {
-  background: #F2C94C;
-  padding: 25px;
-  border-radius: 14px;
-  width: 420px;
-  max-width: 90vw;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 0 10px #FBEFD1;
+    background: #F2C94C;
+
+    padding: 25px;
+    border-radius: 14px;
+
+    width: 420px;
+    max-width: 90vw;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 0 0 0 10px #FBEFD1;
+
+    font-family: "DM Sans", sans-serif;
 }
+
+
+/* =========================================================
+   TÍTULO DEL MODAL
+   ========================================================= */
 
 #checkMensajes h3 {
-  color: #3D3426;
-  margin: 0 0 15px 0;
-  font-size: 1.2rem;
+    color: #3D3426;
+
+    margin: 0 0 15px 0;
+    font-size: 1.2rem;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700; /* Bold */
 }
+
+
+/* =========================================================
+   PANEL DE MENSAJES
+   ========================================================= */
 
 #checkMensajes .panel-mensajes {
-  display: flex;
-  gap: 15px;
+    display: flex;
+    gap: 15px;
+
+    font-family: "DM Sans", sans-serif;
 }
+
+
+/* =========================================================
+   LISTA DE MENSAJES
+   ========================================================= */
 
 #checkMensajes .lista-mensajes {
-  flex: 1;
-  background: white;
-  border-radius: 8px;
-  padding: 10px;
-  max-height: 250px;
-  overflow-y: auto;
+    flex: 1;
+
+    background: white;
+
+    border-radius: 8px;
+    padding: 10px;
+
+    max-height: 250px;
+    overflow-y: auto;
+
+    font-family: "DM Sans", sans-serif;
 }
 
-/* Fila de cada mensaje, con el botón de eliminar al lado */
+
+/* =========================================================
+   CADA MENSAJE
+   ========================================================= */
+
 .item-mensaje {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer;
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px;
+
+    border-bottom: 1px solid #ddd;
+
+    cursor: pointer;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
 }
+
+
+/* Hover de cada mensaje */
 
 #checkMensajes .item-mensaje:hover {
     background: #FBEFD1;
 }
 
+
+/* Mensaje seleccionado */
+
 #checkMensajes .item-mensaje.activo {
     background: #F2C94C;
-    font-weight: bold;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
 }
 
+
+/* =========================================================
+   CONTENIDO DEL MENSAJE
+   ========================================================= */
 
 #checkMensajes .contenido-mensaje,
 #checkMensajes .sin-mensajes {
     flex: 1;
+
     background: #3D3426;
     color: white;
+
     border-radius: 8px;
+
     padding: 20px;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     text-align: center;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
 }
+
+
+/* =========================================================
+   CONTENEDOR DEL BOTÓN
+   ========================================================= */
 
 #checkMensajes #contenedorBoton {
     margin-top: 15px;
+
     text-align: right;
+
+    font-family: "DM Sans", sans-serif;
 }
+
+
+/* =========================================================
+   BOTÓN CERRAR
+   ========================================================= */
 
 #btnCerrarModalMensajes {
     background: #3D3426;
     color: white;
+
     border: none;
+
     padding: 10px 20px;
+
     border-radius: 8px;
-    font-weight: bold;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
+
     cursor: pointer;
 }
+
+
+/* Hover del botón */
 
 #btnCerrarModalMensajes:hover {
     opacity: 0.85;

@@ -1,628 +1,1071 @@
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+   ========================================================= */
+
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "DM Sans", sans-serif;
 }
 
-/* Resetear html y body para ocupar todo el alto/ancho del viewport */
-html, body {
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  background-color: #f0f2f5;
-  overflow-x: hidden; /* Evita scroll horizontal */
+
+/* =========================================================
+   HTML Y BODY
+   ========================================================= */
+
+html,
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
+    background-color: #f0f2f5;
+
+    overflow-x: hidden;
 }
 
-/* El contenedor principal ocupa toda la pantalla */
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
 .main-container {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 0; /* Sin esquinas redondeadas externas */
-  display: flex;
-  flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+
+    background-color: #ffffff;
+
+    padding: 20px;
+
+    border-radius: 0;
+
+    display: flex;
+    flex-direction: column;
 }
 
-/* Encabezado Principal */
+
+/* =========================================================
+   ENCABEZADO PRINCIPAL
+   ========================================================= */
+
 .header {
-  display: flex;
-  justify-content: space-between; /* Separa el título a la izquierda y los botones a la derecha */
-  align-items: center; /* Alinea todo verticalmente al centro */
-  background-color: #f2c94c;
-  padding: 16px 24px;
-  border-radius: 6px;
-  margin-bottom: 20px;
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #f2c94c;
+
+    padding: 16px 24px;
+
+    border-radius: 6px;
+
+    margin-bottom: 20px;
 }
+
 
 .header h1 {
-  font-size: 20px;
-  color: #1a1a1a;
-  margin: 0;
+    font-size: 20px;
+
+    color: #1a1a1a;
+
+    margin: 0;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700; /* Bold */
 }
 
-/* Agrupador de botones */
+
+/* =========================================================
+   AGRUPADOR DE BOTONES
+   ========================================================= */
+
 #seccion-botones {
-  display: flex;
-  gap: 50px; /* Espacio entre el botón de mensajes y cerrar sesión */
+    display: flex;
+
+    gap: 50px;
 }
 
-/* Estilos de los botones del Header */
+
+/* =========================================================
+   BOTONES DEL HEADER
+   ========================================================= */
+
 .header .icon-btn {
-  background-color: #ffffff;
-  border: 1px solid #dcdcdc;
-  padding: 8px 14px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s ease;
+    background-color: #ffffff;
+
+    border: 1px solid #dcdcdc;
+
+    padding: 8px 14px;
+
+    border-radius: 4px;
+
+    font-size: 14px;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 500; /* Medium */
+
+    color: #333;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
 }
+
 
 .header .icon-btn:hover {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
-#btn-cerrar-sesion img{
-  filter: invert(20%) sepia(90%) saturate(5000%) hue-rotate(350deg);
+
+/* =========================================================
+   BOTÓN CERRAR SESIÓN
+   ========================================================= */
+
+#btn-cerrar-sesion img {
+    filter: invert(20%) sepia(90%) saturate(5000%) hue-rotate(350deg);
 }
+
 
 #btn-cerrar-sesion:hover {
-  background: #fecaca;
+    background: #fecaca;
 }
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
 
 #icon-logo {
-  width: 50px;
-  height: 50px;
-  vertical-align: middle;
-  margin-left: 8px;
+    width: 50px;
+    height: 50px;
+
+    vertical-align: middle;
+
+    margin-left: 8px;
 }
 
-/* grid para que la columna derecha se alinee arriba */
+
+/* =========================================================
+   GRID PRINCIPAL
+   ========================================================= */
+
 .content-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
-  align-items: start; /* <--- Agrega esto */
+    display: grid;
+
+    grid-template-columns: 2fr 1fr;
+
+    gap: 20px;
+
+    align-items: start;
 }
 
 
+/* =========================================================
+   SECCIONES
+   ========================================================= */
 
-/* 4. Mapear las secciones para que se expandan completamente */
 .left-section,
 .right-section {
-  padding: 20px;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
+    padding: 20px;
+
+    border-radius: 6px;
+
+    display: flex;
+    flex-direction: column;
 }
 
-.left-section{
-  background-color: #211c15;
+
+.left-section {
+    background-color: #211c15;
 }
 
-.right-section{
-  background-color: #332402;
+
+.right-section {
+    background-color: #332402;
 }
+
+
+/* =========================================================
+   BARRA DE BÚSQUEDA
+   ========================================================= */
 
 .search-bar {
-  display: flex;
-  align-items: center;
-  justify-content:space-around;
-  gap: 10px;
-  margin-bottom: 20px;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-around;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
 }
+
 
 .search-bar h2 {
-  font-size: 18px;
-  color: #ffffff;
-  font-weight: normal;
+    font-size: 18px;
+
+    color: #ffffff;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
 }
+
 
 .search-bar input {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  font-size: 13px;
-  width: 180px;
+    padding: 8px 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 4px;
+
+    outline: none;
+
+    font-size: 13px;
+
+    width: 180px;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
 }
+
+
+/* =========================================================
+   BOTÓN PRINCIPAL
+   ========================================================= */
 
 .btn-primary {
-  background-color: #f2c94c;
-  color: black;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 13px;
-  transition: background-color 0.2s;
+    background-color: #f2c94c;
+
+    color: black;
+
+    border: none;
+
+    padding: 8px 16px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
+
+    font-size: 13px;
+
+    transition: background-color 0.2s;
 }
+
 
 .btn-primary:hover {
-  background-color: #c49d28;
+    background-color: #c49d28;
 }
 
-/* Estilos para el contenedor y el control select */
+
+/* =========================================================
+   CAMPO DE BÚSQUEDA
+   ========================================================= */
+
 .search-bar .campo {
-  display: flex;
-  align-items: center;
+    display: flex;
+
+    align-items: center;
 }
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
 
 .search-bar select {
-  padding: 4px 12px; /* Reducimos el padding superior e inferior de 8px a 4px */
-  height: 35px;
-  width: 50px;
-  line-height: 1.2;  /* Asegura un interlineado adecuado */
-  box-sizing: border-box; /* Garantiza que padding e height no entren en conflicto */
-  border: px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  font-size: 12px;
-  background-color: white;
-  color: #333;
-  cursor: pointer;
-  height: 35px; /* Mantiene la misma altura que los inputs */
+    padding: 4px 12px;
+
+    height: 35px;
+
+    width: 50px;
+
+    line-height: 1.2;
+
+    box-sizing: border-box;
+
+    border: 1px solid #ccc;
+
+    border-radius: 4px;
+
+    outline: none;
+
+    font-size: 12px;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
+
+    background-color: white;
+
+    color: #333;
+
+    cursor: pointer;
 }
+
 
 #selec-categoria-producto {
-  font-size: 13px; /* Cambia al tamaño que desees */
-  height: 35px;
-  width: 250px;
+    font-size: 13px;
+
+    height: 35px;
+
+    width: 250px;
+
+    font-family: "DM Sans", sans-serif;
 }
 
 
-/* Ajuste específico para el botón de agregar '+' */
+/* =========================================================
+   BOTÓN AGREGAR CATEGORÍA
+   ========================================================= */
+
 #btn-registrar-categoria {
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 16px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    padding: 8px 12px;
+
+    border-radius: 4px;
+
+    font-size: 16px;
+
+    line-height: 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
 }
 
 
-/*  Scroll interno para la lista de productos */
+/* =========================================================
+   LISTA DE PRODUCTOS
+   ========================================================= */
+
 .product-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  flex: 1;
-  overflow-y: auto; /* Mantiene la lista scrolleable si hay muchos productos */
-  max-height: calc(100vh - 180px); /* Ajusta según el header */
-  padding-right: 6px;
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    max-height: calc(100vh - 180px);
+
+    padding-right: 6px;
 }
 
 
 .product-list p {
-  background-color: rgba(239, 68, 68, 0.15); /* Rojo transparente */
-  color: #fca5a5;                             /* Rojo claro para buen contraste */
-  border: 1px solid rgba(239, 68, 68, 0.3);  /* Borde tenue */
+    background-color: rgba(239, 68, 68, 0.15);
+
+    color: #fca5a5;
+
+    border: 1px solid rgba(239, 68, 68, 0.3);
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
 }
 
-/* CSS */
+
+/* =========================================================
+   PRODUCTO
+   ========================================================= */
+
 .product-item {
-  background-color: #dee1e6;
-  padding: 12px 18px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border-left: 5px solid #28a745; /* Verde por defecto */
+    background-color: #dee1e6;
+
+    padding: 12px 18px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    border-left: 5px solid #28a745;
 }
 
-/* Alerta de bajo stock */
+
+/* =========================================================
+   ALERTA DE BAJO STOCK
+   ========================================================= */
+
 .product-item.alert-product {
-  background-color: #dee1e6;
-  border-left-color: #dc3545; /* Rojo para alerta */
+    background-color: #dee1e6;
+
+    border-left-color: #dc3545;
 }
+
+
+/* =========================================================
+   INFORMACIÓN DEL PRODUCTO
+   ========================================================= */
 
 .product-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
 }
+
 
 .product-id {
-  color: #6c757d;
-  font-weight: bold;
+    color: #6c757d;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700; /* Bold */
 }
+
 
 .product-name {
-  font-weight: 600;
-  color: #212529;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
+
+    color: #212529;
 }
+
 
 .product-meta {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    font-family: "DM Sans", sans-serif;
 }
 
-/* Etiquetas de stock (Badges) */
+
+/* =========================================================
+   BADGES DE STOCK
+   ========================================================= */
+
 .stock-badge {
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: bold;
+    padding: 4px 10px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
 }
+
 
 .stock-ok {
-  background-color: #e2f0d9;
-  color: #2b6a2b;
+    background-color: #e2f0d9;
+
+    color: #2b6a2b;
 }
+
 
 .stock-low {
-  background-color: #f8d7da;
-  color: #721c24;
+    background-color: #f8d7da;
+
+    color: #721c24;
 }
+
+
+/* =========================================================
+   ACCIONES DEL PRODUCTO
+   ========================================================= */
 
 .product-actions {
-  display: flex;
-  gap: 8px;
+    display: flex;
+
+    gap: 8px;
 }
+
+
+/* =========================================================
+   BOTONES CON ICONO
+   ========================================================= */
 
 .icon-btn {
-  background: #f1f3f5;
-  border: none;
-  padding: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
+    background: #f1f3f5;
+
+    border: none;
+
+    padding: 8px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition: background 0.2s;
+
+    font-family: "DM Sans", sans-serif;
 }
 
+
 .icon-btn:hover {
-  background: #e9ecef;
+    background: #e9ecef;
 }
+
+
+/* =========================================================
+   BOTÓN ELIMINAR
+   ========================================================= */
 
 .btn-eliminar {
     background: #C74A30;
 }
 
-.btn-eliminar:hover, .btn-editar:hover {
+
+.btn-eliminar:hover,
+.btn-editar:hover {
     background: #fecaca;
 }
+
+
+/* =========================================================
+   ICONOS
+   ========================================================= */
 
 .icon-btn img {
     width: 20px;
     height: 20px;
+
     object-fit: contain;
 }
 
+
+/* =========================================================
+   TÍTULOS DE BOX
+   ========================================================= */
+
 .box h2 {
-  font-size: 18px;
-  color: white;
-  font-weight: normal;
-  text-align: center;
+    font-size: 18px;
+
+    color: white;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
+
+    text-align: center;
 }
 
-/* --- Estilos para la sección de modificación (info-box) --- */
+
+/* =========================================================
+   SECCIÓN DE MODIFICACIÓN
+   ========================================================= */
 
 #info-box {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background-color: color-mix(in srgb, #494030 90%, white);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 25px;
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    background-color: color-mix(in srgb, #494030 90%, white);
+
+    padding: 20px;
+
+    border-radius: 8px;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    margin-bottom: 25px;
 }
+
+
+/* =========================================================
+   CONTENEDOR DE MODIFICACIÓN
+   ========================================================= */
 
 .cont-mod {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
 }
 
+
+/* =========================================================
+   LABELS DE MODIFICACIÓN
+   ========================================================= */
+
 .cont-mod label {
-  font-size: 13px;
-  font-weight: bold;
-  color: #ffffff; /* Texto en blanco para alto contraste */
+    font-size: 13px;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
+
+    color: #ffffff;
 }
+
+
+/* =========================================================
+   INPUTS Y SELECTS DE MODIFICACIÓN
+   ========================================================= */
 
 .cont-mod input,
 .cont-mod select {
-  padding: 8px 14px;
-  border: 1px solid #ced4da;
-  border-radius: 20px; /* Bordes redondeados estilo píldora como en la interfaz */
-  font-size: 13px;
-  outline: none;
-  width: 100%;
-  color: #333;
-  background-color: #ffffff;
+    padding: 8px 14px;
+
+    border: 1px solid #ced4da;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    outline: none;
+
+    width: 100%;
+
+    color: #333;
+
+    background-color: #ffffff;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
 }
+
 
 .cont-mod input:focus,
 .cont-mod select:focus {
-  border-color: #f2c94c; /* Tono dorado/amarillo en lugar de morado */
+    border-color: #f2c94c;
 }
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
 
 .cont-mod textarea {
-  padding: 10px 14px;
-  border: 1px solid #ced4da;
-  border-radius: 12px;
-  font-size: 13px;
-  outline: none;
-  width: 100%;
-  resize: vertical;
-  max-height: 150px;
-  font-family: inherit;
-  color: #333;
-  background-color: #ffffff;
+    padding: 10px 14px;
+
+    border: 1px solid #ced4da;
+
+    border-radius: 12px;
+
+    font-size: 13px;
+
+    outline: none;
+
+    width: 100%;
+
+    resize: vertical;
+
+    max-height: 150px;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400; /* Regular */
+
+    color: #333;
+
+    background-color: #ffffff;
 }
+
 
 .cont-mod textarea:focus {
-  border-color: #f2c94c; /* Tono dorado/amarillo en lugar de morado */
+    border-color: #f2c94c;
 }
 
-/* Estilo para mostrar el ID estático */
+
+/* =========================================================
+   ID DEL PRODUCTO
+   ========================================================= */
+
 #mod-id {
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    flex-direction: row;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-bottom: 8px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
+
 
 .label-id-producto {
-  font-weight: bold;
-  color: #f2c94c; /* Amarillo/dorado representativo del sistema */
-  font-size: 14px;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700; /* Bold */
+
+    color: #f2c94c;
+
+    font-size: 14px;
 }
 
-.cont-mod-botones{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+
+/* =========================================================
+   BOTONES DE MODIFICACIÓN
+   ========================================================= */
+
+.cont-mod-botones {
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: center;
 }
 
-/* Botones dentro de contenedor de botones */
+
 .cont-mod-botones button {
-  background-color: #f2c94c;
-  margin: 8px 8px 8px 8px;
-  width: 40%;
-  color: #000;
+    background-color: #f2c94c;
+
+    margin: 8px 8px 8px 8px;
+
+    width: 40%;
+
+    color: #000;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
 }
+
+
+/* =========================================================
+   REGISTRO
+   ========================================================= */
 
 #register-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
 }
 
-/* ============================= */
-/* Adaptación a dispositivos móviles */
-/* ============================= */
+
+/* =========================================================
+   ADAPTACIÓN A DISPOSITIVOS MÓVILES
+   ========================================================= */
 
 @media (max-width: 768px) {
 
-  /* Contenedor principal */
-  .main-container {
-    padding: 10px;
-  }
+    /* Contenedor principal */
 
-  /* Encabezado */
-  .header {
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
-    text-align: center;
-  }
+    .main-container {
+        padding: 10px;
+    }
 
-  .header h1 {
-    font-size: 18px;
-  }
 
-  #icon-logo {
-    width: 40px;
-    height: 40px;
-  }
+    /* Encabezado */
 
-  /* Botones del encabezado */
-  #seccion-botones {
-    width: 100%;
-    justify-content: center;
-    gap: 15px;
-  }
+    .header {
+        flex-direction: column;
 
-  .header .icon-btn {
-    padding: 8px 12px;
-  }
+        gap: 15px;
 
-  /* Grid principal */
-  .content-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
+        padding: 15px;
 
-  /* Secciones */
-  .left-section,
-  .right-section {
-    padding: 15px;
-  }
+        text-align: center;
+    }
 
-  /* Barra de búsqueda */
-  .search-bar {
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
-    gap: 10px;
-  }
 
-  .search-bar h2 {
-    text-align: center;
-    font-size: 17px;
-  }
+    .header h1 {
+        font-size: 18px;
+    }
 
-  .search-bar input {
-    width: 100%;
-  }
 
-  .search-bar .campo {
-    width: 100%;
-  }
+    #icon-logo {
+        width: 40px;
+        height: 40px;
+    }
 
-  .search-bar select {
-    width: 100%;
-  }
 
-  #selec-categoria-producto {
-    width: 100%;
-  }
+    /* Botones del encabezado */
 
-  /* Botón registrar categoría */
-  #btn-registrar-categoria {
-    width: 45px;
-    align-self: center;
-  }
+    #seccion-botones {
+        width: 100%;
 
-  /* Lista de productos */
-  .product-list {
-    max-height: none;
-    overflow-y: visible;
-  }
+        justify-content: center;
 
-  /* Producto */
-  .product-item {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-    padding: 12px;
-  }
+        gap: 15px;
+    }
 
-  .product-info {
-    flex-wrap: wrap;
-  }
 
-  .product-meta {
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+    .header .icon-btn {
+        padding: 8px 12px;
+    }
 
-  /* Acciones del producto */
-  .product-actions {
-    justify-content: flex-end;
-  }
 
-  /* Panel de información */
-  #info-box {
-    padding: 15px;
-  }
+    /* Grid principal */
 
-  /* ID del producto */
-  #mod-id {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
+    .content-grid {
+        grid-template-columns: 1fr;
 
-  /* Botones del formulario */
-  .cont-mod-botones {
-    flex-direction: column;
-    align-items: center;
-  }
+        gap: 15px;
+    }
 
-  .cont-mod-botones button {
-    width: 80%;
-    margin: 5px;
-  }
 
-  /* Registro */
-  #register-box {
-    width: 100%;
-  }
+    /* Secciones */
+
+    .left-section,
+    .right-section {
+        padding: 15px;
+    }
+
+
+    /* Barra de búsqueda */
+
+    .search-bar {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        justify-content: center;
+
+        gap: 10px;
+    }
+
+
+    .search-bar h2 {
+        text-align: center;
+
+        font-size: 17px;
+    }
+
+
+    .search-bar input {
+        width: 100%;
+    }
+
+
+    .search-bar .campo {
+        width: 100%;
+    }
+
+
+    .search-bar select {
+        width: 100%;
+    }
+
+
+    #selec-categoria-producto {
+        width: 100%;
+    }
+
+
+    /* Botón registrar categoría */
+
+    #btn-registrar-categoria {
+        width: 45px;
+
+        align-self: center;
+    }
+
+
+    /* Lista de productos */
+
+    .product-list {
+        max-height: none;
+
+        overflow-y: visible;
+    }
+
+
+    /* Producto */
+
+    .product-item {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 12px;
+
+        padding: 12px;
+    }
+
+
+    .product-info {
+        flex-wrap: wrap;
+    }
+
+
+    .product-meta {
+        justify-content: space-between;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+    }
+
+
+    /* Acciones del producto */
+
+    .product-actions {
+        justify-content: flex-end;
+    }
+
+
+    /* Panel de información */
+
+    #info-box {
+        padding: 15px;
+    }
+
+
+    /* ID del producto */
+
+    #mod-id {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 5px;
+    }
+
+
+    /* Botones del formulario */
+
+    .cont-mod-botones {
+        flex-direction: column;
+
+        align-items: center;
+    }
+
+
+    .cont-mod-botones button {
+        width: 80%;
+
+        margin: 5px;
+    }
+
+
+    /* Registro */
+
+    #register-box {
+        width: 100%;
+    }
 }
 
 
-/* ============================= */
-/* Pantallas muy pequeñas */
-/* ============================= */
+/* =========================================================
+   PANTALLAS MUY PEQUEÑAS
+   ========================================================= */
 
 @media (max-width: 480px) {
 
-  .main-container {
-    padding: 5px;
-  }
+    .main-container {
+        padding: 5px;
+    }
 
-  .header {
-    padding: 12px;
-  }
 
-  .header h1 {
-    font-size: 16px;
-  }
+    .header {
+        padding: 12px;
+    }
 
-  #seccion-botones {
-    flex-direction: column;
-    gap: 8px;
-  }
 
-  .header .icon-btn {
-    width: 100%;
-  }
+    .header h1 {
+        font-size: 16px;
+    }
 
-  .left-section,
-  .right-section {
-    padding: 10px;
-  }
 
-  .search-bar h2 {
-    font-size: 16px;
-  }
+    #seccion-botones {
+        flex-direction: column;
 
-  .product-item {
-    padding: 10px;
-  }
+        gap: 8px;
+    }
 
-  .product-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
 
-  .product-meta {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    .header .icon-btn {
+        width: 100%;
+    }
 
-  .product-actions {
-    justify-content: center;
-  }
 
-  .product-actions .icon-btn {
-    padding: 7px;
-  }
+    .left-section,
+    .right-section {
+        padding: 10px;
+    }
 
-  .icon-btn img {
-    width: 18px;
-    height: 18px;
-  }
 
-  .cont-mod-botones button {
-    width: 100%;
-  }
+    .search-bar h2 {
+        font-size: 16px;
+    }
+
+
+    .product-item {
+        padding: 10px;
+    }
+
+
+    .product-info {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 5px;
+    }
+
+
+    .product-meta {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .product-actions {
+        justify-content: center;
+    }
+
+
+    .product-actions .icon-btn {
+        padding: 7px;
+    }
+
+
+    .icon-btn img {
+        width: 18px;
+        height: 18px;
+    }
+
+
+    .cont-mod-botones button {
+        width: 100%;
+    }
 }
+
+
+/* =========================================================
+   NAVEGACIÓN DEL ADMINISTRADOR
+   ========================================================= */
+
 .register-box .admin-nav {
     display: flex;
+
     flex-direction: column;
+
     gap: 10px;
+
     margin-top: 20px;
+
     padding-top: 20px;
+
     border-top: 1px solid #e2e8f0;
+
+    font-family: "DM Sans", sans-serif;
 }
+
 
 .register-box .admin-nav .btn-primary {
     width: 100%;
+
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600; /* Semi-bold */
 }
