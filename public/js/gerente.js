@@ -100,7 +100,8 @@ document.addEventListener("DOMContentLoaded", async function(){
             seccionEmpDom.innerHTML+=`
                 <div class="panelEmpleado" id="panelEmpleado${id}" onclick="iluminarEmpleado(${id})">
                     <div class="cajaTexto">
-                        <div class="emp#">${"Empleado# "+id}</div>
+                        <div class="emp#">${"Empleado #"+id}</div>
+                        <br>
                         <div class="nombreCompleto">${nombre}</div>
                     </div>
                     <button class="btnEliminar" onclick="eliminarEmpleado(${id})">E<img src="" alt=""></button>
