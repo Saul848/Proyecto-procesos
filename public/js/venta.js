@@ -11,6 +11,7 @@ let itemsCuenta = [];       // Productos seleccionados en el carrito
 let ofertasActivas = [];    // Ofertas vigentes obtenidas de /api/ofertas
 let metodoPago = "Efectivo";
 let cajaAbierta = true;
+let folioVentaActual = null;
 
 // Referencias del DOM
 const tablaProductosCuerpo = document.getElementById("tablaProductosCuerpo");
@@ -675,6 +676,14 @@ function ejecutarReimpresionTicket() {
     ventana.close();
 }
 
+/**
+ * Genera el carrusel de ofertas activas en la parte superior del punto de venta.
+ * 
+ * Genera una tarjeta por cada oferta activa, mostrando el nombre del producto, tipo de promoción
+ * y su precio original.
+ * 
+ * Si no hay ofertas activas, muestra el mensaje "No hay promociones vigentes".
+ */
 function renderizarCarruselOfertas(){
     const pista = document.getElementById("carrusel-pista");
     const vacio = document.getElementById("carrusel-vacio");
@@ -722,6 +731,10 @@ function renderizarCarruselOfertas(){
     });
 }
 
+/**
+ * Boton izquierdo del carrusel.
+ * Desplaza las tarjetas hacia la izquierda.
+ */
 document.getElementById("btnCarruselIzq").addEventListener("click", () => {
     const pista = document.getElementById("carrusel-pista");
     const tarjeta = pista.querySelector(".carrusel-tarjeta");
@@ -734,6 +747,10 @@ document.getElementById("btnCarruselIzq").addEventListener("click", () => {
     }
 });
 
+/**
+ * Botón derecho del carrusel.
+ * Desplaza las tarjetas hacia la derecha.
+ */
 document.getElementById("btnCarruselDer").addEventListener("click", () => {
     const pista = document.getElementById("carrusel-pista");
     const tarjeta = pista.querySelector(".carrusel-tarjeta");
@@ -745,3 +762,111 @@ document.getElementById("btnCarruselDer").addEventListener("click", () => {
         pista.scrollBy({ left: paso * 2, behavior: "smooth" });
     }
 });
+
+/**
+ * Abre el modal para capturar los datos fiscales del cliente (nombre,
+ * dirección, correo y teléfono).
+ */
+function abrirModalFactura() {
+    //toma el folio de la venta actual (se actualiza al registrar pago)
+    folioVentaActual = document.getElementById('lblFolioVenta').textContent.replace(/\D/g, "");
+    document.getElementById('modalFactura').style.display = 'block';
+}
+
+/**
+ * Cierra el modal de datos del cliente ocultándolo de la pantalla.
+ */
+function cerrarModalFactura() {
+    document.getElementById('modalFactura').style.display = 'none';
+}
+
+/**
+ * Envía los datos del cliente y el folio de la venta al servidor.
+ * 
+ * Si el servidor responde ok, muestra la factura generada y cierra el modal.
+ * Si hay error, muestra una alerta con el mensaje del servidor.
+ */
+function generarFactura() {
+    const nombre = document.getElementById('facturaNombre').value;
+    const direccion = document.getElementById('facturaDireccion').value;
+    const correo = document.getElementById('facturaCorreo').value;
+    const telefono = document.getElementById('facturaTelefono').value;
+
+    fetch('/api/ventas/factura', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folio: folioVentaActual, nombre, direccion, correo, telefono })
+    })
+    .then(r => r.json())
+    .then(respuesta => {
+        if (respuesta.ok) {
+            mostrarFactura(respuesta.factura);
+            cerrarModalFactura();
+        } else {
+            alert(respuesta.mensaje || 'Error al generar factura.');
+        }
+    })
+    .catch(() => alert('Error de conexión con el servidor.'));
+}
+
+/**
+ * Genera el HTML de la factura y lo inserta en el contenedor.
+ * 
+ * @param {Object} f - Objeto factura devuelto por el servidor.
+ */
+function mostrarFactura(f) {
+    const html = `
+        <div class="factura" style="max-width: 700px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow:  ️0 2px 8px rgba(0,0,0,.1); font-family: Arial, sans-serif;">
+            <h2 style="text-align: center; margin-bottom: 15px;">FACTURA COMERCIAL</h2>
+            <p><strong>FECHA:</strong> ${f.fechaEmision}</p>
+            <hr>
+            <p><strong>NOMBRE:</strong> ${f.cliente.nombre}</p>
+            <p><strong>DIRECCIÓN:</strong> ${f.cliente.direccion || "—"}</p>
+            <p><strong>TELÉFONO:</strong> ${f.cliente.telefono || "—"}</p>
+            <p><strong>CORREO:</strong> ${f.cliente.correo || "—"}</p>
+            <hr>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">FACTURA</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">PEDIDO</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">FECHA EMISIÓN</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${f.numeroFactura}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${f.folioVenta}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${f.fechaEmision}</td>
+                </tr>
+            </table>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">PRODUCTO</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">CANTIDAD</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">PRECIO</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">IVA</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">TOTAL</th>
+                </tr>
+                ${f.items.map(it => `
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${it.nombre}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${it.cantidad}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">$${it.precio}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">$${it.iva}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">$${it.totalLinea}</td>
+                    </tr>
+                `).join('')}
+            </table>
+            <div style="text-align: right; margin-bottom: 15px;">
+                <p>BASE IMPONIBLE: $${f.baseImponible}</p>
+                <p>IVA (16%): $${f.ivaTotal}</p>
+                <p><strong>TOTAL: $${f.total}</strong></p>
+            </div>
+            <hr>
+            <p><strong>DIRECCIÓN:</strong> ${f.tienda.direccion}</p>
+            <p><strong>CORREO:</strong> ${f.tienda.correo}</p>
+            <p><strong>TELÉFONO:</strong> ${f.tienda.telefono}</p>
+            <button onclick="window.print()" style="margin-top: 15px; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Imprimir factura</button>
+        </div>
+    `;
+    document.getElementById('contenedorFactura').innerHTML = html;
+}
+
