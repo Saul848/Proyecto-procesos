@@ -735,4 +735,20 @@
     <puesto>gerente</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>21:29:16</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>22:02:19</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
