@@ -4,6 +4,15 @@
 const listaActDom = document.querySelector(".listaAct"); //Contenedor gris de lista
 const seccionEmpDom = document.getElementById("seccionEmp") //Contenedor con scrollbar para la lista
 
+//Panel de informacion
+const labelId = document.getElementById("numEmp");
+const labelNombre = document.getElementById("nombreEmp");
+const labelPuesto = document.getElementById("puestoEmp");
+const labelContacto = document.getElementById("infoContacto");
+const labelUsuario = document.getElementById("usuarioEmp");
+const labelPassword = document.getElementById("passwordEmp");
+const imgEmpleado = document.getElementById("imgEmpleado");
+
 //Dom de las secciones
 const seccionOpcciones= document.getElementById("opcciones");
 const seccionAgregar = document.getElementById("seccionAgregar");
@@ -789,8 +798,35 @@ function iluminarEmpleado(id){
         ultimoPanelEmpSeleccionado=("panelEmpleado"+id);
         //Iluminamos el panel actual
         document.getElementById(ultimoPanelEmpSeleccionado).style.setProperty('background-color', 'blue', 'important');
+        mostrarDatosEmpleado(true)
     }else{
         return
+    }
+}
+
+function mostrarDatosEmpleado(mostrar){
+    //Si la variable ingresada es igual a true se muestra la info del empleado
+    if(mostrar===true){
+        datosEmp.forEach(emp=>{
+            if(emp.id===(Number(ultimoPanelEmpSeleccionado.replace("panelEmpleado", "")))){
+                labelId.innerHTML=`${emp.id}`
+                labelNombre.innerHTML=`${emp.nombre}`;
+                labelPuesto.innerHTML= `${emp.puesto}`;
+                labelContacto.innerHTML= `${emp.telefono}`;
+                labelUsuario.innerHTML=`${emp.usuario}`;
+                labelPassword.innerHTML= `${emp.password}`;
+                imgEmpleado.src= "../img/usuarioLogo.png";
+                imgEmpleado.innerHTML="";
+                imgEmpleado.style="width: 250; height: 250;";
+            }
+        })
+    //Si la variable ingresada es igual a false o null se borra la informacion del usuario
+    }else{
+        labelNombre.innerHTML=``;
+        labelPuesto.innerHTML=``;
+        labelContacto.innerHTML=``;
+        labelUsuario.innerHTML=``;
+        labelPassword.innerHTML=``;
     }
 }
 
