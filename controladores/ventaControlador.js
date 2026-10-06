@@ -256,6 +256,7 @@ function generarFactura(req, res){
     } catch(error){
         res.status(500).json({ ok: false, mensaje: "Error al generar factura.", error: error.message });
     }
+}
   
 async function devolverProducto(req, res) {
     const { id, cantidad, motivo } = req.body;
@@ -308,4 +309,4 @@ module.exports = {
     obtenerHistorialVentas,
     generarFactura,
     devolverProducto
-};
+}

@@ -183,33 +183,57 @@
 
 
     <!-- Modal Factura: Datos fiscales del cliente -->
-    <div id="modalFactura" class="modal" style="display: none; position: fixed; z-index: 1000; left:  0; top:  0; width: 100%; height:  100%; background-color: rgba(0,0,0,0.5); overflow-y: auto;">
-        <div class="modal-content" style="background-color: #fff; margin: 3% auto; padding: 20px; border-radius: 8px; width: 420px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <h3 style="margin-top: 0; color: #333; text-align: center;">Datos fiscales del cliente</h3>
+    <div id="modalFactura" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: auto;">
+        <div class="modal-content" style="background-color: #c5dcf9; margin: 3% auto; padding: 24px; border-radius: 8px; width: 520px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-family: Arial, sans-serif;">
 
-            <label style="display: block; font-weight: bold; margin-bottom: 5px;">Nombre:</label>
-            <input type="text" id="facturaNombre" placeholder="Nombre completo" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border:  ️1px solid #ccc; box-sizing: border-box;">
+            <!-- Encabezado: "Datos de facturación" sobre cuadro blanco -->
+            <div style="background-color: #FFFFFF; border-radius: 6px; padding: 14px 16px; margin-bottom: 16px;">
+                <h3 style="margin: 0; color: #333; font-size: 18px;">Datos de facturación</h3>
+            </div>
 
-            <label style="display: block; font-weight: bold; margin-bottom: 5px;">Dirección:</label>
-            <input type="text" id="facturaDireccion" placeholder="Calle, número, colonia" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius:  ️4px; border:  ️1px solid #ccc; box-sizing: border-box;">
+            <!-- Cuadro de datos con borde y fondo oscuro -->
+            <div style="background-color: #2d2635; border: 1px solid #565656; border-radius: 6px; padding: 18px 16px;">
 
-            <label style="display: block; font-weight: bold; margin-bottom: 5px;">Correo:</label>
-            <input type="email" id="facturaCorreo" placeholder="correo@ejemplo.com" style="width: 100%; padding: 8px; margin-bottom:  ️10px; border-radius:  ️4px; border:  ️1px solid #ccc; box-sizing: border-box;">
+                <!-- Nombre o Razón Social -->
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Nombre o Razón Social:</label>
+                <input type="text" id="facturaNombre" placeholder="Nombre completo" style="width: 100%; padding: 9px; margin-bottom: 14px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
 
-            <label style="display: block; font-weight: bold; margin-bottom: 5px;">Teléfono:</label>
-            <input type="tel" id="facturaTelefono" placeholder="(55) 1234-5678" style="width: 100%; padding: 8px; margin-bottom:  ️10px; border-radius:  ️4px; border:  ️1px solid #ccc; box-sizing: border-box;">
+                <!-- RFC -->
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">RFC:</label>
+                <input type="text" id="facturaRfc" placeholder="RFC" style="width: 100%; padding: 9px; margin-bottom: 14px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333; text-transform: uppercase;">
 
-            <div style="text-align: right; margin-top: 20px;">
-                <button type="button" onclick="cerrarModalFactura()" style="padding: 8px 15px; margin-right: 10px; border: none; border-radius: 4px; background-color: #ccc; cursor: pointer;">Cancelar</button>
-                <button type="button" onclick="generarFactura()" style="padding: 8px 15px; border: none; border-radius: 4px; background-color: #28a745; color: white; font-weight: bold; cursor: pointer;">Generar factura</button>
+                <!-- Fila: Código Postal + Correo -->
+                <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+                    <div style="flex: 1;">
+                        <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Código Postal:</label>
+                        <input type="text" id="facturaCp" placeholder="CP" style="width: 100%; padding: 9px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Correo Electrónico:</label>
+                        <input type="email" id="facturaCorreo" placeholder="correo@ejemplo.com" style="width: 100%; padding: 9px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
+                    </div>
+                </div>
+
+                <!-- Régimen Fiscal -->
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Régimen Fiscal:</label>
+                <input type="text" id="facturaRegimen" placeholder="Régimen fiscal" style="width: 100%; padding: 9px; margin-bottom: 14px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
+
+                <!-- Uso de CFDI -->
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ffffff;">Uso de CFDI:</label>
+                <input type="text" id="facturaUsoCfdi" placeholder="Uso de CFDI" style="width: 100%; padding: 9px; margin-bottom: 6px; border-radius: 4px; border: 1px solid #565656; box-sizing: border-box; font-size: 14px; background-color: #fff; color: #333;">
+
+                <!-- Botones dentro del mismo cuadro -->
+                <div style="text-align: center; margin-top: 16px; padding-top: 14px; border-top: 1px solid #565656;">
+                    <button type="button" onclick="cerrarModalFactura()" style="padding: 9px 18px; margin-right: 10px; border: none; border-radius: 4px; background-color: #de3b40; color: white; font-weight: bold; cursor: pointer; font-size: 14px;">Cancelar</button>
+                    <button type="button" onclick="generarFactura()" style="padding: 9px 18px; border: none; border-radius: 4px; background-color: #1565c0; color: white; font-weight: bold; cursor: pointer; font-size: 14px;">Facturar y registrar pago</button>
+                </div>
             </div>
         </div>
     </div>
 
+
     <!-- Contenedor donde se muestra la factura generada -->
     <div id="contenedorFactura"></div>
-
-
 
 
     <!-- Modal 2: Notificaciones y Mensajes Internos -->

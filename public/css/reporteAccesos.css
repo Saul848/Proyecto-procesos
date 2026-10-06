@@ -1,171 +1,162 @@
+/* ===== Fuente global ===== */
+* {
+    font-family: 'DM Sans', Arial, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== Paleta de colores ===== */
+:root {
+    --fondo-pagina: #f4f1f6;
+    --morado-encabezado: #9757ba;
+    --texto-oscuro: #171a1f;
+    --blanco: #ffffff;
+    --fondo-filtros: #3d2e4f;
+    --morado-buscar: #9568bc;
+    --fila-1: #2b2635;
+    --fila-2: #3d2e4f;
+}
+
+body {
+    background: var(--fondo-pagina);
+    color: var(--texto-oscuro);
+    min-height: 100vh;
+    padding: 30px 20px;
+}
+
+/* ===== Contenedor principal (fondo de TODO) ===== */
+.contenedor {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: var(--fondo-pagina);
+    border-radius: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* ===== Encabezado (morado) ===== */
 .encabezado {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: var(--morado-encabezado);
+    padding: 20px 30px;
     margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #e2e8f0;
 }
-
 .encabezado h1 {
     margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--texto-oscuro);
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
+.encabezado-derecha {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 .encabezado .volver {
-    margin: 0;
-    background: #2563eb;
-    color: #ffffff;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-weight: 600;
+    background: var(--blanco);
+    border-radius: 0;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    padding: 12px;        
     text-decoration: none;
-    transition: background 0.2s;
+    transition: opacity 0.2s;
 }
-
 .encabezado .volver:hover {
-    background: #1d4ed8;
+    opacity: 0.85;
     text-decoration: none;
 }
-
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.icono-salir {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+.logo-equipo {
+    height: 40px;
+    width: auto;
+    display: block;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f4f8;
-    min-height: 100vh;
-    padding: 30px 20px;
-}
-
-.contenedor {
-    max-width: 1100px;
-    margin: 0 auto;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    padding: 30px 35px;
-}
-
-h1 {
-    color: #1e293b;
-    font-size: 26px;
-    margin-bottom: 6px;
-}
-
-.subtitulo {
-    color: #64748b;
-    font-size: 14px;
-    margin-bottom: 25px;
-}
-
-.volver {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #2563eb;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.volver:hover {
-    text-decoration: underline;
-}
-
+/* ===== Sección de filtros (sobre fondo morado oscuro) ===== */
 .filtros {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
     align-items: center;
-    margin-bottom: 25px;
     padding: 18px;
-    background: #f8fafc;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
+    background: var(--fondo-filtros);
 }
-
 .filtros input,
 .filtros select {
     padding: 10px 14px;
-    border: 1px solid #cbd5e1;
+    border: none;
     border-radius: 8px;
     font-size: 14px;
-    background: #fff;
+    background: var(--blanco);
+    color: var(--texto-oscuro);
     outline: none;
-    transition: border-color 0.2s;
 }
-
-.filtros input:focus,
-.filtros select:focus {
-    border-color: #2563eb;
-}
-
 .filtros input {
     flex: 1;
     min-width: 180px;
 }
-
 .btn-buscar {
     padding: 10px 22px;
-    background: #2563eb;
-    color: #fff;
+    background: var(--morado-buscar);
+    color: var(--blanco);
     border: none;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: opacity 0.2s;
 }
-
 .btn-buscar:hover {
-    background: #1d4ed8;
+    opacity: 0.85;
 }
 
+/* ===== Tabla ===== */
 .tabla-wrapper {
     overflow-x: auto;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
 }
-
 table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
 }
 
+/* Encabezado de la tabla */
 thead th {
-    background: #1e293b;
-    color: #ffffff;
+    background: var(--blanco);
+    color: var(--texto-oscuro);
     padding: 14px 18px;
     text-align: left;
+    font-size: 18px;
     font-weight: 600;
-    letter-spacing: 0.3px;
     white-space: nowrap;
 }
 
+/* Filas de registros: alternan dos colores */
 tbody td {
     padding: 13px 18px;
-    border-bottom: 1px solid #e2e8f0;
-    color: #334155;
+    color: var(--blanco);
+    font-size: 16px;
 }
-
+tbody tr:nth-child(odd) {
+    background: var(--fila-1);   /* #2b2635 */
+}
 tbody tr:nth-child(even) {
-    background: #f8fafc;
+    background: var(--fila-2);   /* #3d2e4f */
 }
 
-tbody tr:hover {
-    background: #eff6ff;
-}
-
+/* ===== Etiqueta de evento (entrada/salida) ===== */
 .evento {
     display: inline-block;
     padding: 4px 14px;
@@ -174,19 +165,19 @@ tbody tr:hover {
     font-weight: 600;
     text-transform: capitalize;
 }
-
 .evento.entrada {
     background: #dcfce7;
     color: #166534;
 }
-
 .evento.salida {
     background: #fee2e2;
     color: #991b1b;
 }
 
+/* ===== Mensaje vacío ===== */
 .mensaje-vacio {
     text-align: center;
-    color: #64748b;
+    color: var(--blanco);
     padding: 20px;
+    background: var(--fila-1);
 }
