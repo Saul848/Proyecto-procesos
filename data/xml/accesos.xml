@@ -503,4 +503,12 @@
     <puesto>gerente</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>07:49:00</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
