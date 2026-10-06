@@ -695,4 +695,68 @@
     <puesto>gerente</puesto>
     <evento>entrada</evento>
   </acceso>
+  <acceso>
+    <fecha>2026-10-05</fecha>
+    <hora>17:57:25</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-05</fecha>
+    <hora>17:57:28</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-05</fecha>
+    <hora>17:57:42</hora>
+    <nombre>Marco Polo</nombre>
+    <usuario>roger134</usuario>
+    <puesto>gerente</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>18:00:14</hora>
+    <nombre>Misael</nombre>
+    <usuario>MisaGoodMvp</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>18:10:48</hora>
+    <nombre>Misael</nombre>
+    <usuario>MisaGoodMvp</usuario>
+    <puesto>gerente</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>18:13:35</hora>
+    <nombre>Misael</nombre>
+    <usuario>MisaGoodMvp</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>18:46:40</hora>
+    <nombre>Misael</nombre>
+    <usuario>MisaGoodMvp</usuario>
+    <puesto>gerente</puesto>
+    <evento>salida</evento>
+  </acceso>
+  <acceso>
+    <fecha>2026-10-06</fecha>
+    <hora>18:53:35</hora>
+    <nombre>Misael</nombre>
+    <usuario>MisaGoodMvp</usuario>
+    <puesto>gerente</puesto>
+    <evento>entrada</evento>
+  </acceso>
 </accesos>
