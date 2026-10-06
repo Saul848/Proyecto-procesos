@@ -602,6 +602,9 @@ function obtenerHistorial(){
     }
 }
 
+
+
+
 module.exports = {
     obtenerEmpleados,
     obtenerEmpleado,
