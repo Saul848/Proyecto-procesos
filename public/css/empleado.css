@@ -55,83 +55,267 @@ header.header-empleado {
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* 2. SUB-BARRA DE ESTADO DE CAJA (CELESTE PASTEL) */
+/* ===================================================
+   SUB-BARRA SUPERIOR (HEADER DEL POS)
+   =================================================== */
 .sub-barra-caja {
-    background-color: #cfe2f7;
-    margin: 18px auto 0;
-    max-width: 1240px;
+    background: #dbeafe; /* Tono azul pastel limpio */
     border-radius: 14px;
-    padding: 14px 22px;
+    margin: 16px 20px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+    border: 1px solid #bfdbfe;
+}
+
+/* Fila superior: Título a la izquierda, botones a la derecha */
+.caja-barra-superior {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
-.titulo-caja-actual {
-    font-size: 22px;
-    font-weight: 700;
-    color: #0f172a;
-}
-
-.caja-controles {
+.caja-indicador-grupo {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
+.icono-caja-circulo {
+    width: 44px;
+    height: 44px;
+    background: #ffffff;
+    color: #1d4ed8;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.titulo-caja-actual {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
 .indicador-caja {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     font-size: 13px;
-    font-weight: 500;
-    color: #1e293b;
+    font-weight: 600;
+    color: #475569;
+    margin-top: 2px;
 }
 
 .indicador-caja .dot {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background-color: #22c55e;
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}
+
+/* Controles y botones */
+.caja-controles-barra {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .select-caja-figma {
-    background: #ffffff;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 600;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 600;
+    background-color: #ffffff;
+    color: #0f172a;
     cursor: pointer;
     outline: none;
-}
-
-.btn-caja-blanco {
-    background: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 7px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #1e293b;
-    cursor: pointer;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-.btn-caja-azul {
-    background: #3b82f6;
-    color: #ffffff;
-    border: none;
+.btn-caja-blanco {
+    height: 38px;
+    padding: 0 14px;
+    background-color: #ffffff;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 7px 16px;
     font-size: 13px;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
 }
 
+.btn-caja-blanco:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+.btn-caja-azul {
+    height: 38px;
+    padding: 0 16px;
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    transition: all 0.2s ease;
+}
+
+.btn-caja-azul:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* ===================================================
+   CARRUSEL DE OFERTAS EXPANDIDO AL 100%
+   =================================================== */
+
+/* 1. Contenedor principal: abarca todo el ancho */
+.carrusel-ofertas-moderno {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid #bfdbfe;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    width: 100%; /* Ocupa todo el espacio horizontal */
+    box-sizing: border-box;
+}
+
+/* 2. Título a la izquierda ("Promociones del día") */
+.carrusel-badge-titulo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #1d4ed8;
+    font-size: 13.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    border-right: 1px solid #e2e8f0;
+    padding-right: 16px;
+    flex-shrink: 0;
+}
+
+/* 3. Viewport: abarca todo el resto del contenedor */
+.carrusel-viewport-moderno {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1; /* Se estira para empujar la flecha derecha al extremo */
+    overflow: hidden;
+}
+
+/* 4. Flechas circulares de navegación (< y >) */
+.carrusel-flecha-moderna {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 50%;
+    border: none;
+    background-color: #60a5fa;
+    color: #ffffff;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+    flex-shrink: 0;
+}
+
+.carrusel-flecha-moderna:hover {
+    background-color: #2563eb;
+    transform: scale(1.08);
+}
+
+/* 5. Pista de ofertas: se expande a lo ancho */
+.carrusel-pista-moderna,
+#carrusel-pista {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    flex: 1; /* Ocupa el ancho completo entre ambas flechas */
+    padding: 4px 2px;
+}
+
+.carrusel-pista-moderna::-webkit-scrollbar,
+#carrusel-pista::-webkit-scrollbar {
+    display: none;
+}
+
+/* 6. Tarjetas individuales: se distribuyen proporcionalmente llenando el espacio */
+.card-oferta,
+.carrusel-tarjeta {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 20px;
+    flex: 1; /* Hace que cada tarjeta crezca y tome el mismo ancho */
+    min-width: 180px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* 7. Textos interiores de la tarjeta */
+.card-oferta .oferta-nombre,
+.carrusel-tarjeta .oferta-nombre {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 2px;
+    text-transform: capitalize;
+}
+
+.card-oferta .oferta-tipo,
+.carrusel-tarjeta .oferta-tipo {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ef4444; /* Rojo llamativo */
+    margin: 4px 0;
+}
+
+.card-oferta .oferta-precio,
+.carrusel-tarjeta .oferta-precio {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+}
 /* 3. CONTENEDOR PRINCIPAL OSCURO (FONDO DE LA MAQUETA) */
 .contenedor-pos-principal {
     background-color: #272233;
@@ -641,3 +825,1094 @@ header.header-empleado {
     margin: 20px auto;
     max-width: 80%;
 }
+/* ===================================================
+   ZONA DE COBRO Y MÉTODOS DE PAGO (PANEL DERECHO)
+   =================================================== */
+
+/* Contenedor de métodos de pago (Efectivo / Tarjeta) */
+.payment-area {
+    margin-top: 15px;
+    margin-bottom: 12px;
+}
+
+.methods-row {
+    display: flex;
+    gap: 8px;
+    background-color: #cbd5e1;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.btn-method {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-method.active {
+    background-color: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+}
+
+/* Filas de entrada: Monto recibido y Cambio */
+.campo-cobro-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.campo-cobro-fila input {
+    width: 140px;
+    padding: 6px 12px;
+    font-size: 13px;
+    text-align: right;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #0f172a;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.campo-cobro-fila input:focus {
+    border-color: #3b82f6;
+}
+
+.campo-cobro-fila input[readonly] {
+    background-color: #f8fafc;
+    font-weight: 700;
+}
+
+/* Botones inferiores: Registrar pago y Factura */
+.acciones-finales-ticket {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.btn-registrar-cobro {
+    flex: 1.5;
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-registrar-cobro:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.btn-registrar-cobro:hover:not(:disabled) {
+    background-color: #1e40af;
+}
+
+.btn-factura {
+    flex: 1;
+    background-color: #475569;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-factura:hover {
+    background-color: #334155;
+}
+/* ===================================================
+   MODAL DE HISTORIAL DE VENTAS Y REIMPRESIÓN
+   =================================================== */
+
+/* Fondo oscuro flotante sobre toda la pantalla */
+#modalHistorialVentas.modal-overlay,
+#modalCorroborarTicket.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(2px);
+    z-index: 99999 !important;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Tarjeta flotante centrada */
+.modal-historial-card {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 650px;
+    border-radius: 12px;
+    padding: 22px 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+}
+
+/* Cabecera del modal */
+.modal-historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+.modal-historial-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-cerrar-icono {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #94a3b8;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.btn-cerrar-icono:hover {
+    color: #0f172a;
+}
+
+/* Input buscador del historial */
+.filtro-historial-contenedor {
+    margin-bottom: 14px;
+}
+
+.filtro-historial-contenedor input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 13px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.filtro-historial-contenedor input:focus {
+    border-color: #3b82f6;
+}
+
+/* Tabla con scroll interior */
+.tabla-historial-scroll {
+    overflow-y: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    max-height: 380px;
+}
+
+.tabla-historial {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+}
+
+.tabla-historial thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.tabla-historial tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background-color 0.15s;
+}
+
+.tabla-historial tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.tabla-historial tbody td {
+    padding: 10px 14px;
+    color: #334155;
+}
+
+/* Botón Ver / Reimprimir */
+.tabla-historial button,
+.tabla-historial .btn-toggle-caja {
+    background-color: #0284c7;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tabla-historial button:hover,
+.tabla-historial .btn-toggle-caja:hover {
+    background-color: #0369a1;
+}
+
+/* Pie del modal */
+.modal-historial-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.btn-cerrar-secundario {
+    background-color: #64748b;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cerrar-secundario:hover {
+    background-color: #475569;
+}
+/* ===================================================
+   MODAL DE REIMPRESIÓN DE TICKET (ESTILO FIGMA)
+   =================================================== */
+
+/* Fondo oscuro flotante de la pantalla */
+#modalCorroborarTicket.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(3px);
+    z-index: 100000 !important;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Tarjeta del ticket con ligero azul de fondo */
+.modal-ticket-card {
+    background-color: #f0f6fd; /* Ligero azul de Figma */
+    width: 90%;
+    max-width: 400px;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* Área interior del ticket */
+.ticket-impresion-cuerpo {
+    font-family: 'DM Sans', Arial, sans-serif;
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.ticket-impresion-encabezado {
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.ticket-impresion-encabezado strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.ticket-impresion-encabezado span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+}
+
+/* Separadores punteados tipo recibo */
+.ticket-separador-figma {
+    border: none;
+    border-top: 1px dashed #64748b;
+    margin: 10px 0;
+}
+
+/* Contenido dinámico del ticket */
+#detalleTicketReimpresion {
+    font-size: 13.5px;
+}
+
+/* Botones de acción inferiores con orden exacto de Figma: Volver a la izquierda, Imprimir a la derecha */
+.ticket-acciones-botones {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.btn-volver-ticket {
+    flex: 1;
+    background-color: #dc3545; /* Rojo de Figma */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-volver-ticket:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
+.btn-imprimir-ticket {
+    flex: 2;
+    background-color: #0b66c3; /* Azul rey de Figma */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(11, 102, 195, 0.25);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-imprimir-ticket:hover {
+    background-color: #09529d;
+    transform: translateY(-1px);
+}
+/* ===================================================
+   MODAL DE MENSAJES PENDIENTES
+   =================================================== */
+
+/* Capa de fondo fijo que oscurece la pantalla */
+#checkMensajes.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(2px);
+    z-index: 99999 !important;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Tarjeta flotante centrada */
+.modal-caja.modal-mensajes {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 520px;
+    border-radius: 12px;
+    padding: 22px 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.modal-caja.modal-mensajes h3 {
+    margin: 0 0 14px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+/* Panel de contenido de mensajes */
+.panel-mensajes {
+    min-height: 120px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.contenido-mensaje {
+    padding: 14px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Botón de cerrar */
+#btnCerrarModalMensajes {
+    background-color: #64748b;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#btnCerrarModalMensajes:hover {
+    background-color: #475569;
+}
+/* ===================================================
+   REGLAS PARA MODALES LIMPIOS (SIN INLINE STYLES)
+   =================================================== */
+
+/* Ocultar modales por defecto si no tienen clase activa */
+.modal-overlay {
+    display: none;
+}
+
+.caja-indicador-grupo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.caja-controles-barra {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.col-select {
+    width: 45px;
+}
+
+.ticket-sin-items {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-top: 35px;
+}
+
+.btn-ancho-completo {
+    margin-top: 12px;
+    width: 100%;
+}
+
+.titulo-centrado {
+    margin-top: 0;
+    color: #0f172a;
+    text-align: center;
+}
+
+/* Modal Facturación */
+.modal-facturacion-tarjeta {
+    background-color: #c5dcf9;
+    padding: 24px;
+    border-radius: 8px;
+    width: 520px;
+    max-width: 95%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.factura-encabezado-caja {
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+}
+
+.factura-formulario-cuerpo {
+    background-color: #2d2635;
+    border: 1px solid #565656;
+    border-radius: 6px;
+    padding: 18px 16px;
+}
+
+.factura-formulario-cuerpo label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.factura-formulario-cuerpo input {
+    width: 100%;
+    padding: 9px;
+    margin-bottom: 14px;
+    border-radius: 4px;
+    border: 1px solid #565656;
+    box-sizing: border-box;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #0f172a;
+}
+
+.input-mayusculas {
+    text-transform: uppercase;
+}
+
+.fila-dos-columnas {
+    display: flex;
+    gap: 12px;
+}
+
+.columna-campo {
+    flex: 1;
+}
+
+.factura-botones-pie {
+    text-align: center;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #565656;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-factura-cancelar {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 4px;
+    background-color: #de3b40;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-factura-confirmar {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 4px;
+    background-color: #1565c0;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Modal Movimiento de Caja */
+.modal-movimiento-tarjeta {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 420px;
+    max-width: 95%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.caja-autorizacion-gerente {
+    margin-bottom: 15px;
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.etiqueta-alerta {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #dc2626;
+    font-size: 13px;
+}
+
+.form-grupo {
+    margin-bottom: 15px;
+}
+
+.form-grupo label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #334155;
+    font-size: 13px;
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+
+.movimiento-botones-pie {
+    text-align: right;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-secundario {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #cbd5e1;
+    color: #334155;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-exito {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #16a34a;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.panel-mensajes-pie {
+    margin-top: 15px;
+    text-align: right;
+}
+/* Posicionamiento flotante para el modal de Retiro / Aportación */
+#modalMovimientoCaja {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(2px);
+    z-index: 999999 !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* ===================================================
+   MODAL HISTORIAL DE VENTAS (ESTILO FIGMA)
+   =================================================== */
+
+/* Fondo oscuro flotante de la pantalla */
+#modalHistorialVentas.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(3px);
+    z-index: 99999 !important;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Tarjeta principal con fondo azul pastel */
+.modal-historial-card {
+    background-color: #cde1fb; /* Azul pastel de Figma */
+    width: 90%;
+    max-width: 720px;
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* Encabezado con línea */
+.modal-historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #a8c8f0;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+.modal-historial-header h3 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-historial-header .btn-cerrar-icono {
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: #64748b;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-historial-header .btn-cerrar-icono:hover {
+    color: #0f172a;
+}
+
+/* Input buscador azul cielo */
+.filtro-historial-contenedor {
+    margin-bottom: 16px;
+}
+
+.filtro-historial-contenedor input {
+    width: 100%;
+    padding: 10px 14px;
+    background-color: #b5d5fb; /* Tono azul del buscador en Figma */
+    border: 1px solid #9fc4f2;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #1e293b;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.filtro-historial-contenedor input::placeholder {
+    color: #557ba8;
+}
+
+.filtro-historial-contenedor input:focus {
+    border-color: #3b82f6;
+    background-color: #badcfd;
+}
+
+/* Contenedor oscuro con scroll para la tabla */
+.tabla-historial-scroll {
+    background-color: #2b2635; /* Fondo oscuro de la tabla en Figma */
+    border-radius: 8px;
+    overflow-y: auto;
+    max-height: 380px;
+    min-height: 260px;
+    border: 1px solid #3d354a;
+}
+
+/* Estructura de la tabla */
+.tabla-historial {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    text-align: left;
+}
+
+/* Cabecera blanca redondeada */
+.tabla-historial thead th {
+    background-color: #ffffff; /* Encabezado blanco de Figma */
+    color: #1e293b;
+    font-weight: 700;
+    padding: 11px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+/* Filas oscuras */
+.tabla-historial tbody tr {
+    background-color: #2b2635;
+    border-bottom: 1px solid #3c344a;
+    transition: background-color 0.15s ease;
+}
+
+.tabla-historial tbody tr:hover {
+    background-color: #342d40;
+}
+
+.tabla-historial tbody td {
+    padding: 12px 16px;
+    color: #ffffff; /* Texto de folio y fecha en blanco */
+    vertical-align: middle;
+}
+
+/* Folio destacado */
+.tabla-historial tbody td:first-child {
+    font-weight: 700;
+}
+
+/* Importe total en verde brillante */
+.tabla-historial tbody td:nth-child(3) {
+    color: #38e25d !important; /* Verde Neón de Figma */
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* Botón Ver / Reimprimir */
+.tabla-historial button,
+.tabla-historial .btn-toggle-caja {
+    background-color: #0b66c3; /* Azul rey */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: background-color 0.2s;
+}
+
+.tabla-historial button:hover,
+.tabla-historial .btn-toggle-caja:hover {
+    background-color: #09529d;
+}
+
+/* Pie del modal con botón rojo a la derecha */
+.modal-historial-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+}
+
+.btn-cerrar-secundario {
+    background-color: #dc3545; /* Botón rojo de Figma */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.25);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-cerrar-secundario:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+/* Modal de Facturación (Overlay centrado y oculto de inicio) */
+#modalFactura.modal-overlay {
+    display: none; /* Mantenerlo oculto por defecto */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(3px);
+    z-index: 99999 !important;
+    justify-content: center;
+    align-items: center;
+}
+/* ===================================================
+   CLASES AUXILIARES PARA VENTA.JS (SIN INLINE STYLES)
+   =================================================== */
+
+/* Estado del punto indicador de caja */
+.dot-abierto {
+    background-color: #22c55e !important;
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.6) !important;
+}
+
+.dot-cerrado {
+    background-color: #ef4444 !important;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.6) !important;
+}
+
+/* Filas y columnas del catálogo de productos */
+.tabla-sin-datos,
+.historial-sin-datos {
+    text-align: center;
+    color: #94a3b8;
+    padding: 16px;
+    font-size: 13px;
+}
+
+.col-prod-nombre {
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.col-prod-precio {
+    font-weight: 700;
+}
+
+.col-prod-id {
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Filas de artículos en el panel de ticket */
+.ticket-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.ticket-item-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.ticket-item-nombre {
+    font-weight: 600;
+    font-size: 13px;
+    color: #0f172a;
+}
+
+.ticket-item-controles {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 3px;
+}
+
+.ticket-item-cant {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.ticket-item-unitario {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.ticket-item-subtotal {
+    font-weight: 700;
+    font-size: 13px;
+    color: #0f172a;
+}
+
+.btn-cant {
+    padding: 2px 7px;
+    border: 1px solid #cbd5e1;
+    background: #f1f5f9;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 11px;
+    line-height: 1;
+}
+
+.btn-cant:hover {
+    background: #e2e8f0;
+}
+
+/* Filas del ticket reimpreso */
+.ticket-reimpresion-fila {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 13.5px;
+}
+
+.ticket-metadatos {
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.ticket-reimpresion-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+/* Card del comprobante de factura impreso */
+.comprobante-factura-card {
+    max-width: 650px;
+    margin: 24px auto;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    font-family: 'DM Sans', Arial, sans-serif;
+    color: #0f172a;
+}
+
+.comprobante-factura-titulo {
+    text-align: center;
+    margin: 0 0 14px 0;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.comprobante-factura-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13px;
+}
+
+.comprobante-factura-tabla th,
+.comprobante-factura-tabla td {
+    border: 1px solid #e2e8f0;
+    padding: 8px 10px;
+}
+
+.comprobante-factura-tabla thead th {
+    background-color: #f8fafc;
+    font-weight: 700;
+}
+
+.comprobante-factura-totales {
+    text-align: right;
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+.factura-gran-total {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1d4ed8;
+}
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.mt-3 { margin-top: 14px; }
+

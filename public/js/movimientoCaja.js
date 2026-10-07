@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnMovimiento && modalMovimiento) {
         btnMovimiento.addEventListener("click", () => {
             console.log("¡Hiciste clic en el botón de Retiro / Aportación!");
-            modalMovimiento.style.setProperty("display", "block", "important");
+            modalMovimiento.style.setProperty("display", "flex", "important");
         });
     }
 

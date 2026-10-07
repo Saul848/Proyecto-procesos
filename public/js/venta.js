@@ -1,19 +1,45 @@
 /**
- * Lógica del lado del cliente para el Punto de Venta.
- * Gestiona el catálogo, cálculo de ofertas y descuentos dinámicos,
- * control de stock, gestión del ticket de venta y confirmación de transacciones.
+ * Módulo de Punto de Venta (POS) - Lógica de Cliente
+ * 
+ * Gestiona el catálogo de productos, promociones y ofertas dinámicas,
+ * cálculo de subtotales, control de stock local, liquidación de tickets,
+ * emisión de comprobantes fiscales (CFDI) y reimpresión de ventas previas.
+ * 
  * @module public/js/venta
  */
 
-let todosLosProductos = []; // Catálogo original completo cargado de la API
-let catalogoProductos = []; // Catálogo filtrado en la vista
-let itemsCuenta = [];       // Productos seleccionados en el carrito 
-let ofertasActivas = [];    // Ofertas vigentes obtenidas de /api/ofertas
+// ============================================================================
+// ESTADO GLOBAL DE LA APLICACIÓN
+// ============================================================================
+
+/** @type {Array<Object>} Catálogo original completo provisto por la API */
+let todosLosProductos = [];
+
+/** @type {Array<Object>} Catálogo filtrado según la búsqueda del usuario */
+let catalogoProductos = [];
+
+/** @type {Array<Object>} Artículos añadidos a la cuenta actual del cliente */
+let itemsCuenta = [];
+
+/** @type {Array<Object>} Ofertas comerciales activas registradas en el backend */
+let ofertasActivas = [];
+
+/** @type {Array<Object>} Caché local para consulta rápida de ventas previas */
+let ventasHistorialCache = [];
+
+/** @type {"Efectivo"|"Tarjeta"} Método de pago actualmente seleccionado */
 let metodoPago = "Efectivo";
+
+/** @type {boolean} Estado operativo de la caja registradora */
 let cajaAbierta = true;
+
+/** @type {string|null} Identificador o folio de la transacción activa */
 let folioVentaActual = null;
 
-// Referencias del DOM
+// ============================================================================
+// REFERENCIAS AL DOM
+// ============================================================================
+
 const tablaProductosCuerpo = document.getElementById("tablaProductosCuerpo");
 const inputBuscar = document.getElementById("inputBuscar");
 const listaItemsTicket = document.getElementById("listaItemsTicket");
@@ -32,8 +58,11 @@ const modalTicket = document.getElementById("modalTicket");
 const reciboDetalle = document.getElementById("reciboDetalle");
 const btnCerrarModal = document.getElementById("btnCerrarModal");
 const lblFolioVenta = document.getElementById("lblFolioVenta");
-const idCajaSeleccionada = document.getElementById('selectCaja').value; // Tomará "1" o "2"
 const btnTransacciones = document.getElementById("btnTransacciones");
+
+// ============================================================================
+// CICLO DE VIDA E INICIALIZACIÓN
+// ============================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
     verificarEstadoCaja();
@@ -43,102 +72,76 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * Configura los escuchadores de eventos para la interfaz de usuario.
+ * Registra todos los escuchadores de eventos para controles e interactividad.
  */
 function configurarEventos() {
-    inputBuscar.addEventListener("input", (e) => {
-        filtrarProductos(e.target.value);
-    });
+    if (inputBuscar) {
+        inputBuscar.addEventListener("input", (e) => filtrarProductos(e.target.value));
+    }
 
-    btnToggleCaja.addEventListener("click", alternarCaja);
+    if (btnToggleCaja) {
+        btnToggleCaja.addEventListener("click", alternarCaja);
+    }
 
-    btnEfectivo.addEventListener("click", () => {
-        metodoPago = "Efectivo";
-        btnEfectivo.classList.add("active");
-        btnTarjeta.classList.remove("active");
-        inputMontoRecibido.disabled = false;
-        calcularCambio();
-    });
+    if (btnEfectivo) {
+        btnEfectivo.addEventListener("click", () => {
+            metodoPago = "Efectivo";
+            btnEfectivo.classList.add("active");
+            btnTarjeta.classList.remove("active");
+            inputMontoRecibido.disabled = false;
+            calcularCambio();
+        });
+    }
 
-    btnTarjeta.addEventListener("click", () => {
-        metodoPago = "Tarjeta";
-        btnTarjeta.classList.add("active");
-        btnEfectivo.classList.remove("active");
-        inputMontoRecibido.disabled = true;
-        const total = calcularTotales().total;
-        inputMontoRecibido.value = total.toFixed(2);
-        inputCambio.value = "$0.00";
-        validarBotonCobro();
-    });
+    if (btnTarjeta) {
+        btnTarjeta.addEventListener("click", () => {
+            metodoPago = "Tarjeta";
+            btnTarjeta.classList.add("active");
+            btnEfectivo.classList.remove("active");
+            inputMontoRecibido.disabled = true;
+            const { total } = calcularTotales();
+            inputMontoRecibido.value = total.toFixed(2);
+            inputCambio.value = "$0.00";
+            validarBotonCobro();
+        });
+    }
 
-    inputMontoRecibido.addEventListener("input", calcularCambio);
+    if (inputMontoRecibido) {
+        inputMontoRecibido.addEventListener("input", calcularCambio);
+    }
 
-    // Conectar el botón de cobro directamente a procesarVenta
-    btnRegistrarPago.addEventListener("click", procesarVenta);
+    if (btnRegistrarPago) {
+        btnRegistrarPago.addEventListener("click", procesarVenta);
+    }
 
-    btnCerrarModal.addEventListener("click", () => {
-        modalTicket.style.display = "none";
-        itemsCuenta = [];
-        inputMontoRecibido.value = "";
-        inputCambio.value = "$0.00";
-        actualizarTicket();
-        cargarFolioActual();
-        cargarDatos(); // Corregido: se llama a cargarDatos()
-    });
+    if (btnCerrarModal) {
+        btnCerrarModal.addEventListener("click", reiniciarVentaDespuesDeCobro);
+    }
 
     if (btnTransacciones) {
         btnTransacciones.addEventListener("click", () => {
             window.location.href = "transacciones.html";
         });
     }
+
+    // Controles de desplazamiento del carrusel de promociones
+    const btnIzq = document.getElementById("btnCarruselIzq");
+    const btnDer = document.getElementById("btnCarruselDer");
+
+    if (btnIzq) {
+        btnIzq.addEventListener("click", () => desplazarCarrusel(-1));
+    }
+    if (btnDer) {
+        btnDer.addEventListener("click", () => desplazarCarrusel(1));
+    }
 }
 
-    btnRegistrarPago.addEventListener("click", () => {
-
-        // 1. Obtenemos la caja seleccionada del menú desplegable
-        const idCajaSeleccionada = document.getElementById('selectCaja').value;
-
-        // 2. Armamos el objeto con todos los datos incluyendo el método de pago
-        const datosVenta = {
-            idEmpleado: "1",               // O tu variable dinámica de empleado
-            idCaja: idCajaSeleccionada,    // "1" o "2" según el menú
-            metodoPago: metodoPago,        // <--- Aquí viaja "Efectivo" o "Tarjeta"
-            items: itemsCuenta.map((i) => ({
-                idProducto: i.id,
-                cantidad: i.cantidad
-            }))
-        };
-
-        // 3. Enviamos los datos al servidor
-        fetch('/api/ventas/confirmar', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datosVenta)
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    console.log(`Venta registrada con éxito con tarjeta/efectivo en la Caja ${idCajaSeleccionada}`);
-                    // Aquí muestras tu ticket o modal de éxito
-                } else {
-                    alert(data.mensaje);
-                }
-            })
-            .catch(err => console.error("Error:", err));
-    });
-    btnCerrarModal.addEventListener("click", () => {
-        modalTicket.style.display = "none";
-        itemsCuenta = [];
-        inputMontoRecibido.value = "";
-        inputCambio.value = "$0.00";
-        actualizarTicket();
-        cargarFolioActual();
-        cargarProductos();
-    });
-}
+// ============================================================================
+// CONSULTAS AL SERVIDOR Y CONTROL DE CAJA
+// ============================================================================
 
 /**
- * Obtiene del servidor el siguiente número de folio para mostrarlo en pantalla.
+ * Consulta y actualiza el consecutivo del siguiente folio de venta.
  * @async
  */
 async function cargarFolioActual() {
@@ -147,31 +150,32 @@ async function cargarFolioActual() {
         if (res.ok) {
             const data = await res.json();
             if (lblFolioVenta && data.siguienteFolio) {
+                folioVentaActual = String(data.siguienteFolio);
                 lblFolioVenta.textContent = `Venta numero ${data.siguienteFolio}`;
             }
         }
     } catch (e) {
-        console.warn("No se pudo obtener el folio actual:", e);
+        console.warn("No fue posible consultar el folio consecutivo:", e);
     }
 }
 
 /**
- * Consulta el estado actual de la caja registradora en el servidor.
+ * Consulta el estado de apertura/cierre de la caja en el servidor.
  * @async
  */
 async function verificarEstadoCaja() {
     try {
         const res = await fetch("/api/ventas/caja/estado");
         const data = await res.json();
-        cajaAbierta = data.cajaAbierta;
+        cajaAbierta = Boolean(data.cajaAbierta);
         actualizarVistaCaja();
     } catch (err) {
-        console.error("Error al consultar caja:", err);
+        console.error("Error al consultar el estado de caja:", err);
     }
 }
 
 /**
- * Alterna entre abrir y cerrar la caja en el servidor.
+ * Modifica el estado de apertura o cierre de la caja.
  * @async
  */
 async function alternarCaja() {
@@ -182,37 +186,40 @@ async function alternarCaja() {
             body: JSON.stringify({ abierta: !cajaAbierta })
         });
         const data = await res.json();
-        cajaAbierta = data.cajaAbierta;
+        cajaAbierta = Boolean(data.cajaAbierta);
         actualizarVistaCaja();
     } catch (err) {
-        alert("Error al cambiar estado de caja");
+        alert("Error al cambiar el estado de la caja.");
     }
 }
 
 /**
- * Actualiza los elementos visuales que representan el estado de la caja.
+ * Sincroniza las etiquetas e indicadores visuales según el estado de la caja.
  */
 function actualizarVistaCaja() {
-    if (cajaAbierta) {
-        cajaDot.style.backgroundColor = "#2ecc71";
-        cajaTexto.textContent = "Caja Abierta";
-        btnToggleCaja.textContent = "Cerrar Caja";
-    } else {
-        cajaDot.style.backgroundColor = "#e74c3c";
-        cajaTexto.textContent = "Caja Cerrada";
-        btnToggleCaja.textContent = "Abrir Caja";
+    if (cajaDot && cajaTexto && btnToggleCaja) {
+        if (cajaAbierta) {
+            cajaDot.classList.remove("dot-cerrado");
+            cajaDot.classList.add("dot-abierto");
+            cajaTexto.textContent = "Caja abierta";
+            btnToggleCaja.textContent = "Cerrar caja";
+        } else {
+            cajaDot.classList.remove("dot-abierto");
+            cajaDot.classList.add("dot-cerrado");
+            cajaTexto.textContent = "Caja cerrada";
+            btnToggleCaja.textContent = "Abrir caja";
+        }
     }
     validarBotonCobro();
 }
 
 /**
- * Carga los productos y las ofertas activas en paralelo desde la API.
+ * Descarga simultáneamente el catálogo de existencias y las ofertas activas.
  * @async
  */
 async function cargarDatos() {
     try {
         const [resProd, resOf] = await Promise.all([
-            //fetch de productos completo para validar autenticacion y autorizacion
             fetch("/api/productos", {
                 method: "GET",
                 headers: {
@@ -230,10 +237,7 @@ async function cargarDatos() {
         if (resOf.ok) {
             const dataOfertas = await resOf.json();
             const listado = Array.isArray(dataOfertas) ? dataOfertas : (dataOfertas.ofertas || []);
-            // Filtra únicamente las ofertas vigentes
             ofertasActivas = listado.filter(o => o.estado === "disponible");
-
-            //renderiza el carrusel con las ofertas 
             renderizarCarruselOfertas();
         } else {
             ofertasActivas = [];
@@ -249,9 +253,13 @@ async function cargarDatos() {
     }
 }
 
+// ============================================================================
+// RENDERIZADO DEL CATÁLOGO Y FILTRADO
+// ============================================================================
+
 /**
- * Filtra los productos en memoria según el término ingresado por ID o nombre.
- * @param {string} termino - Texto a buscar.
+ * Filtra los productos visibles por nombre o clave de identificación.
+ * @param {string} termino - Criterio de búsqueda ingresado.
  */
 function filtrarProductos(termino) {
     const busqueda = String(termino || "").trim().toLowerCase();
@@ -270,13 +278,17 @@ function filtrarProductos(termino) {
 }
 
 /**
- * Dibuja las filas de la tabla de productos vinculando las promociones correspondientes.
+ * Dibuja las filas del catálogo de artículos sin estilos inline.
  */
 function renderizarTabla() {
+    if (!tablaProductosCuerpo) return;
     tablaProductosCuerpo.innerHTML = "";
 
     if (catalogoProductos.length === 0) {
-        tablaProductosCuerpo.innerHTML = `<tr><td colspan="6" style="color:#888; padding:15px;">No hay productos que coincidan</td></tr>`;
+        tablaProductosCuerpo.innerHTML = `
+            <tr>
+                <td colspan="6" class="tabla-sin-datos">No hay productos que coincidan</td>
+            </tr>`;
         return;
     }
 
@@ -286,13 +298,10 @@ function renderizarTabla() {
         const stockActual = Number(prod.stock) || 0;
         const precioActual = Number(prod.precio) || 0;
 
-        // Empatar con ofertas del módulo de ofertas
         const oferta = ofertasActivas.find(o => String(o.idProducto) === idProd);
         let textoOferta = "-";
-        let claseOferta = "sin-oferta";
 
         if (oferta) {
-            claseOferta = "badge-oferta";
             if (oferta.tipoProm === "porcentaje") {
                 textoOferta = `${oferta.valorDesc}%`;
             } else if (oferta.tipoProm === "cantidad") {
@@ -312,21 +321,25 @@ function renderizarTabla() {
                        ${stockActual <= 0 ? "disabled" : ""} 
                        onchange="toggleSeleccion('${idProd}', this.checked)">
             </td>
-            <td style="font-weight: 500; text-transform: capitalize;">${prod.nombre}</td>
-            <td style="font-weight: 600;">$${precioActual.toFixed(0)}</td>
+            <td class="col-prod-nombre">${prod.nombre}</td>
+            <td class="col-prod-precio">$${precioActual.toFixed(2)}</td>
             <td><span class="badge-pildora">${textoOferta}</span></td>
             <td><span class="badge-pildora">${stockActual}</span></td>
-            <td style="color: #64748b; font-weight: 600;">${idProd}</td>
+            <td class="col-prod-id">${idProd}</td>
         `;
 
         tablaProductosCuerpo.appendChild(tr);
     });
 }
 
+// ============================================================================
+// GESTIÓN DEL CARRITO / TICKET DE VENTA
+// ============================================================================
+
 /**
- * Agrega o quita un producto del carrito según el estado del checkbox.
- * @param {string} idProducto - ID del producto seleccionado.
- * @param {boolean} checked - Indica si el checkbox fue marcado o desmarcado.
+ * Agrega o remueve un producto de la cuenta activa al alternar su casilla.
+ * @param {string} idProducto - Identificador del artículo.
+ * @param {boolean} checked - Estado de la casilla de selección.
  */
 window.toggleSeleccion = function (idProducto, checked) {
     const prod = todosLosProductos.find((p) => {
@@ -353,9 +366,9 @@ window.toggleSeleccion = function (idProducto, checked) {
 };
 
 /**
- * Modifica la cantidad de unidades de un producto en el carrito (+1 o -1).
- * @param {string} idProducto - ID del producto a modificar.
- * @param {number} delta - Variación en la cantidad (+1 o -1).
+ * Modifica la cantidad adquirida de un artículo asegurando el límite de stock.
+ * @param {string} idProducto - Identificador del producto.
+ * @param {number} delta - Variación unitaria (+1 o -1).
  */
 window.cambiarCantidadTicket = function (idProducto, delta) {
     const item = itemsCuenta.find(i => String(i.id) === String(idProducto));
@@ -377,9 +390,9 @@ window.cambiarCantidadTicket = function (idProducto, delta) {
 };
 
 /**
- * Calcula el subtotal monetario de una línea del ticket aplicando la promoción correspondiente.
- * @param {Object} item - Elemento de la cuenta con datos de precio, cantidad y oferta.
- * @returns {number} Subtotal de la línea.
+ * Aplica las reglas comerciales sobre un artículo para determinar su subtotal.
+ * @param {Object} item - Producto en ticket con precio, cantidad y oferta asociada.
+ * @returns {number} Subtotal con descuentos calculados.
  */
 function calcularSubtotalItem(item) {
     const base = item.precioOriginal;
@@ -411,18 +424,18 @@ function calcularSubtotalItem(item) {
 }
 
 /**
- * Calcula los totales acumulados del ticket de venta.
+ * Realiza el cálculo global de subtotal, IVA y monto total.
  * @returns {{subtotal: number, iva: number, total: number}}
  */
 function calcularTotales() {
-    const subtotal = itemsCuenta.reduce((acc, i) => acc + calcularSubtotalItem(i), 0);
-    const total = subtotal;
-    const iva = total * 0.16;
+    const total = itemsCuenta.reduce((acc, i) => acc + calcularSubtotalItem(i), 0);
+    const subtotal = total / 1.16;
+    const iva = total - subtotal;
     return { subtotal, iva, total };
 }
 
 /**
- * Calcula el cambio a devolver al cliente cuando el método de pago es efectivo.
+ * Calcula el importe de cambio en pagos con efectivo y valida la transacción.
  */
 function calcularCambio() {
     const { total } = calcularTotales();
@@ -448,9 +461,11 @@ function calcularCambio() {
 }
 
 /**
- * Valida si el botón de registrar pago debe habilitarse según el estado de la caja y el pago.
+ * Habilita o restringe el botón de confirmación de cobro según las reglas operativas.
  */
 function validarBotonCobro() {
+    if (!btnRegistrarPago) return;
+
     const { total } = calcularTotales();
     const recibido = parseFloat(inputMontoRecibido.value) || 0;
 
@@ -467,11 +482,13 @@ function validarBotonCobro() {
 }
 
 /**
- * Actualiza la lista visual del ticket de venta con los productos y totales actuales.
+ * Actualiza la vista detallada de la cuenta en el panel derecho.
  */
 function actualizarTicket() {
+    if (!listaItemsTicket) return;
+
     if (itemsCuenta.length === 0) {
-        listaItemsTicket.innerHTML = `<p style="text-align:center; color:#999; font-size:12px; margin-top:35px;">No hay productos en la cuenta</p>`;
+        listaItemsTicket.innerHTML = `<p class="ticket-sin-items">No hay productos en la cuenta</p>`;
         lblSubtotal.textContent = "$0.00";
         lblIva.textContent = "$0.00";
         lblTotal.textContent = "$0.00";
@@ -485,24 +502,20 @@ function actualizarTicket() {
     itemsCuenta.forEach((item) => {
         const itemLine = document.createElement("div");
         itemLine.className = "ticket-item-row";
-        itemLine.style.display = "flex";
-        itemLine.style.justifyContent = "space-between";
-        itemLine.style.alignItems = "center";
-        itemLine.style.margin = "6px 0";
 
         const subtotalFila = calcularSubtotalItem(item);
 
         itemLine.innerHTML = `
-            <div style="display: flex; flex-direction: column; text-align: left;">
-                <span style="font-weight: 600; font-size: 13px;">${item.nombre}</span>
-                <div style="display: flex; align-items: center; gap: 6px; margin-top: 3px;">
-                    <button type="button" onclick="cambiarCantidadTicket('${item.id}', -1)" style="padding: 1px 7px; border: 1px solid #ccc; background: #eee; border-radius: 3px; cursor: pointer; font-weight: bold;">-</button>
-                    <span style="font-size: 12px; font-weight: bold;">${item.cantidad}</span>
-                    <button type="button" onclick="cambiarCantidadTicket('${item.id}', 1)" style="padding: 1px 7px; border: 1px solid #ccc; background: #eee; border-radius: 3px; cursor: pointer; font-weight: bold;">+</button>
-                    <span style="font-size: 11px; color: #777;">($${item.precioOriginal.toFixed(2)} c/u)</span>
+            <div class="ticket-item-info">
+                <span class="ticket-item-nombre">${item.nombre}</span>
+                <div class="ticket-item-controles">
+                    <button type="button" class="btn-cant" onclick="cambiarCantidadTicket('${item.id}', -1)">-</button>
+                    <span class="ticket-item-cant">${item.cantidad}</span>
+                    <button type="button" class="btn-cant" onclick="cambiarCantidadTicket('${item.id}', 1)">+</button>
+                    <span class="ticket-item-unitario">($${item.precioOriginal.toFixed(2)} c/u)</span>
                 </div>
             </div>
-            <span style="font-weight: 700; font-size: 13px;">$${subtotalFila.toFixed(2)}</span>
+            <span class="ticket-item-subtotal">$${subtotalFila.toFixed(2)}</span>
         `;
         listaItemsTicket.appendChild(itemLine);
     });
@@ -515,13 +528,17 @@ function actualizarTicket() {
     calcularCambio();
 }
 
+// ============================================================================
+// PROCESAMIENTO Y CONFIRMACIÓN DE VENTA
+// ============================================================================
+
 /**
- * Envía la venta confirmada al servidor para registrarla en XML y actualizar existencias.
+ * Envía la venta confirmada al backend para su almacenamiento XML y actualización de stock.
  * @async
  */
 async function procesarVenta() {
     if (!cajaAbierta) {
-        alert("La caja está cerrada.");
+        alert("La caja se encuentra cerrada.");
         return;
     }
 
@@ -529,15 +546,13 @@ async function procesarVenta() {
         || sessionStorage.getItem("idUsuario")
         || "1";
 
-
-    // capturamos la caja del menú y el método de pago activo
-    const idCajaSeleccionada = document.getElementById("selectCaja") ? document.getElementById("selectCaja").value : "1";
-    const metodoPagoActual = typeof metodoPago !== 'undefined' ? metodoPago : "Efectivo";
+    const selectCaja = document.getElementById("selectCaja");
+    const idCajaSeleccionada = selectCaja ? selectCaja.value : "1";
 
     const payload = {
-        idEmpleado: idEmpleadoActivo, // Asigna el empleado real de la sesión activa
-        idCaja: idCajaSeleccionada,   // <--- Enviamos la caja dinámicamente
-        metodoPago: metodoPagoActual, // <--- Enviamos Efectivo o Tarjeta
+        idEmpleado: idEmpleadoActivo,
+        idCaja: idCajaSeleccionada,
+        metodoPago,
         items: itemsCuenta.map((i) => ({
             idProducto: i.id,
             cantidad: i.cantidad
@@ -568,12 +583,13 @@ async function procesarVenta() {
         btnRegistrarPago.textContent = "Registrar pago";
     }
 }
+
 /**
- * Muestra el modal con el desglose del comprobante de venta emitido por el backend.
- * @param {Object} ticket - Datos de la venta devueltos por el servidor.
+ * Despliega el modal emergente con el comprobante de compra recién emitido.
+ * @param {Object} ticket - Estructura de venta retornada por el servidor.
  */
 function mostrarTicketModal(ticket) {
-    if (!ticket) return;
+    if (!ticket || !reciboDetalle || !modalTicket) return;
 
     const fecha = ticket.fecha ? new Date(ticket.fecha).toLocaleString() : new Date().toLocaleString();
     const itemsRaw = ticket.items?.item || ticket.items || [];
@@ -602,135 +618,203 @@ function mostrarTicketModal(ticket) {
             <span>$${Number(ticket.total || 0).toFixed(2)} MXN</span>
         </div>
         <div class="ticket-pie-metodo">
-            Método: ${metodoPago}
+            Método de pago: ${metodoPago}
         </div>
     `;
 
     modalTicket.style.display = "flex";
 }
- 
-/* HISTORIAL Y REIMPRESIÓN DE TICKETS */
 
-let ventasHistorialCache = [];
+/**
+ * Restaura el panel de cobro tras completar una venta y cerrar el ticket.
+ */
+function reiniciarVentaDespuesDeCobro() {
+    if (modalTicket) modalTicket.style.display = "none";
+    itemsCuenta = [];
+    if (inputMontoRecibido) inputMontoRecibido.value = "";
+    if (inputCambio) inputCambio.value = "$0.00";
+    actualizarTicket();
+    cargarFolioActual();
+    cargarDatos();
+}
 
-async function abrirHistorialVentas() {
+// ============================================================================
+// HISTORIAL DE TRANSACCIONES Y REIMPRESIÓN
+// ============================================================================
+
+/**
+ * Consulta el historial general de tickets y abre el modal correspondiente.
+ * @async
+ */
+window.abrirHistorialVentas = async function () {
     try {
         const res = await fetch("/api/ventas");
         const data = await res.json();
         ventasHistorialCache = data.ventas || [];
         renderizarHistorial(ventasHistorialCache);
-        document.getElementById("modalHistorialVentas").style.display = "flex";
+        
+        const modal = document.getElementById("modalHistorialVentas");
+        if (modal) modal.style.display = "flex";
     } catch (e) {
         alert("Error al cargar el historial de ventas.");
     }
-}
+};
 
-function cerrarModalHistorial() {
-    document.getElementById("modalHistorialVentas").style.display = "none";
-}
+/**
+ * Oculta la ventana modal del historial de ventas.
+ */
+window.cerrarModalHistorial = function () {
+    const modal = document.getElementById("modalHistorialVentas");
+    if (modal) modal.style.display = "none";
+};
 
+/**
+ * Genera dinámicamente las filas de la tabla de historial sin estilos inline.
+ * @param {Array<Object>} lista - Listado de tickets devueltos por el backend.
+ */
 function renderizarHistorial(lista) {
     const tbody = document.getElementById("tablaHistorialCuerpo");
     if (!tbody) return;
 
-    tbody.innerHTML = lista.length ? "" : `<tr><td colspan="4" style="text-align:center; padding:15px; color:#888;">Sin ventas registradas</td></tr>`;
+    if (!lista.length) {
+        tbody.innerHTML = `<tr><td colspan="4" class="historial-sin-datos">Sin ventas registradas</td></tr>`;
+        return;
+    }
 
+    tbody.innerHTML = "";
     [...lista].reverse().forEach((v) => {
         const id = v["@_id"] || v.id || v.folio;
         const fecha = v.fecha ? new Date(v.fecha).toLocaleString() : "N/D";
         const total = Number(v.total || 0).toFixed(2);
 
-        tbody.innerHTML += `
-            <tr style="border-bottom: 1px solid #eee;">
-                <td><strong>#${id}</strong></td>
-                <td>${fecha}</td>
-                <td style="color:#27ae60; font-weight:bold;">$${total}</td>
-                <td style="text-align:center;">
-                    <button type="button" class="btn-toggle-caja" style="background:#3498db; padding:4px 8px; font-size:12px;" onclick="seleccionarVentaParaReimpresion('${id}')">
-                        <i class="fa-solid fa-eye"></i> Ver / Reimprimir
-                    </button>
-                </td>
-            </tr>
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>#${id}</td>
+            <td>${fecha}</td>
+            <td>$${total}</td>
+            <td>
+                <button type="button" onclick="seleccionarVentaParaReimpresion('${id}')">
+                    <i class="fa-solid fa-eye"></i> Ver/reimprimir
+                </button>
+            </td>
         `;
+        tbody.appendChild(tr);
     });
 }
 
-function filtrarHistorialVentas() {
-    const filtro = document.getElementById("filtroHistorial").value.trim().toLowerCase();
+/**
+ * Filtra el listado de ventas históricas por número de folio en memoria.
+ */
+window.filtrarHistorialVentas = function () {
+    const inputFiltro = document.getElementById("filtroHistorial");
+    const filtro = inputFiltro ? inputFiltro.value.trim().toLowerCase() : "";
     const filtradas = ventasHistorialCache.filter(v => String(v["@_id"] || v.id || "").toLowerCase().includes(filtro));
     renderizarHistorial(filtradas);
-}
+};
 
-function seleccionarVentaParaReimpresion(idVenta) {
+/**
+ * Carga un ticket en el modal de corroboración y oculta temporalmente la lista.
+ * @param {string} idVenta - Folio de la venta seleccionada.
+ */
+window.seleccionarVentaParaReimpresion = function (idVenta) {
     const venta = ventasHistorialCache.find(v => String(v["@_id"] || v.id) === String(idVenta));
     if (!venta) return alert("Venta no encontrada.");
 
     const itemsRaw = venta.items?.item || venta.productos?.producto || [];
     const items = Array.isArray(itemsRaw) ? itemsRaw : [itemsRaw];
 
-    const filas = items.map(it => `
-        <div style="display:flex; justify-content:space-between; margin:2px 0;">
-            <span>${it.cantidad || 1}x ${it.nombre || "Prod"}</span>
+    const filasProductos = items.map(it => `
+        <div class="ticket-reimpresion-fila">
+            <span>${it.nombre || "Producto"}</span>
             <span>$${Number(it.subtotal || it.precioUnitario || 0).toFixed(2)}</span>
         </div>
     `).join("");
 
-    document.getElementById("detalleTicketReimpresion").innerHTML = `
-        <p style="margin:2px 0;"><strong>Folio:</strong> #${venta["@_id"] || venta.id}</p>
-        <p style="margin:2px 0;"><strong>Fecha:</strong> ${new Date(venta.fecha).toLocaleString()}</p>
-        <hr style="border:none; border-top:1px dashed #000; margin:6px 0;">
-        ${filas}
-        <hr style="border:none; border-top:1px dashed #000; margin:6px 0;">
-        <div style="display:flex; justify-content:space-between; font-weight:bold;">
-            <span>TOTAL:</span>
-            <span>$${Number(venta.total).toFixed(2)}</span>
-        </div>
-    `;
+    const contenedor = document.getElementById("detalleTicketReimpresion");
+    if (contenedor) {
+        contenedor.innerHTML = `
+            <div class="ticket-metadatos">
+                <div>Folio: #${venta["@_id"] || venta.id}</div>
+                <div>Fecha: ${new Date(venta.fecha).toLocaleString()}</div>
+            </div>
+            <hr class="ticket-separador-figma">
+            <div class="ticket-items-desglose">
+                ${filasProductos}
+            </div>
+            <hr class="ticket-separador-figma">
+            <div class="ticket-reimpresion-total">
+                <span>Total:</span>
+                <span>$${Number(venta.total).toFixed(2)}</span>
+            </div>
+        `;
+    }
 
-    document.getElementById("modalCorroborarTicket").style.display = "flex";
-}
+    const modalHistorial = document.getElementById("modalHistorialVentas");
+    const modalCorroborar = document.getElementById("modalCorroborarTicket");
 
-function cerrarModalCorroborar() {
-    document.getElementById("modalCorroborarTicket").style.display = "none";
-}
+    if (modalHistorial) modalHistorial.style.display = "none";
+    if (modalCorroborar) modalCorroborar.style.display = "flex";
+};
 
-function ejecutarReimpresionTicket() {
+/**
+ * Cierra la vista previa de reimpresión y restituye el modal de historial.
+ */
+window.cerrarModalCorroborar = function () {
+    const modalCorroborar = document.getElementById("modalCorroborarTicket");
+    const modalHistorial = document.getElementById("modalHistorialVentas");
+
+    if (modalCorroborar) modalCorroborar.style.display = "none";
+    if (modalHistorial) modalHistorial.style.display = "flex";
+};
+
+/**
+ * Dispara la orden de impresión térmica nativa sobre el recibo seleccionado.
+ */
+window.ejecutarReimpresionTicket = function () {
     const area = document.getElementById("areaTicketReimpresion");
     if (!area) return;
 
     const ventana = window.open("", "_blank", "width=320,height=500");
-    if (!ventana) return alert("Habilite las ventanas emergentes en el navegador.");
+    if (!ventana) return alert("Habilite las ventanas emergentes en su navegador.");
 
-    ventana.document.body.innerHTML = area.innerHTML;
-    ventana.document.body.style.fontFamily = "monospace";
-    ventana.document.body.style.padding = "10px";
-
+    ventana.document.write(`
+        <html>
+            <head>
+                <title>Impresión de Ticket</title>
+                <style>
+                    body { font-family: monospace; padding: 12px; margin: 0; font-size: 13px; }
+                    .ticket-reimpresion-fila, .ticket-reimpresion-total { display: flex; justify-content: space-between; }
+                    hr { border: none; border-top: 1px dashed #000; margin: 8px 0; }
+                </style>
+            </head>
+            <body>${area.innerHTML}</body>
+        </html>
+    `);
+    ventana.document.close();
     ventana.focus();
     ventana.print();
     ventana.close();
-}
+};
+
+// ============================================================================
+// CARRUSEL SUPERIOR DE OFERTAS
+// ============================================================================
 
 /**
- * Genera el carrusel de ofertas activas en la parte superior del punto de venta.
- * 
- * Genera una tarjeta por cada oferta activa, mostrando el nombre del producto, tipo de promoción
- * y su precio original.
- * 
- * Si no hay ofertas activas, muestra el mensaje "No hay promociones vigentes".
+ * Construye dinámicamente las tarjetas de ofertas en el carrusel superior.
  */
-function renderizarCarruselOfertas(){
+function renderizarCarruselOfertas() {
     const pista = document.getElementById("carrusel-pista");
     const vacio = document.getElementById("carrusel-vacio");
-    if(!pista) return;
+    if (!pista) return;
 
     pista.innerHTML = "";
 
-    //si no hay ofertas, mostramos el aviso
-    if(!ofertasActivas || ofertasActivas.length === 0){
-        vacio.style.display = "block";
+    if (!ofertasActivas || ofertasActivas.length === 0) {
+        if (vacio) vacio.style.display = "block";
         return;
     }
-    vacio.style.display = "none";
+    if (vacio) vacio.style.display = "none";
 
     ofertasActivas.forEach((oferta) => {
         const idProd = String(oferta.idProducto);
@@ -739,7 +823,6 @@ function renderizarCarruselOfertas(){
             return idVal === idProd;
         });
 
-        //tipo de promoción
         let textoOferta;
         if (oferta.tipoProm === "porcentaje") {
             textoOferta = `-${oferta.valorDesc}%`;
@@ -755,7 +838,7 @@ function renderizarCarruselOfertas(){
         const precio = producto ? (Number(producto.precio) || 0).toFixed(0) : "-";
 
         const card = document.createElement("div");
-        card.className = "carrusel-tarjeta";
+        card.className = "card-oferta";
         card.innerHTML = `
             <div class="oferta-nombre">${nombre}</div>
             <div class="oferta-tipo">${textoOferta}</div>
@@ -766,141 +849,162 @@ function renderizarCarruselOfertas(){
 }
 
 /**
- * Boton izquierdo del carrusel.
- * Desplaza las tarjetas hacia la izquierda.
+ * Desplaza horizontalmente la pista del carrusel de promociones.
+ * @param {number} direccion - Dirección del desplazamiento (-1 izquierda, 1 derecha).
  */
-document.getElementById("btnCarruselIzq").addEventListener("click", () => {
+function desplazarCarrusel(direccion) {
     const pista = document.getElementById("carrusel-pista");
-    const tarjeta = pista.querySelector(".carrusel-tarjeta");
-    const paso = tarjeta ? tarjeta.offsetWidth + 12 : 200;
+    if (!pista) return;
 
-    if (pista.scrollLeft <= 0) {
-        pista.scrollTo({ left: pista.scrollWidth, behavior: "smooth" });
+    const tarjeta = pista.querySelector(".card-oferta");
+    const paso = tarjeta ? tarjeta.offsetWidth + 12 : 180;
+
+    if (direccion === -1) {
+        if (pista.scrollLeft <= 0) {
+            pista.scrollTo({ left: pista.scrollWidth, behavior: "smooth" });
+        } else {
+            pista.scrollBy({ left: -paso * 2, behavior: "smooth" });
+        }
     } else {
-        pista.scrollBy({ left: -paso * 2, behavior: "smooth" });
+        if (pista.scrollLeft + pista.clientWidth >= pista.scrollWidth - 1) {
+            pista.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+            pista.scrollBy({ left: paso * 2, behavior: "smooth" });
+        }
     }
-});
-
-/**
- * Botón derecho del carrusel.
- * Desplaza las tarjetas hacia la derecha.
- */
-document.getElementById("btnCarruselDer").addEventListener("click", () => {
-    const pista = document.getElementById("carrusel-pista");
-    const tarjeta = pista.querySelector(".carrusel-tarjeta");
-    const paso = tarjeta ? tarjeta.offsetWidth + 12 : 200;
-
-    if (pista.scrollLeft + pista.clientWidth >= pista.scrollWidth -1) {
-        pista.scrollTo({ left: 0, behavior: "smooth" });
-    } else {
-        pista.scrollBy({ left: paso * 2, behavior: "smooth" });
-    }
-});
-
-/**
- * Abre el modal para capturar los datos fiscales del cliente (nombre,
- * dirección, correo y teléfono).
- */
-function abrirModalFactura() {
-    //toma el folio de la venta actual (se actualiza al registrar pago)
-    folioVentaActual = document.getElementById('lblFolioVenta').textContent.replace(/\D/g, "");
-    document.getElementById('modalFactura').style.display = 'block';
 }
 
-/**
- * Cierra el modal de datos del cliente ocultándolo de la pantalla.
- */
-function cerrarModalFactura() {
-    document.getElementById('modalFactura').style.display = 'none';
-}
+// ============================================================================
+// EMISIÓN Y CONSULTA DE FACTURACIÓN (CFDI)
+// ============================================================================
 
 /**
- * Envía los datos del cliente y el folio de la venta al servidor.
- * 
- * Si el servidor responde ok, muestra la factura generada y cierra el modal.
- * Si hay error, muestra una alerta con el mensaje del servidor.
+ * Abre el modal centrado para capturar los datos fiscales de facturación.
  */
-function generarFactura() {
-    const nombre = document.getElementById('facturaNombre').value;
-    const direccion = document.getElementById('facturaDireccion').value;
-    const correo = document.getElementById('facturaCorreo').value;
-    const telefono = document.getElementById('facturaTelefono').value;
+window.abrirModalFactura = function () {
+    const folioTexto = document.getElementById("lblFolioVenta")?.textContent || "";
+    folioVentaActual = folioTexto.replace(/\D/g, "");
 
-    fetch('/api/ventas/factura', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ folio: folioVentaActual, nombre, direccion, correo, telefono })
-    })
-    .then(r => r.json())
-    .then(respuesta => {
+    const modal = document.getElementById("modalFactura");
+    if (modal) {
+        modal.style.display = "flex";
+    }
+};
+
+/**
+ * Oculta el modal de registro de datos fiscales.
+ */
+window.cerrarModalFactura = function () {
+    const modal = document.getElementById("modalFactura");
+    if (modal) {
+        modal.style.display = "none";
+    }
+};
+
+/**
+ * Recopila la información fiscal capturada y la remite al servidor.
+ * @async
+ */
+window.generarFactura = async function () {
+    const nombre = document.getElementById("facturaNombre")?.value.trim();
+    const rfc = document.getElementById("facturaRfc")?.value.trim();
+    const cp = document.getElementById("facturaCp")?.value.trim();
+    const correo = document.getElementById("facturaCorreo")?.value.trim();
+    const regimen = document.getElementById("facturaRegimen")?.value.trim();
+    const usoCfdi = document.getElementById("facturaUsoCfdi")?.value.trim();
+
+    if (!nombre || !rfc || !correo) {
+        alert("Por favor complete al menos Nombre, RFC y Correo Electrónico.");
+        return;
+    }
+
+    const payload = {
+        folio: folioVentaActual,
+        nombre,
+        rfc,
+        cp,
+        correo,
+        regimen,
+        usoCfdi
+    };
+
+    try {
+        const res = await fetch("/api/ventas/factura", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        const respuesta = await res.json();
+
         if (respuesta.ok) {
             mostrarFactura(respuesta.factura);
             cerrarModalFactura();
         } else {
-            alert(respuesta.mensaje || 'Error al generar factura.');
+            alert(respuesta.mensaje || "Error al emitir la factura comercial.");
         }
-    })
-    .catch(() => alert('Error de conexión con el servidor.'));
-}
+    } catch (e) {
+        alert("Error de conexión con el servidor al facturar.");
+    }
+};
 
 /**
- * Genera el HTML de la factura y lo inserta en el contenedor.
- * 
- * @param {Object} f - Objeto factura devuelto por el servidor.
+ * Renderiza el formato impreso de factura en el contenedor designado.
+ * @param {Object} f - Factura fiscal devuelta por el servidor.
  */
 function mostrarFactura(f) {
-    const html = `
-        <div class="factura" style="max-width: 700px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow:  ️0 2px 8px rgba(0,0,0,.1); font-family: Arial, sans-serif;">
-            <h2 style="text-align: center; margin-bottom: 15px;">FACTURA COMERCIAL</h2>
-            <p><strong>FECHA:</strong> ${f.fechaEmision}</p>
-            <hr>
-            <p><strong>NOMBRE:</strong> ${f.cliente.nombre}</p>
-            <p><strong>DIRECCIÓN:</strong> ${f.cliente.direccion || "—"}</p>
-            <p><strong>TELÉFONO:</strong> ${f.cliente.telefono || "—"}</p>
-            <p><strong>CORREO:</strong> ${f.cliente.correo || "—"}</p>
-            <hr>
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
-                <tr>
-                    <th style="border: 1px solid #ddd; padding: 8px;">FACTURA</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">PEDIDO</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">FECHA EMISIÓN</th>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${f.numeroFactura}</td>
-                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${f.folioVenta}</td>
-                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${f.fechaEmision}</td>
-                </tr>
-            </table>
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
-                <tr>
-                    <th style="border: 1px solid #ddd; padding: 8px;">PRODUCTO</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">CANTIDAD</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">PRECIO</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">IVA</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">TOTAL</th>
-                </tr>
-                ${f.items.map(it => `
-                    <tr>
-                        <td style="border: 1px solid #ddd; padding: 8px;">${it.nombre}</td>
-                        <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${it.cantidad}</td>
-                        <td style="border: 1px solid #ddd; padding: 8px;">$${it.precio}</td>
-                        <td style="border: 1px solid #ddd; padding: 8px;">$${it.iva}</td>
-                        <td style="border: 1px solid #ddd; padding: 8px;">$${it.totalLinea}</td>
-                    </tr>
-                `).join('')}
-            </table>
-            <div style="text-align: right; margin-bottom: 15px;">
-                <p>BASE IMPONIBLE: $${f.baseImponible}</p>
-                <p>IVA (16%): $${f.ivaTotal}</p>
-                <p><strong>TOTAL: $${f.total}</strong></p>
+    const contenedor = document.getElementById("contenedorFactura");
+    if (!contenedor || !f) return;
+
+    const filasItems = (f.items || []).map(it => `
+        <tr>
+            <td>${it.nombre}</td>
+            <td class="text-center">${it.cantidad}</td>
+            <td class="text-right">$${Number(it.precio || 0).toFixed(2)}</td>
+            <td class="text-right">$${Number(it.iva || 0).toFixed(2)}</td>
+            <td class="text-right">$${Number(it.totalLinea || 0).toFixed(2)}</td>
+        </tr>
+    `).join("");
+
+    contenedor.innerHTML = `
+        <div class="comprobante-factura-card">
+            <h2 class="comprobante-factura-titulo">FACTURA COMERCIAL</h2>
+            <p><strong>FECHA:</strong> ${f.fechaEmision || new Date().toLocaleString()}</p>
+            <hr class="ticket-separador-figma">
+            <div class="comprobante-factura-datos">
+                <p><strong>RAZÓN SOCIAL:</strong> ${f.cliente?.nombre || "—"}</p>
+                <p><strong>RFC:</strong> ${f.cliente?.rfc || "—"}</p>
+                <p><strong>C.P.:</strong> ${f.cliente?.cp || "—"}</p>
+                <p><strong>CORREO:</strong> ${f.cliente?.correo || "—"}</p>
+                <p><strong>RÉGIMEN FISCAL:</strong> ${f.cliente?.regimen || "—"}</p>
+                <p><strong>USO CFDI:</strong> ${f.cliente?.usoCfdi || "—"}</p>
             </div>
-            <hr>
-            <p><strong>DIRECCIÓN:</strong> ${f.tienda.direccion}</p>
-            <p><strong>CORREO:</strong> ${f.tienda.correo}</p>
-            <p><strong>TELÉFONO:</strong> ${f.tienda.telefono}</p>
-            <button onclick="window.print()" style="margin-top: 15px; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Imprimir factura</button>
+            <hr class="ticket-separador-figma">
+            <table class="comprobante-factura-tabla">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cant</th>
+                        <th>Precio</th>
+                        <th>IVA</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>${filasItems}</tbody>
+            </table>
+            <div class="comprobante-factura-totales">
+                <p>Base imponible: $${Number(f.baseImponible || 0).toFixed(2)}</p>
+                <p>IVA (16%): $${Number(f.ivaTotal || 0).toFixed(2)}</p>
+                <p class="factura-gran-total">TOTAL: $${Number(f.total || 0).toFixed(2)}</p>
+            </div>
+            <hr class="ticket-separador-figma">
+            <div class="comprobante-factura-emisor">
+                <p><strong>SUCURSAL:</strong> ${f.tienda?.nombre || "CADENA COMERCIAL OXXO"}</p>
+                <p><strong>DIRECCIÓN:</strong> ${f.tienda?.direccion || "Matriz Principal"}</p>
+            </div>
+            <button type="button" class="btn-imprimir-ticket mt-3" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Imprimir factura fiscal
+            </button>
         </div>
     `;
-    document.getElementById('contenedorFactura').innerHTML = html;
 }
-

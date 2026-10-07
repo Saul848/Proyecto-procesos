@@ -144,3 +144,42 @@
 .barra-sesion-administrador button:hover {
     background-color: #f0f0f0;
 }
+
+/* Barra principal superior */
+.barra-sesion-empleado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 24px;
+    background-color: #3b82f6; /* Azul base */
+    color: #ffffff;
+}
+
+/* Contenedor de los botones de la derecha */
+.barra-sesion-empleado > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Separación horizontal entre Mensajes y Cerrar sesión */
+}
+
+/* Estilo individual de los botones */
+.barra-sesion-empleado button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background-color: #ffffff;
+    color: #0f172a;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.barra-sesion-empleado button:hover {
+    background-color: #f1f5f9;
+    transform: translateY(-1px);
+}
